@@ -98,7 +98,7 @@ app = Flask(__name__)
 @app.route('/')
 def main():
         btc,eth,sol= fetch()
-        return render_template('bob.html',sol=sol,eth=eth,btc=btc)
+        return render_template('main.html',sol=sol,eth=eth,btc=btc)
 
 @app.post('/helius')
 def helius():
