@@ -138,7 +138,7 @@ def show():
     cursor = sql.cursor()
     cursor.execute("SELECT Name FROM port")
     balance = getbal()
-    return render_template('render.html',balance=balance,calist=list(cursor.fetchall()))
+    return render_template('main.html',balance=balance,calist=list(cursor.fetchall()))
 
     
 

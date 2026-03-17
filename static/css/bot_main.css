@@ -1,0 +1,476 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    cursor: none;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.header-ticker {
+    width: 100%;
+    background: #000000e0;
+
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    
+    padding: 10px 0;
+    text-align: center;
+    display: block;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+    
+
+.ticker-wrap {
+    display: inline-block;
+    padding-left: 100%; 
+    animation: marquee-move 15s linear infinite; 
+}
+
+.ticker-textcolour {
+    color: #00FF85;;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    display: inline-block;
+}
+
+/* THE ANIMATION ENGINE */
+@keyframes marquee-move {
+    0% { transform: translate(-100%, 0); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Optional: Stop on hover */
+
+/*.header-ticker:hover .ticker-wrap {
+    animation-play-state: paused;
+}*/
+
+
+.header-ticker marquee {
+    display: block;
+    margin:0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    width: 40px;
+    height: auto;
+}
+
+.logo h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-socials {
+    display: flex;
+    gap: 12px;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+    min-height: calc(1000vh - 160px);
+}
+
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    padding: 40px 20px;
+    border-right: 1px solid rgb(202, 190, 190);
+    background: linear-gradient(to bottom, #000, #050505);
+}
+
+.sidebar a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 20px;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.sidebar a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 60%;
+    background: #605e5e; 
+    transition: all 0.3s ease;
+    border-radius: 0 4px 4px 0;
+}
+
+.sidebar a:hover::before {
+    width: 4px; 
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 
+                 0 0 12px rgba(255, 255, 255, 0.4);
+    transform: translateX(5px);
+}
+
+/* CONTENT */
+.content {
+    padding: 40px;
+    flex-grow: 1;
+}
+
+
+.header-socials {
+  display: flex;
+  gap: 15px;
+}
+
+.Btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #212020; 
+  text-decoration: none;
+}
+
+.svgContainer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+/* The expanding background circle */
+.BG {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: 1;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.Btn.x-twitter .BG { background-color: #000000; }
+.Btn.insta .BG { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.Btn.discord .BG { background-color: #5865F2; }
+
+/* The Hover Animations */
+.Btn:hover .BG {
+  transform: scale(1);
+}
+
+.Btn:hover .svgContainer {
+  transform: scale(1.15); 
+}
+
+
+.cursor-dot, .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+}
+
+.cursor-ring {
+    width: 35px;
+    height: 35px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 15px rgb(255, 255, 255);
+    transition: width 0.2s, height 0.2s;
+}
+
+.cursor-hidden {
+  opacity: 0;
+}
+
+.cursor-ring.cursor-hover {
+    width: 60px;
+    height: 60px;
+    border-color: #16cb89; 
+    box-shadow: 0 0 20px rgba(78, 74, 74, 0.6);
+    background: rgba(255, 255, 255, 0.1); 
+}
+
+
+/* --- The Main 2-Column Grid --- */
+.GridContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Command Console takes up 2/3, Metrics 1/3 */
+    gap: 20px;
+}
+
+/* --- Common styling for 'Terminal' style boxes --- */
+.CommandConsole, .DataMetrics section {
+    background-color: #080808; /* Slightly lighter than the page background */
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+/* --- Column 1: Console View --- */
+.TerminalView {
+    background-color: #000000;
+    border-radius: 4px;
+    height: 300px;
+    padding: 10px;
+    overflow-y: scroll; /* Makes the terminal scrollable */
+    margin-bottom: 15px;
+}
+
+.TerminalView p {
+    font-size: 0.9rem;
+    color: #aaaaaa;
+    margin: 5px 0;
+}
+
+.ActionButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.refresh-btn {
+    background: none;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.refresh-btn.ActionStart:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.refresh-btn.ActionStop:hover {
+    border-color: #ff3333; /* Red hover for stop */
+    color: #ff3333;
+}
+
+/* --- Column 2: Metrics --- */
+.DataMetrics {
+    display: grid;
+    gap: 10px;
+}
+
+.MetricCard {
+    text-align: center;
+    border: 1px solid #333;
+    padding: 15px;
+    background-color: #080808;
+    border-radius: 4px;
+}
+
+.MetricCard h3 {
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #aaaaaa;
+}
+
+.BigValue {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* --- Special Effects --- */
+.NeoGreenGlow {
+    color: #00FF85;
+    text-shadow: 0 0 10px #00FF85, 0 0 20px #00FF85;
+}
+
+.SubtleText {
+    color: #555555;
+    font-size: 0.9rem;
+}
+
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 40px 0;
+    font-family: sans-serif;
+}
+
+th {
+    text-align: left;
+    color: #555; /* Subtle grey for headers */
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #222;
+}
+
+td {
+    padding: 15px 0;
+    border-bottom: 1px solid #111;
+    font-size: 1.1rem;
+}
+
+/* Button Styling */
+.refresh-btn {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    display: block;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.refresh-btn:hover {
+    background-color: #00FF85; 
+    box-shadow: 0 0 15px #00FF85;
+}
+
+.neon-green {
+    color: #00FF85;
+}
+
+.card {
+  width: 1100px;
+  margin:auto;
+  height: 150px;
+  background: rgb(255, 255, 255);
+  transition: all 0.4s;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.705);
+  font-size: 30px;
+  font-weight: 900;
+  /* ADDED THIS: prevents content from leaking during transition */
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-radius: 15px;
+  cursor: pointer;
+  transform: scale(1.1); /* Reduced slightly to prevent screen clipping */
+  background: #e60f0f; 
+  border: 3px solid #00FF85; /* Neon border */
+}
+
+.first-content {
+  height: 100%;
+  width: 100%;
+  transition: all 0.4s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+}
+
+.card:hover .first-content {
+  height: 0px;
+  opacity: 0;
+}
+
+.second-content {
+  height: 0%;
+  width: 100%;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s;
+  font-size: 0px;
+  transform: rotate(90deg) scale(-1);
+}
+
+.card:hover .second-content {
+  opacity: 1;
+  height: 100%;
+  font-size: 1.8rem;
+  transform: rotate(0deg);
+}
+
+/* Ensure the cell can hold the absolute-positioned dropdown */
+td {
+    position: relative;
+}
+
+/* 1. Hide the dropdown by default */
+.row-dropdown {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;       /* Appears right below the text */
+    left: 0;
+    background: #111; /* Dark terminal background */
+    border: 1px solid #00FF85; /* Neon border */
+    padding: 10px;
+    z-index: 100;
+    width: 200px;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    pointer-events: none; /* Prevents flickering */
+}
+
+/* 2. Style the text inside the dropdown */
+.row-dropdown p {
+    font-size: 0.8rem;
+    color: #fff;
+    margin: 5px 0;
+    text-transform: none; /* Keeps it from being all caps if your table is caps */
+}
+
+/* 3. SHOW the dropdown when hovering over the ROW */
+tr:hover .row-dropdown {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(5px); /* Gentle slide-down effect */
+}
