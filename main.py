@@ -98,7 +98,7 @@ app = Flask(__name__)
 @app.route('/')
 def main():
         btc,eth,sol= fetch()
-        return render_template('main.html',sol=sol,eth=eth,btc=btc)
+        return render_template('bob.html',sol=sol,eth=eth,btc=btc)
 
 @app.post('/helius')
 def helius():
@@ -138,7 +138,7 @@ def show():
     cursor = sql.cursor()
     cursor.execute("SELECT Name FROM port")
     balance = getbal()
-    return render_template('render.html',balance=balance,calist=list(cursor.fetchall()))
+    return render_template('bot.html',balance=balance,calist=list(cursor.fetchall()))
 
     
 
