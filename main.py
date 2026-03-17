@@ -5,6 +5,17 @@ import sqlite3
 import requests
 import json
 
+def getitems():
+    sql = sqlite3.connect('bot.db')
+    cursor = sql.cursor()
+    cursor.execute("SELECT Name,Initial FROM port")
+    rec = list(cursor.fetchall())
+    l=[]
+    for i in rec:
+        l.append({"tick":i[0],"fdv":i[1]})
+    return l
+    
+
 def cbal():
     f = open('balance.json','r')
     bal = json.load(f)['bal']
@@ -138,7 +149,9 @@ def show():
     cursor = sql.cursor()
     cursor.execute("SELECT Name FROM port")
     balance = getbal()
-    return render_template('main.html',balance=balance,calist=list(cursor.fetchall()))
+    items = getitems()
+    btc,eth,sol= fetch()
+    return render_template('bot_main.html',items=items,balance = balance,eth=eth,sol=sol,btc=btc)
 
     
 

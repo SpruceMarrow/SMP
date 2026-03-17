@@ -83,7 +83,7 @@
 
             <div id="hover-details" class="row-dropdown"></div>
 
-            <table>
+            <table id="table">
                 <thead>
                     <tr>
                         <th>PAIR</th>
@@ -92,36 +92,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>SOL/USDT</td>
-                        <td>88.55$</td>
-                        <td class="neon-green">+5.4%</td>
-                    </tr>
-                    <tr><td>BTC/USDT</td><td>64,210$</td><td class="neon-green">+1.2%</td></tr>
-                    <tr><td>SOL/USDT</td><td>88.55$</td><td class="neon-green">+5.4%</td></tr>
-                    <tr><td>BTC/USDT</td><td>64,210$</td><td class="neon-green">+1.2%</td></tr>
-                    <tr><td>SOL/USDT</td><td>88.55$</td><td class="neon-green">+5.4%</td></tr>
-                    <tr><td>BTC/USDT</td><td>64,210$</td><td class="neon-green">+1.2%</td></tr>
-                    <tr><td>SOL/USDT</td><td>88.55$</td><td class="neon-green">+5.4%</td></tr>
-                    <tr><td>BTC/USDT</td><td>64,210$</td><td class="neon-green">+1.2%</td></tr>
-                    <tr><td>SOL/USDT</td><td>88.55$</td><td class="neon-green">+5.4%</td></tr>
-                    <tr><td>BTC/USDT</td><td>64,210$</td><td class="neon-green">+1.2%</td></tr>
                 </tbody>
             </table>
 
             <div class="card">
                 <div class="first-content">
-                    <span style="color: black">BALANCE</span>
+                    <span style="color: black">BALANCE:</span>
                 </div>
                 <div class="second-content">
-                    <span>lol</span>
+                    <span>{{balance}}</span>
                 </div>
             </div>
 
             <button class="refresh-btn">Refresh</button>
             
         
-   <script>
+   <script type="text/javascript">
     const dot = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
     const detailBox = document.getElementById('hover-details');
@@ -202,6 +188,14 @@
             console.log("Refreshing coin data...");
             alert("Data Refreshed!");
         });
+    }
+
+    var item = {{items | tojson}};
+    console.log(item);
+
+    for (var i = 0; i<item.length;i++) {
+
+        document.getElementsByTagName("table")[0].innerHTML += "<tr><td>"+item[i].tick+"</td>"+"<td>"+item[i].fdv+"</td></tr>" 
     }
 </script>
 </body>
