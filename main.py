@@ -129,9 +129,11 @@ def helius():
                 for i in list1:
                     for j in i:
                         calist.append(j)
-                tick = data['baseToken']['symbol']
-                fdv = data['fdv']
-                amount = tx['nativeTransfers']['amount'] / 1e9
+                newdata = data[0]
+                tick = newdata['baseToken']['symbol']
+                fdv = newdata['fdv']
+                nativetransfers = tx['nativeTransfers']
+                amount = nativetransfers[0]['amount'] / 1e9
                 print(f'{tick} {fdv} {amount}')
                 if fdv>80000 and amount>1:
                     print(f'{tick} {fdv} {amount}')
