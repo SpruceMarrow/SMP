@@ -132,7 +132,7 @@ def helius():
                 fdv = data[0]['fdv']
                 amount = tx['nativeTransfers'][0]['amount'] / 1e9
                 print(f'{tick} {fdv} {amount}')
-                if fdv>1000 and amount>0.3:
+                if fdv>80000 and amount>1:
                     print(f'{tick} {fdv} {amount}')
                     if tick not in calist:
                         add(tick,fdv)
