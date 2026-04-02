@@ -144,7 +144,7 @@ def helius():
     return 'received'
 
 @app.route('/bot')
-def show():
+def bot():
     sql = sqlite3.connect('bot.db')
     cursor = sql.cursor()
     cursor.execute("SELECT Name FROM port")
