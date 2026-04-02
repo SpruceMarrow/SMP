@@ -122,6 +122,7 @@ def helius():
                 ca = mints['mint']
                 response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
                 data = list(response.json())
+                print(data)
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
                 list1 = list(cursor.fetchall())
