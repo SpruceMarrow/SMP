@@ -117,8 +117,8 @@ def helius():
                     for j in i:
                         calist.append(j)
                 newdata = data
-                tick = newdata['baseToken']['symbol']
-                fdv = newdata['fdv']
+                tick = newdata[0]['baseToken']['symbol']
+                fdv = newdata[0]['fdv']
                 nativetransfers = tx['nativeTransfers']
                 amount = nativetransfers[0]['amount'] / 1e9
                 print(f'{tick} {fdv} {amount}')
