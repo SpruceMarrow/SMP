@@ -116,7 +116,7 @@ def helius():
                 for i in list1:
                     for j in i:
                         calist.append(j)
-                newdata = data
+                newdata = data or [{'basetoken':{'symbol':' '},'fdv':0}]
                 tick = newdata[0]['baseToken']['symbol']
                 fdv = newdata[0]['fdv']
                 nativetransfers = tx['nativeTransfers'][0] or 0
