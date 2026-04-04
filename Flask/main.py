@@ -1,12 +1,16 @@
 import asyncio
 from flask import Flask, render_template
 from flask import request 
-import sqlite3
+import psycopg2
 import requests
 import json
+import os
+import psycopg2
+
+DBURL = os.environ["DATABASE_URL"]
 
 def getitems():
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     cursor.execute("SELECT Name,Initial FROM port")
     rec = list(cursor.fetchall())
@@ -14,60 +18,43 @@ def getitems():
     for i in rec:
         l.append({"tick":i[0],"fdv":i[1]})
     return l
-    
-
-def cbal():
-    f = open('balance.json','r')
-    bal = json.load(f)['bal']
-    f.close()
-
-    f = open('balance.json','w')
-    json.dump({'bal':bal-0.1},f)
-    f.close()
-
 
 def getbal():
-    f = open('balance.json','r')
-    bal = json.load(f)['bal']
-    f.close()
+    sql = psycopg2.connect(DBURL)
+    cursor = sql.cursor()
+    cursor.execute("SELECT Balance FROM bal")
+    rec = list(cursor.fetchall())
+    bal = rec[0][0]
     return bal
 
 
+
 def buybal(tick):
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    f = open('balance.json','r')
-    bal = json.load(f)['bal']
-    f.close()
-
-    f = open('balance.json','w')
-    json.dump({'bal':bal-0.1},f)
-    f.close()
-
+    bal = getbal()
+    cursor.execute(f'UPDATE bal set Balance= {bal-0.1}')
     cursor.execute(f'UPDATE port set BuyBal= {bal-0.1} WHERE Name = "{tick}"')
     sql.commit()
+    sql.close()
 
     
 def sellbal(final,fdv,tick):
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    f = open('balance.json','r')
-    bal = json.load(f)['bal']
-    f.close()
-
-    f = open('balance.json','w')
-    json.dump({'bal':bal+(0.1*(final-fdv)/fdv)},f)
-    f.close()
-
+    bal = getbal()
+    cursor.execute(f'UPDATE bal set Balance= {bal+(0.1*(final-fdv)/fdv)}')
     cursor.execute(f'UPDATE port set SellBal= {bal+(0.1*(final-fdv)/fdv)} WHERE Name = "{tick}"')
     sql.commit()
+    sql.close()
 
 
-def add(tick,fdv):
-    sql = sqlite3.connect('bot.db')
+def add(tick,fdv,ca):
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    cursor.execute(f'INSERT INTO port (Name,Initial) values ("{tick}",{fdv})')
+    cursor.execute(f'INSERT INTO port (Name,Initial,CA) values ("{tick}",{fdv},"{ca}")')
     sql.commit()
+    sql.close()
 
 def fetch():
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
@@ -84,7 +71,7 @@ def fetch():
 
 async def check(ca,tick,fdv):
     n=0
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     while n<288:
         res = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
@@ -113,7 +100,7 @@ def main():
 
 @app.post('/helius')
 def helius():
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     hreq = list(request.get_json())
     for tx in hreq:
@@ -138,7 +125,7 @@ def helius():
                 if fdv>80000 and amount>1:
                     print(f'{tick} {fdv} {amount}')
                     if tick not in calist:
-                        add(tick,fdv)
+                        add(tick,fdv,ca)
                         buybal(tick)
                         check(ca,tick,fdv)
                 
@@ -148,7 +135,7 @@ def helius():
 
 @app.route('/bot')
 def bot():
-    sql = sqlite3.connect('bot.db')
+    sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     cursor.execute("SELECT Name FROM port")
     balance = getbal()
