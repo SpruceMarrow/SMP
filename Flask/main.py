@@ -52,7 +52,7 @@ def sellbal(final,fdv,tick):
 def add(tick,fdv,ca):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    cursor.execute(f'INSERT INTO port (Name,Initial,CA) values ("{tick}",{fdv},"{ca}")')
+    cursor.execute(f"INSERT INTO port (Name,Initial,CA) values ({tick},{fdv},{ca})")
     sql.commit()
     sql.close()
 
