@@ -24,7 +24,7 @@ def getbal():
     cursor = sql.cursor()
     cursor.execute("SELECT Balance FROM bal")
     rec = list(cursor.fetchall())
-    bal = rec[0]
+    bal = rec[0][0]
     return bal
 
 
