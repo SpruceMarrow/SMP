@@ -142,6 +142,10 @@ def bot():
     btc,eth,sol= fetch()
     return jsonify({"items":[items,balance,eth,sol,btc]})
 
+@app.route('/api')
+def api():
+    return jsonify({"items":["hello"]})
+
 
     
 

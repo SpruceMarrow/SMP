@@ -62,16 +62,28 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     }
   ]);
 
-  const [items,setItems] = useState("");
+ const [items, setItems] = useState<string[]>([]);  // Change to array of strings (adjust type if it's objects, e.g., useState<any[]>([]))
 
-  useEffect(() => {
-    fetch("https://smp-hex7.onrender.com/bot")
-    .then(res => res.json())
-    .then(data => {console.log("hello"); setItems(data.items);})
-  }, []);
-
-
-
+useEffect(() => {
+  fetch("https://smp-hex7.onrender.com/api")
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("API data:", data);  // Log to verify the response
+      if (Array.isArray(data.items)) {
+        setItems(data.items);  // Assuming data.items is an array
+      } else {
+        console.error("Expected items to be an array, but got:", data.items);
+        setItems([]);  // Fallback to empty array
+      }
+    })
+    .catch(err => {
+      console.error("API fetch failed:", err);
+      setItems([]);  // Fallback
+    });
+}, []);
 
   const handleVote = (id: number, type: 'for' | 'against') => {
     setProposals(prev => prev.map(p => {
