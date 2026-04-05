@@ -67,8 +67,10 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
   useEffect(() => {
     fetch("https://smp-hex7.onrender.com/bot")
     .then(res => res.json())
-    .then(data => {setItems(data.items)})
+    .then(data => {console.log("hello"); setItems(data.items);})
   }, []);
+
+
 
 
   const handleVote = (id: number, type: 'for' | 'against') => {

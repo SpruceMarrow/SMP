@@ -132,7 +132,7 @@ def helius():
 
     return 'received'
 
-@app.get('/bot')
+@app.route('/bot')
 def bot():
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
