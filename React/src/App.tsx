@@ -65,6 +65,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
  const [items, setItems] = useState<string[]>([]);  // Change to array of strings (adjust type if it's objects, e.g., useState<any[]>([]))
 
 useEffect(() => {
+  console.log("Hello")
   fetch("https://smp-hex7.onrender.com/api")
     .then(res => {
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);

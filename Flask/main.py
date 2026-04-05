@@ -1,6 +1,7 @@
 import asyncio
 from flask import Flask, render_template, url_for, jsonify
 from flask import request 
+from flask_cors import CORS
 import psycopg2
 import requests
 import json
@@ -91,6 +92,7 @@ async def check(ca,tick,fdv):
         
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def main():
