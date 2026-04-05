@@ -62,6 +62,15 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     }
   ]);
 
+  const [items,setItems] = useState("");
+
+  useEffect(() => {
+    fetch("https://smp-hex7.onrender.com/bot")
+    .then(res => res.json())
+    .then(data => {setItems(data.items)})
+  }, []);
+
+
   const handleVote = (id: number, type: 'for' | 'against') => {
     setProposals(prev => prev.map(p => {
       if (p.id === id && p.status === 'Active') {
@@ -89,7 +98,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
           <ArrowLeft size={20} />
           Back to Kitchen
         </button>
-        <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">Governance</h1>
+        <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">{items}</h1>
       </div>
 
       <div className="grid gap-8">

@@ -1,11 +1,10 @@
 import asyncio
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, jsonify
 from flask import request 
 import psycopg2
 import requests
 import json
 import os
-import psycopg2
 
 DBURL = os.environ["DATABASE_URL"]
 
@@ -133,7 +132,7 @@ def helius():
 
     return 'received'
 
-@app.route('/bot')
+@app.get('/bot')
 def bot():
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
@@ -141,7 +140,8 @@ def bot():
     balance = getbal()
     items = getitems()
     btc,eth,sol= fetch()
-    return render_template('bot_main.html',items=items,balance = balance,eth=eth,sol=sol,btc=btc)
+    return jsonify({"items":[items,balance,eth,sol,btc]})
+
 
     
 
