@@ -9,14 +9,20 @@ import os
 
 DBURL = os.environ["DATABASE_URL"]
 
+def getprices(items):
+    l = []
+    for i in items:
+        l.append(i["ca"])
+    return l
+
 def getitems():
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    cursor.execute("SELECT Name,Initial FROM port")
+    cursor.execute("SELECT Name,Initial,CA FROM port")
     rec = list(cursor.fetchall())
     l=[]
     for i in rec:
-        l.append({"tick":i[0],"fdv":i[1]})
+        l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
     return l
 
 def getbal():
@@ -142,7 +148,8 @@ def bot():
     balance = getbal()
     items = getitems()
     btc,eth,sol= fetch()
-    return jsonify({"items":[items,balance,eth,sol,btc]})
+    cur = getprices(items)
+    return jsonify({"items":[items,balance,eth,sol,btc,cur]})
 
 @app.route('/api')
 def api():
