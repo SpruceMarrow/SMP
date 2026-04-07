@@ -155,9 +155,11 @@ def bot():
     btc,eth,sol= fetch()
     cur = getprices(items)
     inc = []
+    l = []
     for i in range(len(items)):
         inc.append(round(((items[i]["fdv"]-cur[i])/items[i]["fdv"])*100,2))
-    return jsonify({"items":[items,balance,eth,sol,btc,cur,inc]})
+        l.append(items[i]["fdv"])
+    return jsonify({"items":[items,balance,eth,sol,btc,cur,l,inc]})
 
 @app.route('/api')
 def api():
