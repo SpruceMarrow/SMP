@@ -142,14 +142,14 @@ def helius():
 
 @app.route('/bot')
 def bot():
-    sql = psycopg2.connect(DBURL)
-    cursor = sql.cursor()
-    cursor.execute("SELECT Name FROM port")
     balance = getbal()
     items = getitems()
     btc,eth,sol= fetch()
     cur = getprices(items)
-    return jsonify({"items":[items,balance,eth,sol,btc,cur]})
+    inc = []
+    for i in range(len(items)):
+        inc.append(((items[i]["fdv"]-cur[i])/items[i]["fdv"])*100)
+    return jsonify({"items":[items,balance,eth,sol,btc,cur,inc]})
 
 @app.route('/api')
 def api():
