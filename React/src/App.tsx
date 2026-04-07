@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, 
   Menu, 
@@ -31,6 +31,8 @@ interface Proposal {
 }
 
 // --- Components ---
+
+{/* Governance View */ }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
   const [proposals, setProposals] = useState<Proposal[]>([
@@ -99,6 +101,8 @@ useEffect(() => {
     }));
   };
 
+  {/*Governance View page ui*/}
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -108,12 +112,16 @@ useEffect(() => {
       <div className="flex items-center justify-between mb-12">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-orange-400 font-bold transition-colors"
+          className="flex items-center gap-2 text-text-tmain dark:text-slate-400 hover:text-tmain dark:hover:text-text-tmain font-bold transition-colors"
         >
           <ArrowLeft size={20} />
           Back to Kitchen
         </button>
+<<<<<<< Updated upstream
         <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">{items}</h1>
+=======
+        <h1 className="text-text-tmain font-bold font-text-tmain text-text-tmain dark:text-text-tmain">Governance</h1>
+>>>>>>> Stashed changes
       </div>
 
       <div className="grid gap-8">
@@ -121,7 +129,7 @@ useEffect(() => {
           <motion.div 
             key={proposal.id}
             whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 border-4 border-surface-container-lowest dark:border-slate-800 p-8 rounded-xl sticker-shadow"
+            className="bg-white dark:bg-slate-900 border-4 border-surface dark:border-slate-800 p-8 rounded-xl sticker-shadow"
           >
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center gap-3">
@@ -132,17 +140,17 @@ useEffect(() => {
                   {proposal.status}
                 </span>
                 {proposal.timeLeft && (
-                  <span className="flex items-center gap-1 text-xs font-bold text-on-surface-variant dark:text-slate-400">
+                  <span className="flex items-center gap-1 text-xs font-bold text-text-tmain dark:text-slate-400">
                     <Clock size={14} />
                     {proposal.timeLeft}
                   </span>
                 )}
               </div>
-              <span className="text-sm font-bold text-on-surface-variant dark:text-slate-500">#{proposal.id}</span>
+              <span className="text-sm font-bold text-text-tmain dark:text-slate-500">#{proposal.id}</span>
             </div>
 
             <h3 className="text-2xl font-black mb-4 dark:text-white">{proposal.title}</h3>
-            <p className="text-on-surface-variant dark:text-slate-300 mb-8 leading-relaxed font-medium">
+            <p className="text-text-tmain dark:text-slate-300 mb-8 leading-relaxed font-medium">
               {proposal.description}
             </p>
 
@@ -152,13 +160,13 @@ useEffect(() => {
                   <span>For: {proposal.votesFor.toLocaleString()}</span>
                   <span>Against: {proposal.votesAgainst.toLocaleString()}</span>
                 </div>
-                <div className="h-4 bg-surface-container dark:bg-slate-800 rounded-full overflow-hidden flex border-2 border-surface-container-lowest dark:border-slate-700">
+                <div className="h-4 bg-surface-container dark:bg-slate-800 rounded-full overflow-hidden flex border-2 border-surface dark:border-slate-700">
                   <div 
                     className="h-full bg-primary dark:bg-orange-500 transition-all duration-500" 
                     style={{ width: `${(proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
                   />
                   <div 
-                    className="h-full bg-secondary dark:bg-slate-600 transition-all duration-500" 
+                    className="h-full bg-text-tmain dark:bg-slate-600 transition-all duration-500" 
                     style={{ width: `${(proposal.votesAgainst / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
                   />
                 </div>
@@ -168,14 +176,14 @@ useEffect(() => {
                 <div className="flex gap-4">
                   <button 
                     onClick={() => handleVote(proposal.id, 'for')}
-                    className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface-container-lowest"
+                    className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
                   >
                     <ThumbsUp size={18} />
                     Vote For
                   </button>
                   <button 
                     onClick={() => handleVote(proposal.id, 'against')}
-                    className="flex items-center gap-2 bg-white dark:bg-slate-800 text-on-surface dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface-container-lowest dark:border-slate-700"
+                    className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
                   >
                     <ThumbsDown size={18} />
                     Against
@@ -191,15 +199,165 @@ useEffect(() => {
         <ShieldCheck className="mx-auto mb-6 w-16 h-16" />
         <h2 className="text-3xl font-black mb-4">Governance Security</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the main treasury.
+          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
         </p>
       </div>
     </motion.div>
   );
 };
 
+{/* The Bakery View */ }  
+
+const BakeryView = ({ onBack }: { onBack: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="max-w-7xl mx-auto px-6 py-12"
+    >
+      <button
+        onClick={onBack}
+        className="flex items-center gap-2 text-tmain dark:text-orange-400 hover:text-tmain dark:hover:text-orange-300 transition-colors mb-8"
+      >
+        <ArrowLeft size={20} />
+        Back to Home
+      </button>
+      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">The Bakery</h1>
+      <p className="text-lg text-white dark:text-slate-300 mb-8">
+        Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
+      </p>
+
+      {/*Table View*/}
+
+      
+<div className="mt-12">
+  <div className="max-w-5xl mx-auto space-y-4">
+
+    {/* HEADER */}
+    <div className="max-w-5xl mx-auto mb-6 px-6 py-4 rounded-xl bg-[color:var(--surface-container)]/85   backdrop-blur-md border border-tmain/10 flex justify-between items-center">
+
+  <div>
+    <h2 className="text-2xl font-black text-tmain">
+      🧁 Bakery Leaderboard
+    </h2>
+    <p className="text-sm text-tmain">
+      __Top performing samosas today
+    </p>
+  </div>
+
+  <button className="px-4 py-2 rounded-lg bg-tmain text-white hover:scale-105 transition">
+    Refresh
+  </button>
+
+</div>
+
+    {/* ROWS */}
+
+    <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>1</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>2</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    {/* Row 3 */}
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>3</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>4</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>5</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>6</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>7</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>8</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>9</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+     <div className="grid grid-cols-4 items-center px-6 py-4 rounded-xl bg-surface-container from-tmain to-transparent border border-tmain shadow-[0_8px_20px_-5px_tmain] hover:scale-[1.02] transition-all">
+      <span>10</span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </div>
+</div>
+</motion.div>
+  );
+};
+
+{/* Extra View */}
+
+const Extra = ({ onBack }: { onBack: () => void }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="max-w-7xl mx-auto px-6 py-12"
+    >
+      <button
+        onClick={onBack}
+        className="flex items-center gap-2 text-tmain dark:text-orange-400 hover:text-tmain dark:hover:text-orange-300 transition-colors mb-8"
+      >
+        <ArrowLeft size={20} />
+        Back to Home
+      </button>
+      <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
+      <p className="text-lg text-tmain dark:text-slate-300 mb-8">
+        EXTRA tht u asked for my frend
+      </p>
+    </motion.div>
+  );
+};
+
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'governance'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'Extra' | 'The Bakery' | 'Governance'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -235,156 +393,184 @@ export default function App() {
     }, step);
   };
 
-  return (
-    <div className="min-h-screen">
-      {/* TopNavBar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/85 dark:bg-slate-950/85 backdrop-blur-md shadow-[0_10px_30px_-15px_rgba(140,74,0,0.1)] dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.5)]">
-        <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView('home')}>
-            <span className="text-2xl font-black text-primary dark:text-orange-400 drop-shadow-[0_2px_0_rgba(255,255,255,1)] font-headline tracking-tight">
-              Samosa Money Printers
-            </span>
-          </div>
+  
+{/* Main App UI */ }
+return (
+  <div className="min-h-screen bg-surface selection:bg-primary-container selection:text-on-primary-container">
+    {/* TopNavBar */}
+    <nav className="fixed top-0 w-full z-50 bg-surface/85 dark:bg-slate-900/85 backdrop-blur-md shadow-[0_10px_30px_-15px_var(--color-primary-dim)] border-b border-surface-container">
+      <div className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
+        {/* Logo */}
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView('home')}>
+          <span className="text-2xl font-black text-tmain font-headline tracking-tight drop-shadow-[0_2px_0_var(--color-surface)]">
+            Samosa Money Printers
+          </span>
+        </div>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg">
-            {['Treasury', 'The Bakery', 'Governance'].map((item) => (
-              <motion.button 
-                key={item}
-                whileHover={{ scale: 1.05, rotate: -1 }}
-                onClick={() => {
-                  if (item === 'Governance') setCurrentView('governance');
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg">
+          {['Extra', 'Treasury', 'The Bakery', 'Governance'].map((item) => (
+            <motion.button 
+              key={item}
+              whileHover={{ scale: 1.05, rotate: -1 }}
+              onClick={() => 
+              {
+                  if (item === 'The Bakery') setCurrentView('The Bakery');
+                  else if (item === 'Governance') setCurrentView('Governance');
+                  else if (item === 'Extra') setCurrentView('Extra');
                   else setCurrentView('home');
-                }}
-                className={`${
-                  (item === 'Governance' && currentView === 'governance') || (item !== 'Governance' && currentView === 'home')
-                    ? 'text-primary dark:text-orange-400'
-                    : 'text-on-surface-variant dark:text-slate-300'
-                } hover:text-primary dark:hover:text-orange-400 transition-colors`}
-              >
-                {item}
-              </motion.button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2.5 rounded-full bg-surface-container dark:bg-slate-800 text-on-surface dark:text-white border-2 border-surface-container-lowest dark:border-slate-700 shadow-[0_4px_0_0_#8c4a00] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all"
-              aria-label="Toggle Theme"
+              }}
+              className={`${
+                (item === 'Governance' && currentView === 'Governance') ||
+                (item === 'The Bakery' && currentView === 'The Bakery') ||
+                (item === 'Extra' && currentView === 'Extra') ||
+                (item === 'Treasury' && currentView === 'home')
+                  ? 'text-tmain,text-tmain'
+                  : 'text-tmain dark:text-tmain'
+              } hover:text-tmain transition-colors`}
             >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button 
-              className="md:hidden p-2"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X /> : <Menu />}
-            </button>
-          </div>
+              {item}
+            </motion.button>
+          ))}
         </div>
 
-        {/* Mobile Nav */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-white dark:bg-slate-900 border-t border-surface-container dark:border-slate-800 overflow-hidden"
-            >
-              <div className="flex flex-col p-6 gap-4">
-                {['Treasury', 'The Bakery', 'Governance'].map((item) => (
-                  <button 
-                    key={item} 
-                    className="text-xl font-black text-left text-on-surface dark:text-white" 
-                    onClick={() => {
-                      if (item === 'Governance') setCurrentView('governance');
-                      else setCurrentView('home');
-                      setIsMenuOpen(false);
-                    }}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+        {/* Action Area (Theme Toggle & Menu) */}
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2.5 rounded-full bg-surface-container-low dark:bg-slate-800 text-tmain dark:text-white border-2 border-surface dark:border-slate-700 shadow-[0_4px_0_0_var(--color-primary-dim)] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all"
+            aria-label="Toggle Theme"
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <button 
+            className="md:hidden p-2 text-text-tmain dark:text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
 
-      <main className="pt-24 min-h-[calc(100vh-200px)]">
-        {currentView === 'home' ? (
-          <>
-            {/* Hero Section */}
-            <section className="relative max-w-7xl mx-auto px-6 py-20 md:py-32 flex flex-col items-center text-center overflow-hidden">
-              <div className="absolute -top-10 -left-10 w-64 h-64 bg-secondary-container/20 dark:bg-orange-500/10 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-10 -right-10 w-96 h-96 bg-primary-container/10 dark:bg-orange-600/5 rounded-full blur-3xl"></div>
-              
-              <div className="relative z-10 space-y-8">
-                <h1 className="text-5xl md:text-8xl font-black font-headline text-on-surface dark:text-white leading-[0.9] tracking-tighter max-w-4xl mx-auto">
-                  Samosa Money Printers DAO: <span className="text-primary-container dark:text-orange-500 drop-shadow-[0_4px_0_rgba(140,74,0,1)] dark:drop-shadow-[0_4px_0_rgba(0,0,0,1)]">Where Every Byte is a Bite.</span>
-                </h1>
-                
-                <div className="pt-8">
-                  <motion.button 
-                    whileHover={{ scale: 1.05, rotate: 1.5 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handlePrint}
-                    className="bg-primary-container text-on-primary-container text-2xl px-12 py-6 rounded-lg font-black shadow-[0_8px_0_0_#8c4a00] hover:shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[4px] active:shadow-none active:translate-y-[8px] transition-all border-4 border-surface-container-lowest sticker-shadow"
-                  >
-                    {isPrinting ? `Printing... ${Math.round(printProgress)}%` : 'Join the Kitchen'}
-                  </motion.button>
-                </div>
-              </div>
-            </section>
-
-            {/* Section 2: Printing the Flavor */}
-            <section className="py-32 px-6 overflow-hidden dark:bg-slate-950">
-              <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
-                <div className="space-y-8 max-w-3xl">
-                  <h2 className="text-4xl md:text-6xl font-black font-headline text-on-surface dark:text-white leading-none">Printing the Flavor</h2>
-                  <ul className="space-y-4 font-bold text-lg flex flex-col items-center">
-                    {[
-                      'Proof-of-Filling (PoF) Consensus',
-                      'Hand-Folded Smart Contracts',
-                      'Triple-Filtered Liquidity Oil'
-                    ].map((item) => (
-                      <li key={item} className="flex items-center gap-3 dark:text-white">
-                        <CheckCircle2 className="text-primary dark:text-orange-400" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="bg-secondary text-white px-8 py-4 rounded-full font-black shadow-[0_4px_0_0_#443100] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-4 border-surface-container-lowest">
-                    Read the Cookbook (Docs)
-                  </button>
-                </div>
-              </div>
-            </section>
-          </>
-        ) : (
-          <GovernanceView onBack={() => setCurrentView('home')} />
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="w-full rounded-t-[3rem] mt-20 bg-orange-100 dark:bg-slate-900 font-bold text-sm">
-        <div className="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-7xl mx-auto">
-          <div className="mb-8 md:mb-0">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-xl font-bold text-orange-900 dark:text-orange-100">Samosa Money Printers</span>
+      {/* Mobile Nav */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden bg-surface dark:bg-slate-900 border-t border-surface-container dark:border-slate-800 overflow-hidden"
+          >
+            <div className="flex flex-col p-6 gap-4">
+              {['Treasury', 'The Bakery', 'Governance'].map((item) => (
+                <button 
+                  key={item} 
+                  className="text-xl font-black text-left text-text-tmain dark:text-white hover:text-tmain transition-colors" 
+                  onClick={() => {
+                    if (item === 'Governance') setCurrentView('Governance');
+                    else if (item === 'The Bakery') setCurrentView('The Bakery');
+                    else setCurrentView('home');
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
             </div>
-            <p className="text-orange-900/60 dark:text-slate-400">© 2026 Samosa Money Printers DAO. Printed with Spice.</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+
+    <main className="pt-24 min-h-[calc(100vh-200px)]">
+      {currentView === 'home' ? (
+        <>
+          {/* Hero Section */}
+          <section className="relative max-w-7xl mx-auto px-6 py-20 md:py-32 flex flex-col items-center text-center overflow-hidden">
+            <div className="absolute -top-10 -left-10 w-64 h-64 bg-text-tmain/20 dark:bg-primary/10 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-10 -right-10 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl"></div>
+            
+            {/* text-tmain headline and print button */}
+            <div className="relative z-10 space-y-8">
+              <h1 className="text-tmain md:text-8xl [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black font-headline text-tmain dark:text-tmain leading-[0.9] tracking-tighter max-w-4xl mx-auto">
+                Samosa Money Printers DAO: <span className="text-white drop-shadow-[0_4px_0_var(--color-primary)] dark:drop-shadow-[0_4px_0_#000]">Where Every Byte is a Bite.</span>
+              </h1>
+              
+              <div className="pt-8">
+                <motion.button 
+                  whileHover={{ scale: 1.05, rotate: 1.5 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handlePrint}
+                  className="bg-surface-container text-text-tmain text-2xl px-12 py-6 rounded-lg font-black shadow-lg"
+  >
+                  {isPrinting ? `Printing... ${Math.round(printProgress)}%` : 'Join the Kitchen'}
+                </motion.button>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 2: Printing the Flavor */}
+          <section className="py-32 px-6 overflow-hidden">
+            <div className="max-w-7xl mx-auto flex flex-col items-center text-center">
+              <div className="space-y-8 max-w-3xl">
+                <h2 className="text-4xl md:text-6xl font-black font-headline text-tmain dark:text-white leading-none">Printing the Flavor</h2>
+                <ul className="space-y-4 font-bold text-lg flex flex-col items-center">
+                  {[
+                    'Proof-of-Filling (PoF) Consensus',
+                    'Hand-Folded Smart Contracts',
+                    'Triple-Filtered Liquidity Oil'
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-text-tmain dark:text-white">
+                      <CheckCircle2 className="text-text-tmain" />
+                      {item}
+                    </li>
+                  ))}
+
+                </ul>
+                {/*cookbook button*/}
+                <button className="bg-surface-container text-tmain border-surface-container px-8 py-4 rounded-full font-black shadow-[0_4px_0_0_var(--surface-container)] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-4">
+                  Read the Cookbook (Docs)
+                </button>
+              </div>
+
+            </div>
+          </section>
+        </>
+       ) : (
+    <>
+      {currentView === 'The Bakery' && (
+        <BakeryView onBack={() => setCurrentView('home')} />
+      )}
+
+      {currentView === 'Governance' && (
+        <GovernanceView onBack={() => setCurrentView('home')} />
+      )}
+
+      {currentView === 'Extra' && (
+        <Extra onBack={() => setCurrentView('home')} />
+      )}
+    </>
+  )}
+  </main>
+
+    {/* Footer */}
+    <footer className="w-full rounded-t-[3rem] mt-20 bg-surface-container dark:bg-slate-900 font-bold text-sm">
+      <div className="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-7xl mx-auto">
+        <div className="mb-8 md:mb-0">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl font-bold text-text-tmain dark:text-tmain">Samosa Money Printers</span>
           </div>
-          <div className="flex gap-12 text-orange-900/60 dark:text-slate-400">
-            <a className="hover:text-primary hover:underline decoration-2 underline-offset-4" href="#"><Twitter size={20} /></a>
-            <a className="hover:text-primary hover:underline decoration-2 underline-offset-4" href="#"><Disc size={20} /></a>
-            <a className="hover:text-primary hover:underline decoration-2 underline-offset-4" href="#"><FileText size={20} /></a>
-            <a className="hover:text-primary hover:underline decoration-2 underline-offset-4" href="#"><Code2 size={20} /></a>
-          </div>
+          <p className="text-tmain dark:text-slate-400">© 2026 Samosa Money Printers DAO. Printed with Spice.</p>
         </div>
-      </footer>
-    </div>
-  );
-}
+        <div className="flex gap-12 text-tmain dark:text-slate-400">
+          <a className="hover:text-tmain transition-colors" href="#"><Twitter size={20} /></a>
+          <a className="hover:text-tmain transition-colors" href="#"><Disc size={20} /></a>
+          <a className="hover:text-tmain transition-colors" href="#"><FileText size={20} /></a>
+          <a className="hover:text-tmain transition-colors" href="#"><Code2 size={20} /></a>
+        </div>
+      </div>
+    </footer>
+  </div>
+);
+};

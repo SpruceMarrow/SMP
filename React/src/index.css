@@ -1,70 +1,91 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;700&display=swap');
 
-@theme {
-  --font-headline: "Plus Jakarta Sans", sans-serif;
-  --font-body: "Plus Jakarta Sans", sans-serif;
-  --font-label: "Plus Jakarta Sans", sans-serif;
+/* ---------------- THEME ---------------- */
 
-  --color-primary: #8c4a00;
-  --color-primary-dim: #7b4000;
-  --color-primary-container: #fd8b00;
-  --color-on-primary-container: #442100;
-  
-  --color-secondary: #755700;
-  --color-secondary-container: #ffca4d;
-  
-  --color-surface: #f6f6ff;
-  --color-surface-container: #e2e7ff;
-  --color-surface-container-low: #eef0ff;
-  --color-surface-container-lowest: #ffffff;
-  
-  --color-on-surface: #141414;
-  --color-on-surface-variant: #444444;
+:root {
+  /* MAIN COLOR SYSTEM */
+  --tmain: #00ff73;
+
+  /* BACKGROUNDS */
+  --surface: #61701c8f;
+  --surface-container: #0f172a;
+  --surface-container-low: #2f4063;
+  --surface-container-lowest: #521a1a;
+
+  --white: #ffffff;
+  --black: #000000;
 }
+
+.dark {
+  --tmain: #00ffcc;
+  --tmain-dim: #000000;
+
+  --surface: #2f4063;
+  --surface-container: #1e293b;
+  --surface-container-low: #111827;
+  --surface-container-lowest: #020617;
+}
+
+/* ---------------- BASE ---------------- */
 
 @layer base {
   body {
-    @apply bg-[#E4E3E0] font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container transition-colors duration-300;
-    background-image: 
-      linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
+    background-color: var(--surface);
+    color: var(--tmain);
+    transition: background-color 0.3s ease, color 0.3s ease;
 
-  .dark body {
-    @apply bg-slate-950 text-slate-100;
+    /* subtle grid */
     background-image: 
-      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 }
 
+/* ---------------- COMPONENTS ---------------- */
+
 @layer components {
-  .sticker-shadow {
-    filter: drop-shadow(0 10px 15px rgba(140, 74, 0, 0.15));
-  }
-
-  .rotate-slight-right {
-    transform: rotate(1.5deg);
-  }
-
-  .rotate-slight-left {
-    transform: rotate(-1.5deg);
-  }
-
   .btn-sticker {
-    @apply relative px-6 py-2.5 rounded-full font-bold transition-all border-2 border-surface-container-lowest;
-    box-shadow: 0 4px 0 0 var(--color-primary);
+    @apply relative font-black transition-all active:translate-y-1 active:shadow-none;
+    box-shadow: 0 4px 0 0 var(--tmain);
   }
 
   .btn-sticker:hover {
-    @apply translate-y-[2px];
-    box-shadow: 0 2px 0 0 var(--color-primary);
+    box-shadow: 0 6px 0 0 var(--tmain);
   }
+}
 
-  .btn-sticker:active {
-    @apply translate-y-[4px];
-    box-shadow: none;
-  }
+/* ---------------- UTILITIES ---------------- */
+
+.text-tmain {
+  color: var(--tmain);
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.text-black {
+  color: var(--black);
+}
+
+.bg-tmain {
+  background-color: var(--tmain);
+}
+
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-surface-container {
+  background-color: var(--surface-container);
+}
+
+.bg-surface-container-low {
+  background-color: var(--surface-container-low);
+}
+
+.bg-surface-container-lowest {
+  background-color: var(--surface-container-lowest);
 }
