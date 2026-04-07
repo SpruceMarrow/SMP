@@ -157,7 +157,7 @@ def bot():
     inc = []
     l = []
     for i in range(len(items)):
-        inc.append(round(((items[i]["fdv"]-cur[i])/items[i]["fdv"])*100,2))
+        inc.append(round(((cur[i]-items[i]["fdv"])/items[i]["fdv"])*100,2))
         l.append(items[i]["fdv"])
     return jsonify({"items":[items,balance,eth,sol,btc,cur,l,inc]})
 
