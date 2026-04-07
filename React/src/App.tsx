@@ -117,11 +117,10 @@ useEffect(() => {
           <ArrowLeft size={20} />
           Back to Kitchen
         </button>
-<<<<<<< Updated upstream
-        <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">{items}</h1>
-=======
+{/* <<<<<<< Updated upstream */}
+{/* ======= */}
         <h1 className="text-text-tmain font-bold font-text-tmain text-text-tmain dark:text-text-tmain">Governance</h1>
->>>>>>> Stashed changes
+{/* >>>>>>> Stashed changes */}
       </div>
 
       <div className="grid gap-8">
