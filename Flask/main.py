@@ -26,6 +26,7 @@ def getitems():
     for i in rec:
         l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
     return l
+    sql.close()
 
 def getbal():
     sql = psycopg2.connect(DBURL)
@@ -34,6 +35,7 @@ def getbal():
     rec = list(cursor.fetchall())
     bal = rec[0][0]
     return bal
+    sql.close()
 
 
 
@@ -96,6 +98,7 @@ async def check(ca,tick,fdv):
             await asyncio.sleep(300)
         
         n+=1
+    sql.close()
         
         
 
@@ -137,6 +140,7 @@ def helius():
                         add(tick,fdv,ca)
                         buybal(tick)
                         check(ca,tick,fdv)
+    sql.close()
                 
         
 
