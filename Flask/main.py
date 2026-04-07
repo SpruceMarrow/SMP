@@ -12,7 +12,9 @@ DBURL = os.environ["DATABASE_URL"]
 def getprices(items):
     l = []
     for i in items:
-        l.append(i["ca"])
+        response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{i["ca"]}',headers={"Accept":"*/*"})
+        data = list(response.json())
+        l.append(data[0]["fdv"])
     return l
 
 def getitems():
