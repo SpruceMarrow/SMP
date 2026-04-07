@@ -25,8 +25,9 @@ def getitems():
     l=[]
     for i in rec:
         l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
-    return l
     sql.close()
+    return l
+    
 
 def getbal():
     sql = psycopg2.connect(DBURL)
@@ -34,8 +35,9 @@ def getbal():
     cursor.execute("SELECT Balance FROM bal")
     rec = list(cursor.fetchall())
     bal = rec[0][0]
-    return bal
     sql.close()
+    return bal
+    
 
 
 
