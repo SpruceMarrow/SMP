@@ -150,7 +150,7 @@ def helius():
     return 'received'
 
 @app.route('/bot')
-def bot_async():
+def bot():
     balance = getbal()
     items = getitems()
     btc,eth,sol= fetch()
