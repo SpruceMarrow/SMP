@@ -5,23 +5,37 @@
 
 :root {
   /* MAIN COLOR SYSTEM */
-  --tmain: #00ff73;
+  --tmain: #fd8b00;
 
   /* BACKGROUNDS */
-  --surface: #61701c8f;
-  --surface-container: #0f172a;
+
+  --surface: #e4b896;
+  --surface-container: rgb(15, 23, 42);
   --surface-container-low: #2f4063;
   --surface-container-lowest: #521a1a;
 
   --white: #ffffff;
   --black: #000000;
+
+  --grid-color: rgb(15, 23, 42,0.1);
+
+  --color-primary: #8c4a00;
+  --color-primary-dim: #7b4000;
+  --color-primary-container: #fd8b00;
+  --color-on-primary-container: #442100;
+  
+  --color-secondary: #755700;
+  --color-secondary-container: #ffca4d;
+
 }
 
 .dark {
-  --tmain: #00ffcc;
+  --tmain: #3fdabb;
   --tmain-dim: #000000;
 
-  --surface: #2f4063;
+  --grid-color: rgba(232, 232, 232, 0.1);
+
+  --surface: #0b121e;
   --surface-container: #1e293b;
   --surface-container-low: #111827;
   --surface-container-lowest: #020617;
@@ -89,3 +103,4 @@
 .bg-surface-container-lowest {
   background-color: var(--surface-container-lowest);
 }
+
