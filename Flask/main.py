@@ -150,11 +150,13 @@ def helius():
     return 'received'
 
 @app.route('/bot')
-def bot():
-    balance = getbal()
-    items = getitems()
-    btc,eth,sol= fetch()
-    cur = getprices(items)
+async def bot():
+    loop = asyncio.get_event_loop()
+    balance, items, (btc,eth,sol) = await asyncio.gather(
+        loop.run_in_executor(None,getbal)
+        loop.run_in_executor(None,getitems)
+        loop.run_in_executor(None,fetch)
+    cur = await loop.run_in_executor(None,partial(getprices,items))
     fdvs = [i["fdv"] for i in items]
     inc = [round(((cur-fdv)/fdv)*100,2) for cur,fdv in zip(cur,fdvs)]
     return jsonify({"items":[items,balance,eth,sol,btc,cur,fdvs,inc]})
