@@ -218,7 +218,7 @@ useEffect(() => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">{data}</h1>
+      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">{items}</h1>
       <p className="text-lg text-white dark:text-slate-300 mb-8">
         Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
       </p>
