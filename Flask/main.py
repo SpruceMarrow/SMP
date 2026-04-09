@@ -155,7 +155,7 @@ async def bot():
     balance, items, (btc,eth,sol) = await asyncio.gather(
         loop.run_in_executor(None,getbal)
         loop.run_in_executor(None,getitems)
-        loop.run_in_executor(None,fetch)
+        loop.run_in_executor(None,fetch))
     cur = await loop.run_in_executor(None,partial(getprices,items))
     fdvs = [i["fdv"] for i in items]
     inc = [round(((cur-fdv)/fdv)*100,2) for cur,fdv in zip(cur,fdvs)]
