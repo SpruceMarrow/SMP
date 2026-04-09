@@ -7,6 +7,7 @@ import requests
 import json
 import os
 from functools import partial
+import aiohttp
 
 DBURL = os.environ["DATABASE_URL"]
 
@@ -87,18 +88,20 @@ async def check(ca,tick,fdv):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     while n<288:
-        res = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
-        if list(res.json())[0]['fdv'] >= 2*fdv:
-            final = list(res.json())[0]['fdv']
-            cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
-            sellbal(final,fdv,tick)
-            sql.commit()
-            break
-        if n==287:
-            cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
-            sql.commit()
-        else:
-            await asyncio.sleep(300)
+        async with aiohttp.ClientSession() as session:
+            async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
+                data = await resp.json()
+                if list(data)[0]['fdv'] >= 2*fdv:
+                    final = list(data)[0]['fdv']
+                    cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
+                    sellbal(final,fdv,tick)
+                    sql.commit()
+                    break
+                if n==287:
+                    cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
+                    sql.commit()
+                else:
+                    await asyncio.sleep(300)
         
         n+=1
     sql.close()
@@ -142,7 +145,7 @@ def helius():
                     if tick not in calist:
                         add(tick,fdv,ca)
                         buybal(tick)
-                        check(ca,tick,fdv)
+                        asyncio.create_task(check(ca,tick,fdv))
     sql.close()
                 
         
