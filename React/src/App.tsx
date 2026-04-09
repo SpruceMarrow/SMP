@@ -573,7 +573,7 @@ type Item = {
   img: string;
   label: string;
 };
-const [result, setResult] = useState<any[]>([]);  
+const [result, setResult] = useState<any>(null);  
 
 useEffect(() => {
   fetch("https://smp-hex7.onrender.com/api")
