@@ -153,8 +153,8 @@ def helius():
 async def bot():
     loop = asyncio.get_event_loop()
     balance, items, (btc,eth,sol) = await asyncio.gather(
-        loop.run_in_executor(None,getbal)
-        loop.run_in_executor(None,getitems)
+        loop.run_in_executor(None,getbal),
+        loop.run_in_executor(None,getitems),
         loop.run_in_executor(None,fetch))
     cur = await loop.run_in_executor(None,partial(getprices,items))
     fdvs = [i["fdv"] for i in items]
