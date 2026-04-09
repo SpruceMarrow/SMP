@@ -6,18 +6,30 @@ import psycopg2
 import requests
 import json
 import os
+from functools import partial
+import aiohttp
 
 DBURL = os.environ["DATABASE_URL"]
+
+def getprices(items):
+    l = []
+    for i in items:
+        response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{i["ca"]}',headers={"Accept":"*/*"})
+        data = list(response.json())
+        l.append(data[0]["fdv"])
+    return l
 
 def getitems():
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    cursor.execute("SELECT Name,Initial FROM port")
+    cursor.execute("SELECT Name,Initial,CA FROM port")
     rec = list(cursor.fetchall())
     l=[]
     for i in rec:
-        l.append({"tick":i[0],"fdv":i[1]})
+        l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
+    sql.close()
     return l
+    
 
 def getbal():
     sql = psycopg2.connect(DBURL)
@@ -25,7 +37,9 @@ def getbal():
     cursor.execute("SELECT Balance FROM bal")
     rec = list(cursor.fetchall())
     bal = rec[0][0]
+    sql.close()
     return bal
+    
 
 
 
@@ -74,20 +88,23 @@ async def check(ca,tick,fdv):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     while n<288:
-        res = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
-        if list(res.json())[0]['fdv'] >= 2*fdv:
-            final = list(res.json())[0]['fdv']
-            cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
-            sellbal(final,fdv,tick)
-            sql.commit()
-            break
-        if n==287:
-            cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
-            sql.commit()
-        else:
-            await asyncio.sleep(300)
+        async with aiohttp.ClientSession() as session:
+            async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
+                data = await resp.json()
+                if list(data)[0]['fdv'] >= 2*fdv:
+                    final = list(data)[0]['fdv']
+                    cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
+                    sellbal(final,fdv,tick)
+                    sql.commit()
+                    break
+                if n==287:
+                    cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
+                    sql.commit()
+                else:
+                    await asyncio.sleep(300)
         
         n+=1
+    sql.close()
         
         
 
@@ -114,6 +131,7 @@ def helius():
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
                 list1 = list(cursor.fetchall())
+                sql.close()
                 for i in list1:
                     for j in i:
                         calist.append(j)
@@ -128,25 +146,25 @@ def helius():
                     if tick not in calist:
                         add(tick,fdv,ca)
                         buybal(tick)
-                        check(ca,tick,fdv)
+                        asyncio.create_task(check(ca,tick,fdv))
+    
                 
         
 
     return 'received'
 
 @app.route('/bot')
-def bot():
-    sql = psycopg2.connect(DBURL)
-    cursor = sql.cursor()
-    cursor.execute("SELECT Name FROM port")
-    balance = getbal()
-    items = getitems()
-    btc,eth,sol= fetch()
-    return jsonify({"items":[items,balance,eth,sol,btc]})
+async def bot():
+    loop = asyncio.get_event_loop()
+    balance, items, (btc,eth,sol) = await asyncio.gather(
+        loop.run_in_executor(None,getbal),
+        loop.run_in_executor(None,getitems),
+        loop.run_in_executor(None,fetch))
+    cur = await loop.run_in_executor(None,partial(getprices,items))
+    fdvs = [i["fdv"] for i in items]
+    inc = [round(((cur-fdv)/fdv)*100,2) for cur,fdv in zip(cur,fdvs)]
+    return jsonify({"items":[items,balance,eth,sol,btc,cur,fdvs,inc]})
 
-@app.route('/api')
-def api():
-    return jsonify({"items":["hello"]})
 
 
     
