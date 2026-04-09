@@ -131,6 +131,7 @@ def helius():
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
                 list1 = list(cursor.fetchall())
+                sql.close()
                 for i in list1:
                     for j in i:
                         calist.append(j)
@@ -146,7 +147,7 @@ def helius():
                         add(tick,fdv,ca)
                         buybal(tick)
                         asyncio.create_task(check(ca,tick,fdv))
-    sql.close()
+    
                 
         
 
