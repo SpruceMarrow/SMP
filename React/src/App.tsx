@@ -573,12 +573,29 @@ type Item = {
   img: string;
   label: string;
 };
+const [items, setItems] = useState<any[]>([]);  
+
+useEffect(() => {
+  fetch("https://smp-hex7.onrender.com/api")
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("API data:", data);  
+      if (Array.isArray(data.items)) {
+        setResult(data.items);  
+      } else {
+        console.error("Expected items to be an array, but got:", data.items);
+        setResult([]);  
+      }
+    })
+}, []);
 
 const items: Item[] = [
-  { img: sol, label: "Solana:82.83$" },
-  { img: eth, label: "Ethereum:2100$" },
-  { img: bitcoin, label: "Bitcoin:65000$" },
-  { img: bnb, label: "Binance:0$" },
-  { img: polygon, label: "Polygon:0$" },
+  { img: sol, label: `Solana:${items.sol}$` },
+  { img: eth, label: `Ethereum:${items.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${items.btc}$` },
+  { img: bnb, label: `Binance:0$` },
 ];
 
