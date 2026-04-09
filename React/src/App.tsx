@@ -588,9 +588,9 @@ useEffect(() => {
 }, []);
 
 const items: Item[] = [
-  { img: sol, label: `Solana:${items.sol}$` },
-  { img: eth, label: `Ethereum:${items.eth}$` },
-  { img: bitcoin, label: `Bitcoin:${items.btc}$` },
+  { img: sol, label: `Solana:${result.sol}$` },
+  { img: eth, label: `Ethereum:${result.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${result.btc}$` },
   { img: bnb, label: `Binance:0$` },
 ];
 
