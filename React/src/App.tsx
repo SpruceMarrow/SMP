@@ -573,7 +573,7 @@ type Item = {
   img: string;
   label: string;
 };
-const [items, setItems] = useState<any[]>([]);  
+const [result, setResult] = useState<any[]>([]);  
 
 useEffect(() => {
   fetch("https://smp-hex7.onrender.com/api")
@@ -583,12 +583,7 @@ useEffect(() => {
     })
     .then(data => {
       console.log("API data:", data);  
-      if (Array.isArray(data.items)) {
-        setResult(data.items);  
-      } else {
-        console.error("Expected items to be an array, but got:", data.items);
-        setResult([]);  
-      }
+      setResult(data);
     })
 }, []);
 
