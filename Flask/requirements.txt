@@ -2,6 +2,7 @@ flask
 Flask[async]
 asyncio
 requests
+aiohttp
 waitress
 psycopg2-binary
 sqlalchemy
