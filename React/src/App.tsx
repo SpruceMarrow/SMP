@@ -554,22 +554,23 @@ type Item = {
   img: string;
   label: string;
 };
-// const [items, setItems] = useState([]);
-//     const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
-//     useEffect(() => {
-//         fetch("https://smp-hex7.onrender.com/api")
-//             .then((res) => res.json())
-//             .then((json) => {
-//                 setItems(json);
-//                 setDataIsLoaded(true);
-//             });
-//     }, []); 
+const [data, setData] = useState([]);
+    const [dataIsLoaded, setDataIsLoaded] = useState(false);
+
+    useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/api")
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json);
+                setDataIsLoaded(true);
+            });
+    }, []); 
 
 const items: Item[] = [
-  { img: sol, label: `Solana:...$` },
-  { img: eth, label: `Ethereum:...$` },
-  { img: bitcoin, label: `Bitcoin:...$` },
+  { img: sol, label: `Solana:${data.sol}$` },
+  { img: eth, label: `Ethereum:${data.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${data.btc}$` },
   { img: bnb, label: `Binance:0$` },
 ];
 
