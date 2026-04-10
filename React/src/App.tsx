@@ -279,7 +279,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
         return (
             <div>
                 <h1>Please wait some time....</h1>
-            </div>
+            </div>)
   
   return (
     <motion.div
