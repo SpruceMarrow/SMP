@@ -265,6 +265,22 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
 {/* Extra View */}
 
 const EXTRA = ({ onBack }: { onBack: () => void }) => {
+  const [data1,setData] = useState<any>({});
+  const [dataIsLoaded, setDataIsLoaded] = useState(false);
+  useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/bot")
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json);
+                setDataIsLoaded(true);
+            });
+    }, []);
+  if (!dataIsLoaded) {
+        return (
+            <div>
+                <h1>Please wait some time....</h1>
+            </div>
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -281,7 +297,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       </button>
       <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
-        EXTRA tht u asked for my frend
+        {{data1.items}}
       </p>
     </motion.div>
   );
