@@ -550,7 +550,7 @@ return (
   );
 };
 
-type Box = {
+type Item = {
   img: string;
   label: string;
 };
@@ -566,7 +566,7 @@ type Box = {
 //             });
 //     }, []); 
 
-const box: Box[] = [
+const items: Item[] = [
   { img: sol, label: `Solana:...$` },
   { img: eth, label: `Ethereum:...$` },
   { img: bitcoin, label: `Bitcoin:...$` },
