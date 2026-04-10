@@ -573,22 +573,22 @@ type Box = {
   img: string;
   label: string;
 };
-const [items, setItems] = useState([]);
-    const [dataIsLoaded, setDataIsLoaded] = useState(false);
+// const [items, setItems] = useState([]);
+//     const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
-    useEffect(() => {
-        fetch("https://smp-hex7.onrender.com/api")
-            .then((res) => res.json())
-            .then((json) => {
-                setItems(json);
-                setDataIsLoaded(true);
-            });
-    }, []); 
+//     useEffect(() => {
+//         fetch("https://smp-hex7.onrender.com/api")
+//             .then((res) => res.json())
+//             .then((json) => {
+//                 setItems(json);
+//                 setDataIsLoaded(true);
+//             });
+//     }, []); 
 
 const box: Box[] = [
-  { img: sol, label: `Solana:${result?.sol ?? "..."}$` },
-  { img: eth, label: `Ethereum:${result?.eth ?? "..."}$` },
-  { img: bitcoin, label: `Bitcoin:${result?.btc ?? "..."}$` },
+  { img: sol, label: `Solana:...$` },
+  { img: eth, label: `Ethereum:...$` },
+  { img: bitcoin, label: `Bitcoin:...$` },
   { img: bnb, label: `Binance:0$` },
 ];
 
