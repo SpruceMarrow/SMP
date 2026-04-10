@@ -287,6 +287,11 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   );
 };
 
+ type Item = {
+  img: string;
+  label: string;
+  };
+
 {/*Start of App8*/}
 
 export default function App() {
@@ -306,23 +311,6 @@ export default function App() {
                 setDataIsLoaded(true);
             });
     }, []); 
-    
-  const items: Item[] = [
-  { img: sol, label: `Solana:${data.sol}$` },
-  { img: eth, label: `Ethereum:${data.eth}$` },
-  { img: bitcoin, label: `Bitcoin:${data.btc}$` },
-  ];
-
-  const leftNav = ["EXTRA", "TREASURY"];
-  const rightNav = [ "THE BAKERY", "GOVERNANCE"];
-  const navItems = [...leftNav, ...rightNav];
-
-  type Item = {
-  img: string;
-  label: string;
-  };
-
-
 
   {/*Light/Dark Toggle Logic*/}
 
@@ -333,6 +321,16 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+    
+  const items: Item[] = [
+  { img: sol, label: `Solana:${data.sol}$` },
+  { img: eth, label: `Ethereum:${data.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${data.btc}$` },
+  ];
+
+  const leftNav = ["EXTRA", "TREASURY"];
+  const rightNav = [ "THE BAKERY", "GOVERNANCE"];
+  const navItems = [...leftNav, ...rightNav];
 
   const handlePrint = () => {
     if (isPrinting) return;
