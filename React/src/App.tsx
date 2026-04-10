@@ -19,16 +19,14 @@ import {
   Bluetooth
 } from 'lucide-react';
 
+{/*importing images*/}
+
 import logo from "./images/1.png";
 import sol from "./images/sol.png";
 import eth from "./images/eth.png";
 import bitcoin from "./images/bitcoin.png";
-import bnb from "./images/bnb.png";
-import polygon from "./images/polygon.png";
 
-
-
-// --- Types ---
+{/* Governance View */ }
 
 interface Proposal {
   id: number;
@@ -39,10 +37,6 @@ interface Proposal {
   status: 'Active' | 'Passed' | 'Rejected';
   timeLeft?: string;
 }
-
-// --- Components ---
-
-{/* Governance View */ }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
   const [proposals, setProposals] = useState<Proposal[]>([
@@ -87,7 +81,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     }));
   };
 
-  {/*Governance View page ui*/}
+  {/*Governance UI*/}
 
   return (
     <motion.div 
@@ -211,61 +205,59 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
         Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
       </p>
 
-      {/*Table View*/}
-
       
-<div className="mt-12">
-  <div className="max-w-5xl mx-auto space-y-4">
+      <div className="mt-12">
+        <div className="max-w-5xl mx-auto space-y-4">
 
-    {/* HEADER */}
-    <div className="max-w-5xl mx-auto mb-6 px-6 py-4 rounded-xl bg-[color:var(--surface-container)]/85  backdrop-blur-md border border-tmain/10 flex justify-between items-center">
+          {/* HEADER */}
+          <div className="max-w-5xl mx-auto mb-6 px-6 py-4 rounded-xl bg-[color:var(--surface-container)]/85  backdrop-blur-md border border-tmain/10 flex justify-between items-center">
 
-  <div>
-    <h2 className="text-2xl font-black text-tmain">
-      🧁 Bakery Leaderboard
-    </h2>
-    <p className="text-sm text-tmain">
-      __Top performing samosas today
-    </p>
-  </div>
-
-  <button className="px-4 py-2 rounded-lg bg-tmain text-white hover:scale-105 transition">
-    Refresh
-  </button>
-
-</div>
-
-    {/* ROWS */}
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div
-              key={i}
-              className="group grid grid-cols-4 items-center px-6 py-4 rounded-xl 
-              bg-surface-container 
-              shadow-[0_1px_0_0_var(--tmain)]
-              hover:shadow-[0_10px_0_0_var(--tmain)]
-              hover:-translate-y-1 transition-all duration-200"
-            >
-              <span className="font-black text-tmain text-lg">
-                {i + 1}
-              </span>
-
-              <span className="font-bold text-tmain text-lg">
-                coin #{i + 1}
-              </span>
-
-              <span className="text-tmain">
-                vkldsvnsdnvo
-              </span>
-
-              <span className="text-tmain">
-                ggbksebglksnglks
-              </span>
-            </div>
-          ))}
-
+        <div>
+          <h2 className="text-2xl font-black text-tmain">
+            🧁 Bakery Leaderboard
+          </h2>
+          <p className="text-sm text-tmain">
+            __Top performing samosas today
+          </p>
         </div>
-  </div>
-</motion.div>
+
+        <button className="px-4 py-2 rounded-lg bg-tmain text-white hover:scale-105 transition">
+          Refresh
+        </button>
+
+      </div>
+
+          {/* ROWS */}
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="group grid grid-cols-4 items-center px-6 py-4 rounded-xl 
+                    bg-surface-container 
+                    shadow-[0_1px_0_0_var(--tmain)]
+                    hover:shadow-[0_10px_0_0_var(--tmain)]
+                    hover:-translate-y-1 transition-all duration-200"
+                  >
+                    <span className="font-black text-tmain text-lg">
+                      {i + 1}
+                    </span>
+
+                    <span className="font-bold text-tmain text-lg">
+                      coin #{i + 1}
+                    </span>
+
+                    <span className="text-tmain">
+                      vkldsvnsdnvo
+                    </span>
+
+                    <span className="text-tmain">
+                      ggbksebglksnglks
+                    </span>
+                  </div>
+                ))}
+
+              </div>
+        </div>
+    </motion.div>
   );
 };
   
@@ -295,6 +287,8 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   );
 };
 
+{/*Start of App8*/}
+
 export default function App() {
   const [currentView, setCurrentView] = useState<'home' | 'EXTRA' | 'THE BAKERY' | 'GOVERNANCE'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
@@ -302,7 +296,25 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Theme effect
+  const items: Item[] = [
+  { img: sol, label: "Solana:82.83$" },
+  { img: eth, label: "Ethereum:2100$" },
+  { img: bitcoin, label: "Bitcoin:65000$" },
+  ];
+
+  const leftNav = ["EXTRA", "TREASURY"];
+  const rightNav = [ "THE BAKERY", "GOVERNANCE"];
+  const navItems = [...leftNav, ...rightNav];
+
+  type Item = {
+  img: string;
+  label: string;
+  };
+
+
+
+  {/*Light/Dark Toggle Logic*/}
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -332,12 +344,10 @@ export default function App() {
     }, step);
   };
 
-  const leftNav = ["EXTRA", "Treasury"];
-  const rightNav = [ "THE BAKERY", "GOVERNANCE"];
-  const navItems = [...leftNav, ...rightNav];
-  
 {/* Mains App UI */ }
+
 return (
+
     <div
     className="min-h-screen bg-[var(--color-surface)]"
     style={{
@@ -350,107 +360,123 @@ return (
     }}
     >
       
-    <nav className="fixed top-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-surface-container shadow-[0_10px_30px_-15px_var(--color-primary-dim)]">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+  {/* nav part */}    
+  <nav className="fixed top-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-surface-container shadow-[0_10px_30px_-15px_var(--color-primary-dim)]">
+    
+    <div className="max-w-7xl mx-auto px-6 py-4 grid grid-cols-[1fr_auto_1fr_auto] items-center">
 
-        {/* Left nav links */}
-        <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg flex-1 justify-end">
-          {leftNav.map((item) => (
-            <motion.button
-              key={item}
-              whileHover={{ scale: 1.05, rotate: -1 }}
-               onClick={() => 
-              {
-                  if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
-                  else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                  else if (item === 'EXTRA') setCurrentView('EXTRA');
-                  else setCurrentView('home');
-              }}
-              
-              className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
-            >
-              {item}
-            </motion.button>
-          ))}
-        </div>
+      {/* Left nav */}
+      <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg justify-end">
+        {leftNav.map((item) => (
+          <motion.button
+            key={item}
+            whileHover={{ scale: 1.05, rotate: -1 }}
+            onClick={() => {
+              if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
+              else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+              else if (item === 'EXTRA') setCurrentView('EXTRA');
+              else setCurrentView('home');
+            }}
+            className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
+          >
+            {item}
+          </motion.button>
+        ))}
+      </div>
 
-        {/* Logo */}
-        <div className="flex-shrink-0 cursor-pointer" onClick={() => setCurrentView('home')} style={{ width: 56, height: 56 }}>
+      {/* Logo */}
+      <div className="flex justify-center px-6">
+        <div
+          className="cursor-pointer"
+          onClick={() => setCurrentView('home')}
+          style={{ width: 56, height: 56 }}
+        >
           <div style={{
-            width: 56, height: 56, borderRadius: '50%',
+            width: 56,
+            height: 56,
+            borderRadius: '50%',
             border: '3px solid var(--tmain, #fd8b00)',
             overflow: 'hidden',
             background: 'var(--color-surface-container)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 28,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}>
-            <img src={logo} alt="logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <img 
+              src={logo} 
+              alt="logo" 
+              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+            />
           </div>
-        </div>
-
-        {/* Right nav links */}
-        <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg flex-1 justify-start">
-          {rightNav.map((item) => (
-            <motion.button
-              key={item}
-              whileHover={{ scale: 1.05, rotate: 1 }}
-              onClick={() => 
-              {
-                  if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
-                  else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                  else if (item === 'EXTRA') setCurrentView('EXTRA');
-                  else setCurrentView('home');
-              }}
-              
-              className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
-            >
-              {item}
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Theme toggle + mobile menu */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="p-2.5 rounded-full bg-surface-container-low dark:bg-slate-800 text-tmain dark:text-white border-2 border-surface dark:border-slate-700 shadow-[0_4px_0_0_var(--color-primary-dim)] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all"
-          >
-            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          <button className="md:hidden p-2 text-tmain dark:text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-surface-container/90 dark:bg-slate-900/80 border-t border-surface-container dark:border-slate-800 overflow-hidden"
+      {/* Right nav */}
+      <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg justify-start">
+        {rightNav.map((item) => (
+          <motion.button
+            key={item}
+            whileHover={{ scale: 1.05, rotate: 1 }}
+            onClick={() => {
+              if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
+              else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+              else if (item === 'EXTRA') setCurrentView('EXTRA');
+              else setCurrentView('home');
+            }}
+            className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
           >
-            <div className="flex flex-col p-6 gap-4">
-              {navItems.map((item) => (
-                <button key={item} className="text-xl font-black text-left text-tmain dark:text-white" 
-                 onClick={() => 
-              {
-                  if (item === 'BAKERY') setCurrentView('THE BAKERY');
-                  else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                  else if (item === 'EXTRA') setCurrentView('EXTRA');
-                  else setCurrentView('home');
-              }}
-              >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+            {item}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Toggle UI */}
+      <div className="flex items-center gap-4 justify-end">
+        <button
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="p-2.5 rounded-full bg-surface-container-low dark:bg-slate-800 text-tmain dark:text-white border-2 border-surface dark:border-slate-700 shadow-[0_4px_0_0_var(--color-primary-dim)] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all"
+        >
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+
+        <button
+          className="md:hidden p-2 text-tmain dark:text-white"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+    </div>
+
+        {/* Mobile menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden bg-surface-container/90 dark:bg-slate-900/80 border-t border-surface-container dark:border-slate-800 overflow-hidden"
+            >
+              <div className="flex flex-col p-6 gap-4">
+                {navItems.map((item) => (
+                  <button key={item} className="text-xl font-black text-left text-tmain dark:text-white" 
+                  onClick={() => 
+                {
+                    if (item === 'BAKERY') setCurrentView('THE BAKERY');
+                    else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+                    else if (item === 'EXTRA') setCurrentView('EXTRA');
+                    else setCurrentView('home');
+                }}
+                >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
 
     <main className="pt-24 pb-11 min-h-[calc(100vh-200px)]">
       {currentView === 'home' ? (
@@ -506,29 +532,28 @@ return (
     </main>
 
     {/* Bottom bar */}
-<div className="fixed bottom-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-t border-surface-container shadow-[0_10px_30px_-15px_var(--tmain)]">
-
- <div className="w-full flex justify-between items-center px-4">
-  {items.map((item, i) => (
-    <div
-      key={i}
-      className="inline-flex items-center gap-2"
-      style={{
-        fontSize: 15,
-        fontWeight: 900,
-        color: 'var(--tmain)',
-        letterSpacing: '0.04em',
-        textShadow: '1px 1px 0 rgba(255, 255, 255, 0.25)',
-        flexShrink: 0,
-      }}
-    >
-      <img src={item.img} className="w-6 h-6 object-contain" />
-      <p className="m-0">{item.label}</p>
-    </div>
-  ))}
+<div className="fixed bottom-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-t border-surface-container shadow-[0_10px_30px_-15px_var(--tmain)]"
+  style={{ height: 36 }} 
+>
+  <div className="w-full h-full flex justify-end items-center px-4 gap-0">
+    {items.map((item, i) => (
+      <>
+        <span key={`sep-${i}`} style={{ color: 'var(--tmain)', opacity: 0.4, fontSize: 12, padding: '0 12px' }}>
+          ◆
+        </span>
+        <div
+          key={i}
+          className="inline-flex items-center gap-2"
+          style={{ fontSize: 13, fontWeight: 900, color: 'var(--tmain)', letterSpacing: '0.04em', flexShrink: 0 }}
+        >
+          <img src={item.img} style={{ width: 18, height: 18, objectFit: 'contain' }} />  {/* ← smaller image */}
+          <p className="m-0">{item.label}</p>
+        </div>
+      </>
+    ))}
+  </div>
 </div>
-
-</div>
+  
 
     <footer className="w-full rounded-t-[3rem] mt-20 bg-surface-container dark:bg-slate-900 font-bold text-sm">
       <div className="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-7xl mx-auto">
@@ -549,28 +574,4 @@ return (
   </div>
   );
 };
-
-type Item = {
-  img: string;
-  label: string;
-};
-
-const [data, setData] = useState([]);
-    const [dataIsLoaded, setDataIsLoaded] = useState(false);
-
-    useEffect(() => {
-        fetch("https://smp-hex7.onrender.com/api")
-            .then((res) => res.json())
-            .then((json) => {
-                setData(json);
-                setDataIsLoaded(true);
-            });
-    }, []); 
-
-const items: Item[] = [
-  { img: sol, label: `Solana:${data?.sol??"..."}$` },
-  { img: eth, label: `Ethereum:${data?.eth??"..."}$` },
-  { img: bitcoin, label: `Bitcoin:${data?.btc??"..."}$` },
-  { img: bnb, label: `Binance:0$` },
-];
 
