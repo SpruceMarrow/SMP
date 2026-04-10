@@ -265,14 +265,14 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
 {/* Extra View */}
 
 const EXTRA = ({ onBack }: { onBack: () => void }) => {
-  const [data,setData] = useState<any>({});
+  const [data,setData] = useState<any[]>([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
     useEffect(() => {
         fetch("https://smp-hex7.onrender.com/bot")
             .then((res) => res.json())
             .then((json) => {
-                setData(json);
+                setData(json.items);
                 setDataIsLoaded(true);
             });
     }, []); 
