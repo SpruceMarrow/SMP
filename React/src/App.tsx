@@ -584,19 +584,11 @@ const [items, setItems] = useState([]);
                 setDataIsLoaded(true);
             });
     }, []); 
-  if (!dataIsLoaded) {
-    return (
-    <div>
-    Loading...
-    </div>
-      
-    )
-  }
 
 const box: Box[] = [
-  { img: sol, label: `Solana:${result.sol}$` },
-  { img: eth, label: `Ethereum:${result.eth}$` },
-  { img: bitcoin, label: `Bitcoin:${result.btc}$` },
+  { img: sol, label: `Solana:${result?.sol ?? "..."}$` },
+  { img: eth, label: `Ethereum:${result?.eth ?? "..."}$` },
+  { img: bitcoin, label: `Bitcoin:${result?.btc ?? "..."}$` },
   { img: bnb, label: `Binance:0$` },
 ];
 
