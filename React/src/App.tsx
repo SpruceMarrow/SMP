@@ -585,7 +585,7 @@ useEffect(() => {
       console.log("API data:", data);  
       setResult(data);
     })
-}, []);
+}, null);
 
 const items: Item[] = [
   { img: sol, label: `Solana:${result.sol}$` },
