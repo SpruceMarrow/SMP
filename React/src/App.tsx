@@ -569,25 +569,30 @@ return (
   );
 };
 
-type Item = {
+type Box = {
   img: string;
   label: string;
 };
-const [result, setResult] = useState<any>(null);  
+const [items, setItems] = useState([]);
+    const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
-useEffect(() => {
-  fetch("https://smp-hex7.onrender.com/api")
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log("API data:", data);  
-      setResult(data);
-    })
-}, null);
+    useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/api")
+            .then((res) => res.json())
+            .then((json) => {
+                setItems(json);
+                setDataIsLoaded(true);
+            });
+    }, []); 
+    if (!dataIsLoaded) {
+        return (
+            <div>
+                <h1>Please wait some time....</h1>
+            </div>
+        );
+    }
 
-const items: Item[] = [
+const box: Box[] = [
   { img: sol, label: `Solana:${result.sol}$` },
   { img: eth, label: `Ethereum:${result.eth}$` },
   { img: bitcoin, label: `Bitcoin:${result.btc}$` },
