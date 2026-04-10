@@ -186,25 +186,6 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
 const BakeryView = ({ onBack }: { onBack: () => void }) => {
 
-   const [items, setItems] = useState<string[]>([]);  // Change to array of strings (adjust type if it's objects, e.g., useState<any[]>([]))
-
-useEffect(() => {
-  fetch("https://smp-hex7.onrender.com/bot")
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log("API data:", data);  // Log to verify the response
-      if (Array.isArray(data.items)) {
-        setItems(data.items);  // Assuming data.items is an array
-      } else {
-        console.error("Expected items to be an array, but got:", data.items);
-        setItems([]);  // Fallback to empty array
-      }
-    })
-}, []);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -219,7 +200,7 @@ useEffect(() => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">{items}</h1>
+      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">hello</h1>
       <p className="text-lg text-white dark:text-slate-300 mb-8">
         Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
       </p>
@@ -593,6 +574,4 @@ return (
   </div>
   );
 };
-
-
 

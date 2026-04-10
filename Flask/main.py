@@ -165,6 +165,11 @@ async def bot():
     inc = [round(((cur-fdv)/fdv)*100,2) for cur,fdv in zip(cur,fdvs)]
     return jsonify({"items":[items,balance,eth,sol,btc,cur,fdvs,inc]})
 
+@app.route('/api')
+def api():
+    btc,eth,sol = fetch()
+    return jsonify({"btc":btc,"eth":eth,"sol":sol})
+
 
 
     
