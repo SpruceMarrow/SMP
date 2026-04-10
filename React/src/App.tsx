@@ -584,13 +584,6 @@ const [items, setItems] = useState([]);
                 setDataIsLoaded(true);
             });
     }, []); 
-    if (!dataIsLoaded) {
-        return (
-            <div>
-                <h1>Please wait some time....</h1>
-            </div>
-        );
-    }
 
 const box: Box[] = [
   { img: sol, label: `Solana:${result.sol}$` },
