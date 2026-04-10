@@ -265,23 +265,18 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
 {/* Extra View */}
 
 const EXTRA = ({ onBack }: { onBack: () => void }) => {
-  const [data1,setData] = useState<any>({});
+  const [data,setData] = useState<any>({});
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-  useEffect(() => {
+
+    useEffect(() => {
         fetch("https://smp-hex7.onrender.com/bot")
             .then((res) => res.json())
             .then((json) => {
                 setData(json);
                 setDataIsLoaded(true);
             });
-    }, []);
-  if (!dataIsLoaded) {
-        return (
-            <div>
-                <h1>Please wait some time....</h1>
-            </div>)
-  
-  return (
+    }, []); 
+  return ( !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -300,7 +295,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
         {data1.items}
       </p>
     </motion.div>
-  );
+  ));
 };
 
  type Item = {
