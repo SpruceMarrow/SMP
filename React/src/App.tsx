@@ -295,7 +295,7 @@ export default function App() {
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [data,setData] = useState([]);
+  const [data,setData] = useState<any>({});
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -306,14 +306,7 @@ export default function App() {
                 setDataIsLoaded(true);
             });
     }, []); 
-    if (!dataIsLoaded) {
-        return (
-            <div>
-                <h1>Please wait some time....</h1>
-            </div>
-        );
-    }
-
+    
   const items: Item[] = [
   { img: sol, label: `Solana:${data.sol}$` },
   { img: eth, label: `Ethereum:${data.eth}$` },
@@ -365,6 +358,7 @@ export default function App() {
 {/* Mains App UI */ }
 
 return (
+  !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
 
     <div
     className="min-h-screen bg-[var(--color-surface)]"
@@ -590,6 +584,6 @@ return (
       </div>
     </footer>
   </div>
-  );
+  ));
 };
 
