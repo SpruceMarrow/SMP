@@ -295,6 +295,24 @@ export default function App() {
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [data,setData] = useState([]);
+  const [dataIsLoaded, setDataIsLoaded] = useState(false);
+
+    useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/api")
+            .then((res) => res.json())
+            .then((json) => {
+                setItems(json);
+                setDataIsLoaded(true);
+            });
+    }, []); 
+    if (!dataIsLoaded) {
+        return (
+            <div>
+                <h1>Please wait some time....</h1>
+            </div>
+        );
+    }
 
   const items: Item[] = [
   { img: sol, label: "Solana:82.83$" },
