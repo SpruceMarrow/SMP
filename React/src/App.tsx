@@ -584,6 +584,14 @@ const [items, setItems] = useState([]);
                 setDataIsLoaded(true);
             });
     }, []); 
+  if (!dataIsLoaded) {
+    return (
+    <div>
+    Loading...
+    </div>
+      
+    )
+  }
 
 const box: Box[] = [
   { img: sol, label: `Solana:${result.sol}$` },
