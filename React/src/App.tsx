@@ -292,7 +292,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       </button>
       <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
-        {data1.items}
+        {data.items}
       </p>
     </motion.div>
   ));
