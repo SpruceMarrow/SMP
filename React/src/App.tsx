@@ -315,9 +315,9 @@ export default function App() {
     }
 
   const items: Item[] = [
-  { img: sol, label: "Solana:82.83$" },
-  { img: eth, label: "Ethereum:2100$" },
-  { img: bitcoin, label: "Bitcoin:65000$" },
+  { img: sol, label: `Solana:${data.sol}$` },
+  { img: eth, label: `Ethereum:${data.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${data.btc}$` },
   ];
 
   const leftNav = ["EXTRA", "TREASURY"];
