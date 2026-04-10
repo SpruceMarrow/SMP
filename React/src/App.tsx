@@ -302,7 +302,7 @@ export default function App() {
         fetch("https://smp-hex7.onrender.com/api")
             .then((res) => res.json())
             .then((json) => {
-                setItems(json);
+                setData(json);
                 setDataIsLoaded(true);
             });
     }, []); 
