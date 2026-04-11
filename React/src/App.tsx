@@ -294,6 +294,32 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
         {data[0][0].ca}
       </p>
+      {data[0].map((name, i) => (
+                  <div
+                    key={i}
+                    className="group grid grid-cols-4 items-center px-6 py-4 rounded-xl 
+                    bg-surface-container 
+                    shadow-[0_1px_0_0_var(--tmain)]
+                    hover:shadow-[0_10px_0_0_var(--tmain)]
+                    hover:-translate-y-1 transition-all duration-200"
+                  >
+                    <span className="font-black text-tmain text-lg">
+                      {i + 1}
+                    </span>
+
+                    <span className="font-bold text-tmain text-lg">
+                      coin {name.tick}
+                    </span>
+
+                    <span className="text-tmain">
+                      {name.ca}
+                    </span>
+
+                    <span className="text-tmain">
+                      ggbksebglksnglks
+                    </span>
+                  </div>
+                ))}
     </motion.div>
   ));
 };
