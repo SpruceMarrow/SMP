@@ -293,7 +293,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
       </p>
-      {data.map((name, i) => (
+      {data[0].map((coin, i) => (
                   <div
                     key={i}
                     className="group grid grid-cols-4 items-center px-6 py-4 rounded-xl 
@@ -307,15 +307,15 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
                     </span>
 
                     <span className="font-bold text-tmain text-lg">
-                      {name[0][i].tick}
+                      {coin.tick}
                     </span>
 
                     <span className="text-tmain">
-                      {name[0][i].ca}
+                      {coin.ca}
                     </span>
 
                     <span className="text-tmain">
-                      {name[7]}
+                      {data[7][i]}
                     </span>
 
                   </div>
