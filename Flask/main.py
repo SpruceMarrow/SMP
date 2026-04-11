@@ -25,7 +25,7 @@ def getitems():
     cursor.execute("SELECT Name,Initial,CA FROM port")
     rec = list(cursor.fetchall())
     l=[]
-    for i in rec[-1:-10]:
+    for i in rec[-1:-10:-1]:
         l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
     sql.close()
     return l
