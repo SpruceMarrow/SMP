@@ -307,11 +307,11 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
                     </span>
 
                     <span className="font-bold text-tmain text-lg">
-                      {name[0].tick}
+                      {name[0][i].tick}
                     </span>
 
                     <span className="text-tmain">
-                      {name[0].ca}
+                      {name[0][i].ca}
                     </span>
 
                     <span className="text-tmain">
