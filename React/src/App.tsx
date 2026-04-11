@@ -296,7 +296,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       {data[0].map((coin, i) => (
                   <div
                     key={i}
-                    className="group grid grid-cols-4 items-center px-12 py-4 rounded-xl 
+                    className="group grid grid-cols-4 items-center px-3 py-4 rounded-xl 
                     bg-surface-container 
                     shadow-[0_1px_0_0_var(--tmain)]
                     hover:shadow-[0_10px_0_0_var(--tmain)]
