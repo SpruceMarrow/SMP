@@ -308,16 +308,13 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
                     </span>
 
                     <span className="font-bold text-tmain text-lg">
-                      coin {name.tick}
+                      {name.tick}
                     </span>
 
                     <span className="text-tmain">
                       {name.ca}
                     </span>
 
-                    <span className="text-tmain">
-                      ggbksebglksnglks
-                    </span>
                   </div>
                 ))}
     </motion.div>
