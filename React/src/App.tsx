@@ -296,7 +296,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       {data[0].map((coin, i) => (
                   <div
                     key={i}
-                    className="group grid grid-cols-4 items-center px-3 py-4 rounded-xl 
+                    className="group grid grid-cols-[2rem_6rem_1fr_auto] min-w-0 items-center px-3 py-4 rounded-xl 
                     bg-surface-container 
                     shadow-[0_1px_0_0_var(--tmain)]
                     hover:shadow-[0_10px_0_0_var(--tmain)]
@@ -310,7 +310,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
                       {coin.tick}
                     </span>
 
-                    <span className="text-tmain">
+                    <span className="text-tmain truncate min-w-0">
                       {coin.ca}
                     </span>
 
