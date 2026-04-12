@@ -86,7 +86,7 @@ def fetch():
 def hfetch():
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical'
     parameters = {
-    'symbol': 'ETH,SOL,BTC',
+    'symbol': 'BTC',
     'convert': 'USD'
     }
     l = []
