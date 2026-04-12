@@ -344,11 +344,11 @@ function Dropdown({selected, setSelected}) {
   
 }
 
-function Chart() {
+function Chart({choice}) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://smp-hex7.onrender.com/api/historical')
+    fetch(`https://smp-hex7.onrender.com/api/historical${choice}`)
       .then(res => res.json())
       .then(raw => {
         // Transform to chart-friendly shape
@@ -598,7 +598,7 @@ return (
           <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          <Chart />
+          <Chart choice={selected} />
         </p>
       </div>
 
