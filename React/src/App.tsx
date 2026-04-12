@@ -361,7 +361,7 @@ function Chart({choice}) {
         }));
         setData(formatted);
       });
-  }, []);
+  }, [choice]);
 
   return ( <LineChart width={600} height={300} data={data}>
   <XAxis dataKey="date" />
