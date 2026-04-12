@@ -332,7 +332,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
 function Dropdown() {
   const [selected,setSelected] = useState("");
   return (
-    <select value={selected} onChange{(e) => onChange(e.target.value)}>
+    <select value={selected} onChange{(e) => setSelected(e.target.value)}>
       <option value="">-- Select --</option>
       <option value="BTC">BTC</option>
       <option value="ETH">ETH</option>
@@ -340,7 +340,7 @@ function Dropdown() {
     </select>
 
     
-  )
+  );
   
 }
 
