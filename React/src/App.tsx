@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AreaSeries, BarSeries, BaselineSeries, CandlestickSeries, createChart } from 'lightweight-charts';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
