@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AreaSeries, BarSeries, BaselineSeries, CandlestickSeries, createChart } from 'lightweight-charts';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -353,22 +354,24 @@ function Chart({choice}) {
       .then(raw => {
         // Transform to chart-friendly shape
         const formatted = raw.Data.map(entry => ({
-          date: new Date(entry.TIMESTAMP*1000).toLocaleDateString(),
-          price: entry.CLOSE,
+          time: new Date(entry.TIMESTAMP*1000).toLocaleDateString(),
+          close: entry.CLOSE,
           high: entry.HIGH,
           low: entry.LOW,
-          volume: entry.VOLUME,
+          open : entry.OPEN
         }));
         setData(formatted);
       });
   }, [choice]);
 
-  return ( <LineChart width={600} height={300} data={data}>
-  <XAxis dataKey="date" />
-  <YAxis />
-  <Tooltip />
-  <Line type="monotone" dataKey="price" stroke="#8884d8" /> {/* this must match your formatted field name */}
-</LineChart>);
+  const candlestickSeries = chart.addSeries(CandlestickSeries, {
+    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
+    wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+});
+candlestickSeries.setData([data]);
+
+  return ( 
+chart.timeScale().fitContent(););
   
 }
 
