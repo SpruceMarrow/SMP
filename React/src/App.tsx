@@ -363,7 +363,8 @@ function Chart({choice}) {
         setData(formatted);
       });
   }, [choice]);
-
+  
+  const chart = createChart(container);
   const candlestickSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',
