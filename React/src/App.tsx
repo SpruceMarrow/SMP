@@ -353,9 +353,11 @@ function Chart() {
       .then(raw => {
         // Transform to chart-friendly shape
         const formatted = raw.map(entry => ({
-          date: new Date(entry.timestamp).toLocaleDateString(),
-          price: entry.close,
-          volume: entry.volume,
+          date: new Date(entry.TIMESTAMP*1000).toLocaleDateString(),
+          price: entry.CLOSE,
+          high: entry.HIGH,
+          low: entry.LOW,
+          volume: entry.VOLUME,
         }));
         setData(formatted);
       });
@@ -590,10 +592,13 @@ return (
           <div><Dropdown selected={selected} setSelected={setSelected} /></div>
           <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
-        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          <Chart />
+        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">chart
         </p>
       </div>
+
+          <div>
+          <Chart />
+          </div>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
