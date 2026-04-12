@@ -332,7 +332,6 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   };
 
 function Dropdown({selected = "btc", setSelected}) {
-  const [select,setSelect]
   return (
     <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
       <option value="">-- Select --</option>
