@@ -348,7 +348,6 @@ function Dropdown({selected, setSelected}) {
 function Chart({choice}) {
   const chartref = useRef(null)
   const [data, setData] = useState([]);
-});
 
   useEffect(() => {
     fetch(`https://smp-hex7.onrender.com/api/historical${choice}`)
