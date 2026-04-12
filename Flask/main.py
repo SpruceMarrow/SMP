@@ -86,6 +86,7 @@ def fetch():
 async def check(ca,tick,fdv):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
+    print("Checking")
     async with aiohttp.ClientSession() as session:
             async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
                 data = await resp.json()
