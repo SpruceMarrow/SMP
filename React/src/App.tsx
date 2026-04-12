@@ -334,7 +334,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
 function Dropdown({selected = "btc", setSelected}) {
   return (
     <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
-      <option value="btc">-- Select --</option>
+      <option value="">-- Select --</option>
       <option value="btc">BTC</option>
       <option value="eth">ETH</option>
       <option value="sol">SOL</option>
@@ -396,7 +396,7 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [data,setData] = useState<any>({});
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
-  const [selected,setSelected] = useState("");
+  const [selected,setSelected] = useState("btc");
 
     useEffect(() => {
         fetch("https://smp-hex7.onrender.com/api")
