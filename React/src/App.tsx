@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, 
@@ -343,6 +344,27 @@ function Dropdown({selected, setSelected}) {
   
 }
 
+export default function Chart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('https://smp-hex7.onrender.com/api/historical')
+      .then(res => res.json())
+      .then(raw => {
+        // Transform to chart-friendly shape
+        const formatted = raw.map(entry => ({
+          date: new Date(entry.timestamp).toLocaleDateString(),
+          price: entry.close,
+          volume: entry.volume,
+        }));
+        setData(formatted);
+      });
+  }, []);
+
+  return <LineChart width={600} height={300} data={data}>...</LineChart>;
+  
+}
+
 {/*Start of App8*/}
 
 export default function App() {
@@ -569,7 +591,7 @@ return (
           <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
+          <Chart />
         </p>
       </div>
 
