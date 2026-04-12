@@ -83,6 +83,17 @@ def fetch():
         l.append(round(data['data'][i]['quote']['USD']['price'],1))
     return l
 
+def hfetch():
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical'
+    parameters = {
+    'symbol': 'ETH,SOL,BTC',
+    'convert': 'USD'
+    }
+    l = []
+    res = requests.get(url, params=parameters,headers={'X-CMC_PRO_API_KEY': "18cc6530935245e48a2327569ff067f9"})
+    data = res.json()
+    return data
+
 async def check(ca,tick,fdv):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
@@ -162,6 +173,11 @@ async def bot():
 def api():
     btc,eth,sol = fetch()
     return jsonify({"btc":btc,"eth":eth,"sol":sol})
+
+@app.route('/api/historical')
+def hist():
+    data = hfetch()
+    return jsonify(data)
 
 
 
