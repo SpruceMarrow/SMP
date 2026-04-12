@@ -346,6 +346,7 @@ function Dropdown({selected, setSelected}) {
 }
 
 function Chart({choice}) {
+  const chartref = useRef(null)
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -364,15 +365,15 @@ function Chart({choice}) {
       });
   }, [choice]);
   
-  const chart = createChart(container);
+  const chart = createChart(chartref.current);
   const candlestickSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',
 });
 candlestickSeries.setData([data]);
+chart.timeScale().fitContent();
 
-  return ( 
-chart.timeScale().fitContent());
+  return <div ref={chartref} />;
   
 }
 
