@@ -329,6 +329,21 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   label: string;
   };
 
+function Dropdown() {
+  const [selected,setSelected] = useState("");
+  return (
+    <select value={selected} onChange{(e) => setSelected(e.target.value)}>
+      <option value="">-- Select --</option>
+      <option value="BTC">BTC</option>
+      <option value="ETH">ETH</option>
+      <option value="SOL">SOL</option>
+    </select>
+
+    
+  )
+  
+}
+
 {/*Start of App8*/}
 
 export default function App() {
@@ -548,6 +563,8 @@ return (
               </div>
             </div>
           </section>
+
+          <div><Dropdown /></div>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
