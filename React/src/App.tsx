@@ -348,6 +348,7 @@ function Dropdown({selected, setSelected}) {
 function Chart({choice}) {
   const chartref = useRef(null)
   const [data, setData] = useState([]);
+});
 
   useEffect(() => {
     fetch(`https://smp-hex7.onrender.com/api/historical${choice}`)
@@ -364,14 +365,23 @@ function Chart({choice}) {
         setData(formatted);
       });
   }, [choice]);
-  
-  const chart = createChart(chartref.current);
-  const candlestickSeries = chart.addSeries(CandlestickSeries, {
+
+  useEffect(() => {
+    if (!chartref.current || data.length ==0 ) return;
+
+    const chart = createChart(chartref.current);
+    const candlestickSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',
-});
-candlestickSeries.setData([data]);
-chart.timeScale().fitContent();
+    candlestickSeries.setData(data);
+    chart.timeScale().fitContent();
+
+    return () => chart.remove();
+    
+    
+  },[data]);
+  
+
 
   return <div ref={chartref} />;
   
