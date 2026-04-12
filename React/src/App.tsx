@@ -375,7 +375,7 @@ export default function App() {
   }, [isDarkMode]);
     
   const items: Item[] = [
-  { img: sol, label: `Solana:${data["sol"]}$` },
+  { img: sol, label: `Solana:${data.sol}$` },
   { img: eth, label: `Ethereum:${data.eth}$` },
   { img: bitcoin, label: `Bitcoin:${data.btc}$` },
   ];
