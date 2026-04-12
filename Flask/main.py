@@ -84,26 +84,16 @@ def fetch():
     return l
 
 async def check(ca,tick,fdv):
-    n=0
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     async with aiohttp.ClientSession() as session:
-        while n<288:
-                async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
-                    data = await resp.json()
-                    if data[0]['fdv'] >= 2*fdv:
-                        final = data[0]['fdv']
-                        cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
-                        sellbal(final,fdv,tick)
-                        sql.commit()
-                        break
-                    if n==287:
-                        cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
-                        sql.commit()
-                    else:
-                        await asyncio.sleep(300)
-        
-        n+=1
+            async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
+                data = await resp.json()
+                if data[0]['fdv'] >= 2*fdv:
+                    final = data[0]['fdv']
+                    cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
+                    sellbal(final,fdv,tick)
+                    sql.commit()
     sql.close()
         
         
@@ -131,10 +121,11 @@ def helius():
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
                 list1 = list(cursor.fetchall())
+                cursor.execute('SELECT CA FROM port')
+                list2 = list(cursor.fetchall())
                 sql.close()
                 for i in list1:
-                    for j in i:
-                        calist.append(j)
+                    calist.append(i[0])
                 newdata = data or [{'baseToken':{'symbol':' '},'fdv':0}]
                 tick = newdata[0]['baseToken']['symbol']
                 fdv = newdata[0]['fdv']
@@ -146,7 +137,8 @@ def helius():
                     if tick not in calist:
                         add(tick,fdv,ca)
                         buybal(tick)
-                        asyncio.create_task(check(ca,tick,fdv))
+                        for i in list2:
+                            asyncio.create_task(check(i[0],tick,fdv))
     
                 
         
