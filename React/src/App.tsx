@@ -329,8 +329,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   label: string;
   };
 
-function Dropdown() {
-  const [selected,setSelected] = useState("");
+function Dropdown({selected, setSelected}) {
   return (
     <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
       <option value="">-- Select --</option>
@@ -354,6 +353,7 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [data,setData] = useState<any>({});
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
+  const [selected,setSelected] = useState("");
 
     useEffect(() => {
         fetch("https://smp-hex7.onrender.com/api")
@@ -563,8 +563,15 @@ return (
               </div>
             </div>
           </section>
-
-          <div><Dropdown /></div>
+          
+          {/* Dropdown*/}
+          <div><Dropdown selected={selected} setSelected={setSelected} /></div>
+          <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
+        <h2 className="text-3xl font-black mb-4">{Selected}</h2>
+        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
+          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
+        </p>
+      </div>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
