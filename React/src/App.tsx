@@ -611,9 +611,9 @@ return (
           <div><Dropdown selected={selected} setSelected={setSelected} /></div>
           <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
-        <div>
-          <Chart choice={selected} />
-        </div>
+        <div className="max-w-2xl mx-auto">
+    <Chart choice={selected} />
+  </div>
       </div>
 
           {/* Printing the Flavor section */}
