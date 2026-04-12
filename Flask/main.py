@@ -172,17 +172,17 @@ def api():
     return jsonify({"btc":btc,"eth":eth,"sol":sol})
 
 @app.route('/api/historicalbtc')
-def hist():
+def histb():
     data = hfetch("BTC")
     return jsonify(data)
 
 @app.route('/api/historicaleth')
-def hist():
+def histe():
     data = hfetch("ETH")
     return jsonify(data)
 
 @app.route('/api/historicalsol')
-def hist():
+def hists():
     data = hfetch("SOL")
     return jsonify(data)
 
