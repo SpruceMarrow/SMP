@@ -352,7 +352,7 @@ function Chart() {
       .then(res => res.json())
       .then(raw => {
         // Transform to chart-friendly shape
-        const formatted = raw.map(entry => ({
+        const formatted = raw.Data.map(entry => ({
           date: new Date(entry.TIMESTAMP*1000).toLocaleDateString(),
           price: entry.CLOSE,
           high: entry.HIGH,
