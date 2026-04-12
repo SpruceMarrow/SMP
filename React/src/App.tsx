@@ -344,7 +344,7 @@ function Dropdown({selected, setSelected}) {
   
 }
 
-export default function Chart() {
+function Chart() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
