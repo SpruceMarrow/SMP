@@ -333,9 +333,9 @@ function Dropdown({selected, setSelected}) {
   return (
     <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
       <option value="">-- Select --</option>
-      <option value="BTC">BTC</option>
-      <option value="ETH">ETH</option>
-      <option value="SOL">SOL</option>
+      <option value="btc">BTC</option>
+      <option value="eth">ETH</option>
+      <option value="sol">SOL</option>
     </select>
 
     
