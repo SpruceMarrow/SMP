@@ -382,7 +382,7 @@ function Chart({choice}) {
   
 
 
-  return <div ref={chartref} />;
+  return <div ref={chartref} style={{ width: '600px', height: '300px' }} />;
   
 }
 
