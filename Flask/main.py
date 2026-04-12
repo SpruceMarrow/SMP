@@ -84,14 +84,11 @@ def fetch():
     return l
 
 def hfetch():
-    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical'
-    parameters = {
-    'symbol': 'BTC',
-    'convert': 'USD'
-    }
-    l = []
-    res = requests.get(url, params=parameters,headers={'X-CMC_PRO_API_KEY': "18cc6530935245e48a2327569ff067f9"})
-    data = res.json()
+    response = requests.get('https://data-api.coindesk.com/spot/v1/historical/days',
+    params={"market":"kraken","instrument":"BTC-USD","limit":10,"aggregate":1,"fill":"true","apply_mapping":"true","response_format":"JSON","api_key":"3318b81f3e11391668abf4c54800baf9067c6c643921c68ae47628b18aa4e131"},
+    headers={"Content-type":"application/json; charset=UTF-8"}
+)
+    data = response.json()
     return data
 
 async def check(ca,tick,fdv):
