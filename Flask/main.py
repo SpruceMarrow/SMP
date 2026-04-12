@@ -83,9 +83,9 @@ def fetch():
         l.append(round(data['data'][i]['quote']['USD']['price'],1))
     return l
 
-def hfetch():
+def hfetch(curr):
     response = requests.get('https://data-api.coindesk.com/spot/v1/historical/days',
-    params={"market":"kraken","instrument":"BTC-USD","limit":10,"aggregate":1,"fill":"true","apply_mapping":"true","response_format":"JSON","api_key":"3318b81f3e11391668abf4c54800baf9067c6c643921c68ae47628b18aa4e131"},
+    params={"market":"kraken","instrument":f"{curr}-USD","limit":10,"aggregate":1,"fill":"true","apply_mapping":"true","response_format":"JSON","api_key":"3318b81f3e11391668abf4c54800baf9067c6c643921c68ae47628b18aa4e131"},
     headers={"Content-type":"application/json; charset=UTF-8"}
 )
     data = response.json()
@@ -171,9 +171,19 @@ def api():
     btc,eth,sol = fetch()
     return jsonify({"btc":btc,"eth":eth,"sol":sol})
 
-@app.route('/api/historical')
+@app.route('/api/historicalbtc')
 def hist():
-    data = hfetch()
+    data = hfetch("BTC")
+    return jsonify(data)
+
+@app.route('/api/historicaleth')
+def hist():
+    data = hfetch("ETH")
+    return jsonify(data)
+
+@app.route('/api/historicalsol')
+def hist():
+    data = hfetch("SOL")
     return jsonify(data)
 
 
