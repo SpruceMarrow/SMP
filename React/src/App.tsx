@@ -597,13 +597,10 @@ return (
           <div><Dropdown selected={selected} setSelected={setSelected} /></div>
           <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
-        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">chart
+        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
+          <Chart />
         </p>
       </div>
-
-          <div>
-          <Chart />
-          </div>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
