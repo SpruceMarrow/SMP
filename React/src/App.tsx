@@ -331,7 +331,8 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
   label: string;
   };
 
-function Dropdown({selected, setSelected}) {
+function Dropdown({selected = "btc", setSelected}) {
+  const [select,setSelect]
   return (
     <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
       <option value="">-- Select --</option>
