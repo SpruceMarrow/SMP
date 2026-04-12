@@ -363,7 +363,12 @@ function Chart() {
       });
   }, []);
 
-  return <LineChart width={600} height={300} data={data}>...</LineChart>;
+  return ( <LineChart width={600} height={300} data={data}>
+  <XAxis dataKey="date" />
+  <YAxis />
+  <Tooltip />
+  <Line type="monotone" dataKey="price" stroke="#8884d8" /> {/* this must match your formatted field name */}
+</LineChart>);
   
 }
 
