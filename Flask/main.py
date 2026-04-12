@@ -91,8 +91,8 @@ async def check(ca,tick,fdv):
         while n<288:
                 async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
                     data = await resp.json()
-                    if list(data)[0]['fdv'] >= 2*fdv:
-                        final = list(data)[0]['fdv']
+                    if data[0]['fdv'] >= 2*fdv:
+                        final = data[0]['fdv']
                         cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
                         sellbal(final,fdv,tick)
                         sql.commit()
