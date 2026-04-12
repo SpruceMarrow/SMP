@@ -371,7 +371,7 @@ function Chart({choice}) {
 candlestickSeries.setData([data]);
 
   return ( 
-chart.timeScale().fitContent(););
+chart.timeScale().fitContent());
   
 }
 
