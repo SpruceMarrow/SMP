@@ -368,7 +368,7 @@ function Chart({choice}) {
   useEffect(() => {
     if (!chartref.current || data.length ==0 ) return;
 
-    const chart = createChart(chartref.current);
+    const chart = createChart(chartref.current ,{width: chartref.current.clientWidth, height: 300});
     const candlestickSeries = chart.addSeries(CandlestickSeries, {
     upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',});
@@ -382,7 +382,7 @@ function Chart({choice}) {
   
 
 
-  return <div ref={chartref} style={{ width: '600px', height: '300px' }} />;
+  return <div ref={chartref} style={{ width: '100%', height: '300px' }} />;
   
 }
 
