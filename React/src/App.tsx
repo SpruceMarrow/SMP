@@ -355,7 +355,7 @@ function Chart({choice}) {
       .then(raw => {
         // Transform to chart-friendly shape
         const formatted = raw.Data.map(entry => ({
-          time: new Date(entry.TIMESTAMP*1000).toLocaleDateString(),
+          time: entry.TIMESTAMP,
           close: entry.CLOSE,
           high: entry.HIGH,
           low: entry.LOW,
