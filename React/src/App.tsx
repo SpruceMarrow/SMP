@@ -315,9 +315,8 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
+  const [data, setData] = useState(null);
+  const [dataIsLoaded, setDataIsLoaded] = useState(false);
     useEffect(() => {
         fetch("https://smp-hex7.onrender.com/api")
             .then((res) => res.json())
@@ -326,8 +325,7 @@ export default function App() {
                 setDataIsLoaded(true);
             });
     }, []); 
-=======
->>>>>>> Stashed changes
+
   const items: Item[] = [
   { img: sol, label: "Solana:82.83$" },
   { img: eth, label: "Ethereum:2100$" },
@@ -335,11 +333,7 @@ export default function App() {
   ];
 
   const leftNav = ["EXTRA", "TREASURY"];
-<<<<<<< Updated upstream
-  const rightNav = [ "THE BAKERY", "GOVERNANCE"];
-=======
   const rightNav = [ "BAKERY", "GOVERNANCE"];
->>>>>>> Stashed changes
   const navItems = [...leftNav, ...rightNav];
 
   type Item = {
@@ -347,11 +341,6 @@ export default function App() {
   label: string;
   };
 
-
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
   {/*Light/Dark Toggle Logic*/}
 
