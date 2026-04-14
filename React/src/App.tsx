@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { AreaSeries, BarSeries, BaselineSeries, CandlestickSeries, createChart } from 'lightweight-charts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CheckCircle2, 
@@ -186,25 +188,6 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
 const BakeryView = ({ onBack }: { onBack: () => void }) => {
 
-   const [items, setItems] = useState<string[]>([]);  // Change to array of strings (adjust type if it's objects, e.g., useState<any[]>([]))
-
-useEffect(() => {
-  fetch("https://smp-hex7.onrender.com/bot")
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log("API data:", data);  // Log to verify the response
-      if (Array.isArray(data.items)) {
-        setItems(data.items);  // Assuming data.items is an array
-      } else {
-        console.error("Expected items to be an array, but got:", data.items);
-        setItems([]);  // Fallback to empty array
-      }
-    })
-}, []);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -219,7 +202,7 @@ useEffect(() => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">{items}</h1>
+      <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">hello</h1>
       <p className="text-lg text-white dark:text-slate-300 mb-8">
         Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
       </p>
@@ -284,7 +267,18 @@ useEffect(() => {
 {/* Extra View */}
 
 const EXTRA = ({ onBack }: { onBack: () => void }) => {
-  return (
+  const [data,setData] = useState<any[]>([]);
+  const [dataIsLoaded, setDataIsLoaded] = useState(false);
+
+    useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/bot")
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json.items);
+                setDataIsLoaded(true);
+            });
+    }, []); 
+  return ( !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -300,11 +294,97 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
       </button>
       <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
-        EXTRA tht u asked for my frend
       </p>
+      {data[0].map((coin, i) => (
+                  <div
+                    key={i}
+                    className="group grid grid-cols-[2rem_6rem_1fr_auto] min-w-0 items-center px-3 py-4 rounded-xl 
+                    bg-surface-container 
+                    shadow-[0_1px_0_0_var(--tmain)]
+                    hover:shadow-[0_10px_0_0_var(--tmain)]
+                    hover:-translate-y-1 transition-all duration-200"
+                  >
+                    <span className="font-black text-tmain text-lg">
+                      {i + 1}
+                    </span>
+
+                    <span className="font-bold text-tmain text-lg">
+                      {coin.tick}
+                    </span>
+
+                    <span className="text-tmain truncate min-w-0">
+                      {coin.ca}
+                    </span>
+
+                    <span className="text-tmain">
+                      {data[7][i]}
+                    </span>
+
+                  </div>
+                ))}
     </motion.div>
-  );
+  ));
 };
+
+ type Item = {
+  img: string;
+  label: string;
+  };
+
+function Dropdown({selected = "btc", setSelected}) {
+  return (
+    <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
+      <option value="">-- Select --</option>
+      <option value="btc">BTC</option>
+      <option value="eth">ETH</option>
+      <option value="sol">SOL</option>
+    </select>
+
+    
+  );
+  
+}
+
+function Chart({choice}) {
+  const chartref = useRef(null)
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://smp-hex7.onrender.com/api/historical${choice}`)
+      .then(res => res.json())
+      .then(raw => {
+        // Transform to chart-friendly shape
+        const formatted = raw.Data.map(entry => ({
+          time: entry.TIMESTAMP,
+          close: entry.CLOSE,
+          high: entry.HIGH,
+          low: entry.LOW,
+          open : entry.OPEN
+        }));
+        setData(formatted);
+      });
+  }, [choice]);
+
+  useEffect(() => {
+    if (!chartref.current || data.length ==0 ) return;
+
+    const chart = createChart(chartref.current ,{width: chartref.current.clientWidth, height: 300});
+    const candlestickSeries = chart.addSeries(CandlestickSeries, {
+    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
+    wickUpColor: '#26a69a', wickDownColor: '#ef5350',});
+    candlestickSeries.setData(data);
+    chart.timeScale().fitContent();
+
+    return () => chart.remove();
+    
+    
+  },[data]);
+  
+
+
+  return <div ref={chartref} style={{ width: '100%', height: '300px' }} />;
+  
+}
 
 {/*Start of App8*/}
 
@@ -314,9 +394,10 @@ export default function App() {
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const [data, setData] = useState(null);
+  const [data,setData] = useState<any>({});
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
+  const [selected,setSelected] = useState("btc");
+
     useEffect(() => {
         fetch("https://smp-hex7.onrender.com/api")
             .then((res) => res.json())
@@ -325,21 +406,6 @@ export default function App() {
                 setDataIsLoaded(true);
             });
     }, []); 
-
-  const items: Item[] = [
-  { img: sol, label: "Solana:82.83$" },
-  { img: eth, label: "Ethereum:2100$" },
-  { img: bitcoin, label: "Bitcoin:65000$" },
-  ];
-
-  const leftNav = ["EXTRA", "TREASURY"];
-  const rightNav = [ "BAKERY", "GOVERNANCE"];
-  const navItems = [...leftNav, ...rightNav];
-
-  type Item = {
-  img: string;
-  label: string;
-  };
 
 
   {/*Light/Dark Toggle Logic*/}
@@ -351,6 +417,16 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [isDarkMode]);
+    
+  const items: Item[] = [
+  { img: sol, label: `Solana:${data.sol}$` },
+  { img: eth, label: `Ethereum:${data.eth}$` },
+  { img: bitcoin, label: `Bitcoin:${data.btc}$` },
+  ];
+
+  const leftNav = ["EXTRA", "TREASURY"];
+  const rightNav = [ "BAKERY", "GOVERNANCE"];
+  const navItems = [...leftNav, ...rightNav];
 
   const handlePrint = () => {
     if (isPrinting) return;
@@ -376,6 +452,7 @@ export default function App() {
 {/* Mains App UI */ }
 
 return (
+  !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
 
     <div className="min-h-screen overflow-x-hidden"
     style={{
@@ -528,6 +605,15 @@ return (
               </div>
             </div>
           </section>
+          
+          {/* Dropdown*/}
+          <div><Dropdown selected={selected} setSelected={setSelected} /></div>
+          <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
+        <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
+        <div className="max-w-2xl mx-auto">
+    <Chart choice={selected} />
+  </div>
+      </div>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
@@ -604,8 +690,6 @@ return (
       </div>
     </footer>
   </div>
-  );
+  ));
 };
-
-
 

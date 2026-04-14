@@ -25,7 +25,7 @@ def getitems():
     cursor.execute("SELECT Name,Initial,CA FROM port")
     rec = list(cursor.fetchall())
     l=[]
-    for i in rec:
+    for i in rec[-1:-11:-1]:
         l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
     sql.close()
     return l
@@ -83,27 +83,26 @@ def fetch():
         l.append(round(data['data'][i]['quote']['USD']['price'],1))
     return l
 
+def hfetch(curr):
+    response = requests.get('https://data-api.coindesk.com/spot/v1/historical/days',
+    params={"market":"kraken","instrument":f"{curr}-USD","limit":10,"aggregate":1,"fill":"true","apply_mapping":"true","response_format":"JSON","api_key":"3318b81f3e11391668abf4c54800baf9067c6c643921c68ae47628b18aa4e131"},
+    headers={"Content-type":"application/json; charset=UTF-8"}
+)
+    data = response.json()
+    return data
+
 async def check(ca,tick,fdv):
-    n=0
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    while n<288:
-        async with aiohttp.ClientSession() as session:
+    print("Checking")
+    async with aiohttp.ClientSession() as session:
             async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
                 data = await resp.json()
-                if list(data)[0]['fdv'] >= 2*fdv:
-                    final = list(data)[0]['fdv']
+                if data[0]['fdv'] >= 2*fdv:
+                    final = data[0]['fdv']
                     cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
                     sellbal(final,fdv,tick)
                     sql.commit()
-                    break
-                if n==287:
-                    cursor.execute(f'DELETE FROM port WHERE Name = {tick}')
-                    sql.commit()
-                else:
-                    await asyncio.sleep(300)
-        
-        n+=1
     sql.close()
         
         
@@ -131,10 +130,11 @@ def helius():
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
                 list1 = list(cursor.fetchall())
+                cursor.execute('SELECT CA FROM port')
+                list2 = list(cursor.fetchall())
                 sql.close()
                 for i in list1:
-                    for j in i:
-                        calist.append(j)
+                    calist.append(i[0])
                 newdata = data or [{'baseToken':{'symbol':' '},'fdv':0}]
                 tick = newdata[0]['baseToken']['symbol']
                 fdv = newdata[0]['fdv']
@@ -146,7 +146,8 @@ def helius():
                     if tick not in calist:
                         add(tick,fdv,ca)
                         buybal(tick)
-                        asyncio.create_task(check(ca,tick,fdv))
+                        for i in list2:
+                            asyncio.create_task(check(i[0],tick,fdv))
     
                 
         
@@ -164,6 +165,26 @@ async def bot():
     fdvs = [i["fdv"] for i in items]
     inc = [round(((cur-fdv)/fdv)*100,2) for cur,fdv in zip(cur,fdvs)]
     return jsonify({"items":[items,balance,eth,sol,btc,cur,fdvs,inc]})
+
+@app.route('/api')
+def api():
+    btc,eth,sol = fetch()
+    return jsonify({"btc":btc,"eth":eth,"sol":sol})
+
+@app.route('/api/historicalbtc')
+def histb():
+    data = hfetch("BTC")
+    return jsonify(data)
+
+@app.route('/api/historicaleth')
+def histe():
+    data = hfetch("ETH")
+    return jsonify(data)
+
+@app.route('/api/historicalsol')
+def hists():
+    data = hfetch("SOL")
+    return jsonify(data)
 
 
 
