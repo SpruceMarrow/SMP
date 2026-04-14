@@ -309,12 +309,25 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
 {/*Start of App8*/}
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'EXTRA' | 'THE BAKERY' | 'GOVERNANCE'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'EXTRA' | 'BAKERY' | 'GOVERNANCE'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+    useEffect(() => {
+        fetch("https://smp-hex7.onrender.com/api")
+            .then((res) => res.json())
+            .then((json) => {
+                setData(json);
+                setDataIsLoaded(true);
+            });
+    }, []); 
+=======
+>>>>>>> Stashed changes
   const items: Item[] = [
   { img: sol, label: "Solana:82.83$" },
   { img: eth, label: "Ethereum:2100$" },
@@ -322,7 +335,11 @@ export default function App() {
   ];
 
   const leftNav = ["EXTRA", "TREASURY"];
+<<<<<<< Updated upstream
   const rightNav = [ "THE BAKERY", "GOVERNANCE"];
+=======
+  const rightNav = [ "BAKERY", "GOVERNANCE"];
+>>>>>>> Stashed changes
   const navItems = [...leftNav, ...rightNav];
 
   type Item = {
@@ -331,6 +348,10 @@ export default function App() {
   };
 
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
   {/*Light/Dark Toggle Logic*/}
 
@@ -367,8 +388,7 @@ export default function App() {
 
 return (
 
-    <div
-    className="min-h-screen bg-[var(--color-surface)]"
+    <div className="min-h-screen overflow-x-hidden"
     style={{
   
       backgroundImage: `
@@ -380,9 +400,8 @@ return (
     >
       
   {/* nav part */}    
-  <nav className="fixed top-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-surface-container shadow-[0_10px_30px_-15px_var(--color-primary-dim)]">
-    
-    <div className="max-w-7xl mx-auto px-6 py-4 grid grid-cols-[1fr_auto_1fr_auto] items-center">
+  <nav className="fixed top-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-surface-container shadow-[0_10px_30px_-15px_var(--tmain)]">
+    <div className="max-w-7xl mx-auto px-6 py-4 flex md:grid md:grid-cols-[1fr_auto_1fr_auto] items-center">  
 
       {/* Left nav */}
       <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg justify-end">
@@ -391,7 +410,7 @@ return (
             key={item}
             whileHover={{ scale: 1.05, rotate: -1 }}
             onClick={() => {
-              if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
+              if (item === 'BAKERY') setCurrentView('BAKERY');
               else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
               else if (item === 'EXTRA') setCurrentView('EXTRA');
               else setCurrentView('home');
@@ -406,7 +425,7 @@ return (
       {/* Logo */}
       <div className="flex justify-center px-6">
         <div
-          className="cursor-pointer"
+          className="cursor-pointer mx-auto md:mx-0"
           onClick={() => setCurrentView('home')}
           style={{ width: 56, height: 56 }}
         >
@@ -437,7 +456,7 @@ return (
             key={item}
             whileHover={{ scale: 1.05, rotate: 1 }}
             onClick={() => {
-              if (item === 'THE BAKERY') setCurrentView('THE BAKERY');
+              if (item === 'BAKERY') setCurrentView('BAKERY');
               else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
               else if (item === 'EXTRA') setCurrentView('EXTRA');
               else setCurrentView('home');
@@ -449,17 +468,16 @@ return (
         ))}
       </div>
 
-      {/* Toggle UI */}
-      <div className="flex items-center gap-4 justify-end">
+     {/* Toggle*/}
+      <div className="flex items-center gap-3 flex-shrink-0">
         <button
           onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2.5 rounded-full bg-surface-container-low dark:bg-slate-800 text-tmain dark:text-white border-2 border-surface dark:border-slate-700 shadow-[0_4px_0_0_var(--color-primary-dim)] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all"
+          className="p-2.5 rounded-full bg-surface-container-low backdrop-blur-md text-tmain border-2 hover:translate-y-[2px] active:translate-y-[4px] transition-all"
         >
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
-
         <button
-          className="md:hidden p-2 text-tmain dark:text-white"
+          className="md:hidden p-2 text-tmain"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -467,7 +485,7 @@ return (
       </div>
 
     </div>
-
+          
         {/* Mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
@@ -482,7 +500,7 @@ return (
                   <button key={item} className="text-xl font-black text-left text-tmain dark:text-white" 
                   onClick={() => 
                 {
-                    if (item === 'BAKERY') setCurrentView('THE BAKERY');
+                    if (item === 'BAKERY') setCurrentView('BAKERY');
                     else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
                     else if (item === 'EXTRA') setCurrentView('EXTRA');
                     else setCurrentView('home');
@@ -497,7 +515,7 @@ return (
         </AnimatePresence>
       </nav>
 
-    <main className="pt-24 pb-11 min-h-[calc(100vh-200px)]">
+    <main className="pt-24 pb-14 min-h-[calc(100vh-200px)]">
       {currentView === 'home' ? (
         <>
           {/* Hero Section */}
@@ -505,8 +523,9 @@ return (
             <div className="absolute -top-10 -left-10 w-64 h-64 bg-text-tmain/20 dark:bg-primary/10 rounded-full blur-3xl"></div>
             <div className="absolute -bottom-10 -right-10 w-96 h-96 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl"></div>
             <div className="relative z-10 space-y-8">
-              <h1 className="text-tmain md:text-8xl [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black font-headline text-tmain dark:text-tmain leading-[0.9] tracking-tighter max-w-4xl mx-auto">
-                Samosa Money Printers DAO: <span className="text-white drop-shadow-[0_4px_0_var(--color-primary)] dark:drop-shadow-[0_4px_0_#000]">Where Every Byte is a Bite.</span>
+              <h1 className="text-4xl lg:text-8xl font-black text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] leading-[0.9] tracking-tighter max-w-4xl mx-auto">
+                <span className="block">Samosa Money Printers DAO:</span>
+                  <span className="block text-white drop-shadow-[0_4px_0_var(--color-primary)]">Where Every Byte is a Bite.</span>
               </h1>
               <div className="pt-8">
                 <motion.button
@@ -543,37 +562,42 @@ return (
         </>
       ) : (
         <>
-          {currentView === 'THE BAKERY' && <BakeryView onBack={() => setCurrentView('home')} />}
+          {currentView === 'BAKERY' && <BakeryView onBack={() => setCurrentView('home')} />}
           {currentView === 'GOVERNANCE' && <GovernanceView onBack={() => setCurrentView('home')} />}
           {currentView === 'EXTRA' && <EXTRA onBack={() => setCurrentView('home')} />}
         </>
       )}
     </main>
 
-    {/* Bottom bar */}
-<div className="fixed bottom-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-t border-surface-container shadow-[0_10px_30px_-15px_var(--tmain)]"
-  style={{ height: 36 }} 
+{/*bottom bar*/}
+
+<div  className="fixed bottom-0 w-full z-50 backdrop-blur-md border-t-2 border-surface-container shadow-[0_-10px_30px_-10px_var(--tmain)]"
+  style={{ 
+    height: 36,
+    backgroundColor: 'color-mix(in srgb, var(--surface-container) 90%, transparent)',
+  }}
 >
-  <div className="w-full h-full flex justify-end items-center px-4 gap-0">
+  <div className="w-full h-full flex justify-end items-center px-3 overflow-hidden">
     {items.map((item, i) => (
-      <>
-        <span key={`sep-${i}`} style={{ color: 'var(--tmain)', opacity: 0.4, fontSize: 12, padding: '0 12px' }}>
+      <React.Fragment key={i}>
+        <span style={{ color: 'var(--tmain)', opacity: 0.4, fontSize: 10, padding: '0 8px', flexShrink: 0 }}>
           ◆
         </span>
         <div
-          key={i}
-          className="inline-flex items-center gap-2"
-          style={{ fontSize: 13, fontWeight: 900, color: 'var(--tmain)', letterSpacing: '0.04em', flexShrink: 0 }}
+          className="inline-flex items-center gap-1"
+          style={{ flexShrink: 0 }}
         >
-          <img src={item.img} style={{ width: 18, height: 18, objectFit: 'contain' }} />  {/* ← smaller image */}
-          <p className="m-0">{item.label}</p>
+          <img src={item.img} style={{ width: 14, height: 14, objectFit: 'contain' }} alt="" />
+          <p className="m-0 text-[10px] md:text-[12px] font-black" style={{ color: 'var(--tmain)', letterSpacing: '0.03em' }}>
+            {item.label}
+          </p>
         </div>
-      </>
+      </React.Fragment>
     ))}
   </div>
 </div>
   
-
+{/* Footer */ }
     <footer className="w-full rounded-t-[3rem] mt-20 bg-surface-container dark:bg-slate-900 font-bold text-sm">
       <div className="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-7xl mx-auto">
         <div className="mb-8 md:mb-0">
