@@ -184,9 +184,9 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
   );
 };
 
-{/* The Bakery View */ }  
+{/* The P2P View */ }  
 
-const BakeryView = ({ onBack }: { onBack: () => void }) => {
+const P2PView = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <motion.div
@@ -204,7 +204,7 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
       </button>
       <h1 className="text-4xl text-tmain [text-shadow:2px_2px_0_black,-1px_-1px_0_black] font-black mb-8 dark:text-white">hello</h1>
       <p className="text-lg text-white dark:text-slate-300 mb-8">
-        Welcome to The Bakery! Here, you can find all the latest samosa recipes and baking tips.
+        Welcome to The P2P! Here, you can find all the latest samosa recipes and baking tips.
       </p>
 
       
@@ -216,7 +216,7 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
 
         <div>
           <h2 className="text-2xl font-black text-tmain">
-            🧁 Bakery Leaderboard
+            🧁 P2P Leaderboard
           </h2>
           <p className="text-sm text-tmain">
             __Top performing samosas today
@@ -265,9 +265,9 @@ const BakeryView = ({ onBack }: { onBack: () => void }) => {
 };
   
 
-{/* Extra View */}
+{/* Bakery View */}
 
-const EXTRA = ({ onBack }: { onBack: () => void }) => {
+const BAKERY = ({ onBack }: { onBack: () => void }) => {
   const [data,setData] = useState<any[]>([]);
   const [dataIsLoaded, setDataIsLoaded] = useState(false);
 
@@ -293,7 +293,7 @@ const EXTRA = ({ onBack }: { onBack: () => void }) => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl font-black mb-8 dark:text-white">Extra</h1>
+      <h1 className="text-4xl font-black mb-8 dark:text-white">Bakery</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
       </p>
       {data[0].map((coin, i) => (
@@ -430,7 +430,7 @@ const chart = createChart(chartref.current, {
 {/*Start of App8*/}
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'EXTRA' | 'BAKERY' | 'GOVERNANCE'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'BAKERY' | 'P2P' | 'GOVERNANCE'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -465,8 +465,8 @@ export default function App() {
   { img: bitcoin, label: `Bitcoin:${data.btc}$` },
   ];
 
-  const leftNav = ["EXTRA", "TREASURY"];
-  const rightNav = [ "BAKERY", "GOVERNANCE"];
+  const leftNav = ["BAKERY", "TREASURY"];
+  const rightNav = [ "P2P", "GOVERNANCE"];
   const navItems = [...leftNav, ...rightNav];
 
   const handlePrint = () => {
@@ -751,9 +751,9 @@ return (
         </>
       ) : (
         <>
-          {currentView === 'BAKERY' && <BakeryView onBack={() => setCurrentView('home')} />}
+          {currentView === 'P2P' && <P2PView onBack={() => setCurrentView('home')} />}
           {currentView === 'GOVERNANCE' && <GovernanceView onBack={() => setCurrentView('home')} />}
-          {currentView === 'EXTRA' && <EXTRA onBack={() => setCurrentView('home')} />}
+          {currentView === 'BAKERY' && <BAKERY onBack={() => setCurrentView('home')} />}
         </>
       )}
     </main>

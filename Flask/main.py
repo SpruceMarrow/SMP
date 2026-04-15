@@ -112,8 +112,7 @@ CORS(app)
 
 @app.route('/')
 def main():
-        btc,eth,sol= fetch()
-        return render_template('main.html',sol=sol,eth=eth,btc=btc)
+        return 'what youre probably looking for is https://frontend-muai.onrender.com/'
 
 @app.post('/helius')
 def helius():
