@@ -212,7 +212,7 @@ const P2PView = ({ onBack }: { onBack: () => void }) => {
         <div className="max-w-5xl mx-auto space-y-4">
 
           {/* HEADER */}
-          <div className="max-w-5xl mx-auto mb-6 px-6 py-4 rounded-xl bg-[color:var(--surface-container)]/85  backdrop-blur-md border border-tmain/10 flex justify-between items-center">
+          <div className="max-w-5xl mx-auto mb-6 px-6 py-4 rounded-xl bg-[color:var(--surface-container)]/95  backdrop-blur-md border border-tmain/10 flex justify-between items-center">
 
         <div>
           <h2 className="text-2xl font-black text-tmain">
@@ -232,26 +232,27 @@ const P2PView = ({ onBack }: { onBack: () => void }) => {
           {/* ROWS */}
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
-                    key={i}
                     className="group grid grid-cols-4 items-center px-6 py-4 rounded-xl 
-                    bg-surface-container 
+                    bg-[var(--surface-container)]/90
+                    backdrop-blur-md  
+                    border-tmain/10
                     shadow-[0_1px_0_0_var(--tmain)]
                     hover:shadow-[0_10px_0_0_var(--tmain)]
                     hover:-translate-y-1 transition-all duration-200"
                   >
-                    <span className="font-black text-tmain text-lg">
+                    <span className="font-black truncate text-tmain text-lg">
                       {i + 1}
                     </span>
 
-                    <span className="font-bold text-tmain text-lg">
+                    <span className="font-bold truncate text-tmain text-lg">
                       coin #{i + 1}
                     </span>
 
-                    <span className="text-tmain">
+                    <span className="text-tmain truncate">
                       vkldsvnsdnvo
                     </span>
 
-                    <span className="text-tmain">
+                    <span className="text-tmain truncate">
                       ggbksebglksnglks
                     </span>
                   </div>
@@ -331,59 +332,99 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
   label: string;
   };
 
-function Dropdown({selected = "btc", setSelected}) {
+function Dropdown({ selected, setSelected }) {
   return (
-    <select value={selected} onChange = {(e) => setSelected(e.target.value)}>
-      <option value="">-- Select --</option>
-      <option value="btc">BTC</option>
-      <option value="eth">ETH</option>
-      <option value="sol">SOL</option>
-    </select>
-
-    
+    <div className="relative inline-block group">
+      <select
+        value={selected}
+        onChange={(e) => setSelected(e.target.value)}
+        className="appearance-none bg-surface-container text-tmain text-xl px-10 py-4 rounded-lg font-black border-4 border-tmain shadow-[4px_4px_0_0_#000] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#000] active:translate-x-[0px] active:translate-y-[0px] active:shadow-none transition-all cursor-pointer outline-none"
+      >
+        <option value="btc">BTC / BITCOIN</option>
+        <option value="eth">ETH / ETHEREUM</option>
+        <option value="sol">SOL / SOLANA</option>
+      </select>
+      {/* Custom arrow for gamer aesthetic */}
+      <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-tmain">
+        ▼
+      </div>
+    </div>
   );
-  
 }
 
-function Chart({choice}) {
-  const chartref = useRef(null)
+function Chart({ choice }) {
+  const chartref = useRef<HTMLDivElement>(null);
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetch(`https://smp-hex7.onrender.com/api/historical${choice}`)
       .then(res => res.json())
       .then(raw => {
-        // Transform to chart-friendly shape
         const formatted = raw.Data.map(entry => ({
           time: entry.TIMESTAMP,
           close: entry.CLOSE,
           high: entry.HIGH,
           low: entry.LOW,
-          open : entry.OPEN
+          open: entry.OPEN
         }));
         setData(formatted);
       });
   }, [choice]);
 
   useEffect(() => {
-    if (!chartref.current || data.length ==0 ) return;
+    if (!chartref.current || data.length === 0) return;
 
-    const chart = createChart(chartref.current ,{width: chartref.current.clientWidth, height: 300});
+    const styles = getComputedStyle(document.documentElement);
+
+const chart = createChart(chartref.current, {
+  width: chartref.current.clientWidth,
+  height: 400,
+
+  layout: {
+    background: { color: 'transparent' },
+    textColor: styles.getPropertyValue('--tmain'),
+  },
+
+  grid: {
+    vertLines: { color: 'rgba(255,255,255,0.03)' },
+    horzLines: { color: 'rgba(255,255,255,0.03)' },
+  },
+
+  timeScale: {
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+
+  rightPriceScale: {
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+});
+
     const candlestickSeries = chart.addSeries(CandlestickSeries, {
-    upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
-    wickUpColor: '#26a69a', wickDownColor: '#ef5350',});
+      upColor: '#22c55e', 
+      downColor: '#ef4444', 
+      borderVisible: false,
+      wickUpColor: '#22c55e', 
+      wickDownColor: '#ef4444',
+    });
+
     candlestickSeries.setData(data);
     chart.timeScale().fitContent();
 
-    return () => chart.remove();
-    
-    
-  },[data]);
-  
+    const handleResize = () => {
+      if (chartref.current) {
+        chart.applyOptions({ width: chartref.current.clientWidth });
+      }
+    };
 
+    window.addEventListener('resize', handleResize);
 
-  return <div ref={chartref} style={{ width: '100%', height: '300px' }} />;
-  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      chart.remove();
+    };
+  }, [data]);
+
+  return <div ref={chartref} className="w-full h-[350px]" />;
 }
 
 {/*Start of App8*/}
@@ -465,121 +506,172 @@ return (
     }}
     >
       
-  {/* nav part */}    
-  <nav className="fixed top-0 w-full z-50 bg-surface-container/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-surface-container shadow-[0_10px_30px_-15px_var(--tmain)]">
-    <div className="max-w-7xl mx-auto px-6 py-4 flex md:grid md:grid-cols-[1fr_auto_1fr_auto] items-center">  
+  <nav className="fixed top-0 w-full z-50 
+  bg-surface-container/90 dark:bg-slate-900/80 
+  backdrop-blur-md 
+  border-b border-surface-container 
+  shadow-[0_10px_30px_-15px_var(--tmain)]">
 
-      {/* Left nav */}
-      <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg justify-end">
-        {leftNav.map((item) => (
-          <motion.button
-            key={item}
-            whileHover={{ scale: 1.05, rotate: -1 }}
-            onClick={() => {
-              if (item === 'P2P') setCurrentView('P2P');
-              else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-              else if (item === 'BAKERY') setCurrentView('BAKERY');
-              else setCurrentView('home');
+  {/* ================= MOBILE NAV ================= */}
+  <div className="md:hidden flex items-center justify-between px-4 py-3">
+
+    {/* Logo */}
+    <div
+      onClick={() => setCurrentView('home')}
+      className="w-10 h-10 rounded-full border-2 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
+    >
+      <img src={logo} alt="logo" className="w-full h-full object-cover" />
+    </div>
+
+    {/* Right Controls */}
+    <div className="flex items-center gap-2">
+
+      {/* Dark Mode Toggle */}
+      <button
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        className="p-2 rounded-full bg-surface-container-low text-tmain 
+        border hover:translate-y-[2px] active:translate-y-[4px] transition-all"
+      >
+        {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+      </button>
+
+      {/* Hamburger */}
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="p-2 text-tmain"
+      >
+        <motion.div
+          animate={isMenuOpen ? "open" : "closed"}
+          className="flex flex-col gap-1"
+        >
+          <motion.span
+            variants={{
+              closed: { rotate: 0, y: 0 },
+              open: { rotate: 45, y: 6 }
             }}
-            className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
-          >
-            {item}
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Logo */}
-      <div className="flex justify-center px-6">
-        <div
-          className="cursor-pointer mx-auto md:mx-0"
-          onClick={() => setCurrentView('home')}
-          style={{ width: 56, height: 56 }}
-        >
-          <div style={{
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            border: '3px solid var(--tmain, #fd8b00)',
-            overflow: 'hidden',
-            background: 'var(--color-surface-container)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <img 
-              src={logo} 
-              alt="logo" 
-              style={{ width: "100%", height: "100%", objectFit: "cover" }} 
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Right nav */}
-      <div className="hidden md:flex items-center gap-8 font-bold tracking-tight text-lg justify-start">
-        {rightNav.map((item) => (
-          <motion.button
-            key={item}
-            whileHover={{ scale: 1.05, rotate: 1 }}
-            onClick={() => {
-              if (item === 'P2P') setCurrentView('P2P');
-              else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-              else if (item === 'BAKERY') setCurrentView('BAKERY');
-              else setCurrentView('home');
+            className="w-5 h-[2px] bg-tmain block"
+          />
+          <motion.span
+            variants={{
+              closed: { opacity: 1 },
+              open: { opacity: 0 }
             }}
-            className={`${currentView === item ? 'text-tmain' : 'text-tmain dark:text-tmain/70'} hover:text-tmain transition-colors`}
-          >
-            {item}
-          </motion.button>
-        ))}
-      </div>
-
-     {/* Toggle*/}
-      <div className="flex items-center gap-3 flex-shrink-0">
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2.5 rounded-full bg-surface-container-low backdrop-blur-md text-tmain border-2 hover:translate-y-[2px] active:translate-y-[4px] transition-all"
-        >
-          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </button>
-        <button
-          className="md:hidden p-2 text-tmain"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+            className="w-5 h-[2px] bg-tmain block"
+          />
+          <motion.span
+            variants={{
+              closed: { rotate: 0, y: 0 },
+              open: { rotate: -45, y: -6 }
+            }}
+            className="w-5 h-[2px] bg-tmain block"
+          />
+        </motion.div>
+      </button>
 
     </div>
-          
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-surface-container/90 dark:bg-slate-900/80 border-t border-surface-container dark:border-slate-800 overflow-hidden"
+  </div>
+
+  {/* ================= DESKTOP NAV ================= */}
+  <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr_auto] items-center max-w-7xl mx-auto px-6 py-4">
+
+    {/* Left nav */}
+    <div className="flex items-center gap-8 font-bold text-lg justify-end">
+      {leftNav.map((item) => (
+        <motion.button
+          key={item}
+          whileHover={{ scale: 1.05, rotate: -1 }}
+          onClick={() => {
+            if (item === 'BAKERY') setCurrentView('BAKERY');
+            else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else setCurrentView('home');
+          }}
+          className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
+        >
+          {item}
+        </motion.button>
+      ))}
+    </div>
+
+    {/* Logo */}
+    <div className="flex justify-center px-8">
+      <div
+        onClick={() => setCurrentView('home')}
+        className="w-14 h-14 rounded-full border-2 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
+      >
+        <img src={logo} className="w-full h-full object-cover" />
+      </div>
+    </div>
+
+    {/* Right nav */}
+    <div className="flex items-center gap-8 font-bold text-lg justify-start">
+      {rightNav.map((item) => (
+        <motion.button
+          key={item}
+          whileHover={{ scale: 1.05, rotate: 1 }}
+          onClick={() => {
+            if (item === 'BAKERY') setCurrentView('BAKERY');
+            else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else setCurrentView('home');
+          }}
+          className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
+        >
+          {item}
+        </motion.button>
+      ))}
+    </div>
+
+    {/* Toggle */}
+    <div className="flex items-center gap-3 justify-end">
+      <button
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        className="p-2.5 rounded-full bg-surface-container-low text-tmain border 
+        hover:translate-y-[2px] active:translate-y-[4px] transition-all"
+      >
+        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
+    </div>
+
+  </div>
+
+  {/* ================= MOBILE MENU ================= */}
+  <AnimatePresence>
+    {isMenuOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        className="md:hidden 
+        bg-surface-container/95 dark:bg-slate-900/95 
+        backdrop-blur-xl 
+        border-t border-tmain/10"
+      >
+        <div className="flex flex-col p-6 gap-4">
+
+          {navItems.map((item) => (
+            <button
+              key={item}
+              onClick={() => {
+                if (item === 'BAKERY') setCurrentView('BAKERY');
+                else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
+                else if (item === 'EXTRA') setCurrentView('EXTRA');
+                else setCurrentView('home');
+                setIsMenuOpen(false);
+              }}
+              className="text-xl font-black text-left text-tmain 
+              hover:translate-x-2 transition-all"
             >
-              <div className="flex flex-col p-6 gap-4">
-                {navItems.map((item) => (
-                  <button key={item} className="text-xl font-black text-left text-tmain dark:text-white" 
-                  onClick={() => 
-                {
-                    if (item === 'P2P') setCurrentView('P2P');
-                    else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                    else if (item === 'BAKERY') setCurrentView('BAKERY');
-                    else setCurrentView('home');
-                }}
-                >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+              {item}
+            </button>
+          ))}
+
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+
+</nav>
 
     <main className="pt-24 pb-14 min-h-[calc(100vh-200px)]">
       {currentView === 'home' ? (
@@ -598,7 +690,7 @@ return (
                   whileHover={{ scale: 1.05, rotate: 1.5 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handlePrint}
-                  className="bg-surface-container text-text-tmain text-2xl px-12 py-6 rounded-lg font-black shadow-lg"
+                  className="bg-surface-container text-tmain text-2xl px-12 py-6 rounded-lg font-black shadow-lg"
                 >
                   {isPrinting ? `Printing... ${Math.round(printProgress)}%` : 'Join the Kitchen'}
                 </motion.button>
@@ -606,14 +698,36 @@ return (
             </div>
           </section>
           
-          {/* Dropdown*/}
-          <div><Dropdown selected={selected} setSelected={setSelected} /></div>
-          <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
-        <h2 className="text-3xl font-black mb-4">{data[selected]}</h2>
-        <div className="max-w-2xl mx-auto">
-    <Chart choice={selected} />
+      {/* Dropdown*/}
+      <section className="max-w-5xl mx-auto px-6 mt-12 space-y-6 text-center">
+
+  <div className="flex justify-center">
+    <Dropdown selected={selected} setSelected={setSelected} />
   </div>
-      </div>
+
+  <div className="
+    bg-[var(--surface-container)]/90 
+    dark:bg-[var(--surface-container)]/90 
+    backdrop-blur-md
+    text-[var(--tmain)] 
+    p-8 md:p-12 
+    rounded-2xl 
+    border border-tmain/20
+    shadow-[0_10px_30px_-10px_var(--tmain)]
+    hover:shadow-[0_20px_40px_-10px_var(--tmain)]
+    transition-all duration-300
+  ">
+
+    <h2 className="text-3xl md:text-4xl text-tmain font-black mb-6">
+      {data[selected]}
+    </h2>
+
+    <div className="w-full max-w-4xl mx-auto">
+      <Chart choice={selected} />
+    </div>
+
+  </div>
+</section>
 
           {/* Printing the Flavor section */}
           <section className="py-32 px-6 overflow-hidden">
