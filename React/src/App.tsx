@@ -293,7 +293,7 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl font-black mb-8 dark:text-white">Bakery</h1>
+      <h1 className="text-4xl font-black mb-8 dark:text-white">Balance: {data[1]}</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
       </p>
       {data[0].map((coin, i) => (
