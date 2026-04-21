@@ -93,7 +93,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
                 <h3 className="text-2xl font-black dark:text-white">{tier.name}</h3>
-                <p className="text-on-surface-variant dark:text-slate-400 font-bold tracking-wider text-sm mt-1">Tier {index}</p>
+                <p className="text-on-surface-variant dark:text-slate-400 font-bold tracking-wider text-sm mt-1">Tier {index+1}</p>
               </div>
               <div className={`${tier.color} px-6 py-2 rounded-full font-black text-lg border-2 border-surface-container-lowest dark:border-slate-700 sticker-shadow`}>
                 {tier.votes}
