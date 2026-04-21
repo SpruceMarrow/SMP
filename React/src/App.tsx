@@ -34,54 +34,32 @@ interface Proposal {
   id: number;
   title: string;
   description: string;
-  votesFor: number;
-  votesAgainst: number;
-  status: 'Active' | 'Passed' | 'Rejected';
-  timeLeft?: string;
 }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
   const [proposals, setProposals] = useState<Proposal[]>([
     {
       id: 1,
-      title: "SMP-001: Increase Chili Allocation",
-      description: "Proposal to increase the chili spice levels in the treasury by 15% to boost yield crunchiness.",
-      votesFor: 12500,
-      votesAgainst: 450,
-      status: 'Active',
-      timeLeft: '2d 14h'
+      title: "Entity",
+      description: "Tier 1",
     },
     {
       id: 2,
-      title: "SMP-002: Deploy Crispy-Layer-3",
-      description: "Upgrade the core folding engine to support triple-layered samosa minting.",
-      votesFor: 8900,
-      votesAgainst: 120,
-      status: 'Active',
-      timeLeft: '5d 8h'
+      title: "SMP Founding Members",
+      description: "Tier 2",
     },
     {
       id: 3,
-      title: "SMP-003: Partnership with Mint Chutney Protocol",
-      description: "Establish a liquidity bridge with the Mint Chutney cross-chain aggregator.",
-      votesFor: 15600,
-      votesAgainst: 2100,
-      status: 'Passed'
+      title: "SMP Core",
+      description: "Tier 3",
+    },
+    {
+      id: 4,
+      title: "SMP Members",
+      description: "Tier 4",
     }
   ]);
 
-  const handleVote = (id: number, type: 'for' | 'against') => {
-    setProposals(prev => prev.map(p => {
-      if (p.id === id && p.status === 'Active') {
-        return {
-          ...p,
-          votesFor: type === 'for' ? p.votesFor + 1 : p.votesFor,
-          votesAgainst: type === 'against' ? p.votesAgainst + 1 : p.votesAgainst
-        };
-      }
-      return p;
-    }));
-  };
 
   {/*Governance UI*/}
 
@@ -111,18 +89,6 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
           >
             <div className="flex justify-between items-start mb-4">
               <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  proposal.status === 'Active' ? 'bg-primary-container text-on-primary-container' :
-                  proposal.status === 'Passed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
-                  {proposal.status}
-                </span>
-                {proposal.timeLeft && (
-                  <span className="flex items-center gap-1 text-xs font-bold text-text-tmain dark:text-slate-400">
-                    <Clock size={14} />
-                    {proposal.timeLeft}
-                  </span>
-                )}
               </div>
               <span className="text-sm font-bold text-text-tmain dark:text-slate-500">#{proposal.id}</span>
             </div>
@@ -134,40 +100,23 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1 w-full">
-                <div className="flex justify-between text-sm font-bold mb-2 dark:text-white">
-                  <span>For: {proposal.votesFor.toLocaleString()}</span>
-                  <span>Against: {proposal.votesAgainst.toLocaleString()}</span>
-                </div>
-                <div className="h-4 bg-surface-container dark:bg-slate-800 rounded-full overflow-hidden flex border-2 border-surface dark:border-slate-700">
-                  <div 
-                    className="h-full bg-primary dark:bg-orange-500 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
-                  <div 
-                    className="h-full bg-text-tmain dark:bg-slate-600 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesAgainst / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
                 </div>
               </div>
 
-              {proposal.status === 'Active' && (
                 <div className="flex gap-4">
                   <button 
-                    onClick={() => handleVote(proposal.id, 'for')}
                     className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
                   >
                     <ThumbsUp size={18} />
                     Vote For
                   </button>
                   <button 
-                    onClick={() => handleVote(proposal.id, 'against')}
                     className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
                   >
                     <ThumbsDown size={18} />
                     Against
                   </button>
                 </div>
-              )}
             </div>
           </motion.div>
         ))}
