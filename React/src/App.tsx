@@ -117,7 +117,6 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
                     Against
                   </button>
                 </div>
-            </div>
           </motion.div>
         ))}
       </div>
