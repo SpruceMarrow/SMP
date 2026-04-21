@@ -104,18 +104,16 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
               </div>
 
                 <div className="flex gap-4">
-                  <button 
+                  <div 
                     className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
                   >
-                    <ThumbsUp size={18} />
-                    Vote For
-                  </button>
-                  <button 
+                    Person
+                  </div>
+                  <div
                     className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
                   >
-                    <ThumbsDown size={18} />
-                    Against
-                  </button>
+                    Person
+                  </div>
                 </div>
           </motion.div>
         ))}
@@ -123,9 +121,9 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
       <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <ShieldCheck className="mx-auto mb-6 w-16 h-16" />
-        <h2 className="text-3xl font-black mb-4">Governance Security</h2>
+        <h2 className="text-3xl font-black mb-4">DAO Governance Structure</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
+          Voting power in Samosa Money Printers is distributed across tiers to ensure balanced decision-making and reward long-term commitment to the kitchen.
         </p>
       </div>
     </motion.div>
