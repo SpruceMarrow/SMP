@@ -37,31 +37,32 @@ interface Proposal {
 }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
-  const [proposals, setProposals] = useState<Proposal[]>([
+  const tiers: VotingTier[] = [
     {
-      id: 1,
-      title: "Entity",
-      description: "Tier 1",
+      name: "Entity",
+      votes: "10 Votes",
+      members: ["Main DAO Entity"],
+      color: "bg-primary dark:bg-orange-600 text-white"
     },
     {
-      id: 2,
-      title: "SMP Founding Members",
-      description: "Tier 2",
+      name: "SMP Founding Members",
+      votes: "5 Votes",
+      members: ["Tej", "Nithin", "Sujan", "Aditiya"],
+      color: "bg-primary-container text-on-primary-container"
     },
     {
-      id: 3,
-      title: "SMP Core",
-      description: "Tier 3",
+      name: "SMP Core",
+      votes: "2 Votes",
+      members: ["Akhil", "Manoj", "Raghu"],
+      color: "bg-secondary-container text-on-secondary-container"
     },
     {
-      id: 4,
-      title: "SMP Members",
-      description: "Tier 4",
+      name: "SMP Members",
+      votes: "1 Vote",
+      members: ["Sreejith", "Kapoor", "Ankit", "Nikhil", "DK"],
+      color: "bg-surface-container dark:bg-slate-800 text-on-surface dark:text-white"
     }
-  ]);
-
-
-  {/*Governance UI*/}
+  ];
 
   return (
     <motion.div 
@@ -72,55 +73,49 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
       <div className="flex items-center justify-between mb-12">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-text-tmain dark:text-slate-400 hover:text-tmain dark:hover:text-text-tmain font-bold transition-colors"
+          className="flex items-center gap-2 text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-orange-400 font-bold transition-colors"
         >
-          <ArrowLeft size={20}/>
+          <ArrowLeft size={20} />
           Back to Kitchen
         </button>
-        <h1 className="text-text-tmain font-bold font-text-tmain text-text-tmain dark:text-text-tmain">Governance</h1>
+        <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">Voting Power</h1>
       </div>
 
       <div className="grid gap-8">
-        {proposals.map((proposal) => (
+        {tiers.map((tier, index) => (
           <motion.div 
-            key={proposal.id}
-            whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 border-4 border-surface dark:border-slate-800 p-8 rounded-xl sticker-shadow"
+            key={tier.name}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-white dark:bg-slate-900 border-4 border-surface-container-lowest dark:border-slate-800 p-8 rounded-xl sticker-shadow"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-2xl font-black dark:text-white">{tier.name}</h3>
+                <p className="text-on-surface-variant dark:text-slate-400 font-bold uppercase tracking-wider text-sm mt-1">Tier Level {tiers.length - index}</p>
               </div>
-              <span className="text-sm font-bold text-text-tmain dark:text-slate-500">#{proposal.id}</span>
+              <div className={`${tier.color} px-6 py-2 rounded-full font-black text-lg border-2 border-surface-container-lowest dark:border-slate-700 sticker-shadow`}>
+                {tier.votes}
+              </div>
             </div>
 
-            <h3 className="text-2xl font-black mb-4 dark:text-white">{proposal.title}</h3>
-            <p className="text-text-tmain dark:text-slate-300 mb-8 leading-relaxed font-medium">
-              {proposal.description}
-            </p>
-
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1 w-full">
+            <div className="flex flex-wrap gap-3">
+              {tier.members.map((member) => (
+                <div 
+                  key={member}
+                  className="bg-surface-container-low dark:bg-slate-800 px-4 py-2 rounded-lg border-2 border-surface-container-lowest dark:border-slate-700 font-bold text-on-surface dark:text-slate-200"
+                >
+                  {member}
                 </div>
-              </div>
-
-                <div className="flex gap-4">
-                  <div 
-                    className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
-                  >
-                    Person
-                  </div>
-                  <div
-                    className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
-                  >
-                    Person
-                  </div>
-                </div>
+              ))}
+            </div>
           </motion.div>
         ))}
       </div>
 
       <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
-        <ShieldCheck className="mx-auto mb-6 w-16 h-16" />
+        <Vote className="mx-auto mb-6 w-16 h-16" />
         <h2 className="text-3xl font-black mb-4">DAO Governance Structure</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
           Voting power in Samosa Money Printers is distributed across tiers to ensure balanced decision-making and reward long-term commitment to the kitchen.
