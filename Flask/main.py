@@ -96,11 +96,11 @@ async def check(ca,tick,fdv):
     cursor = sql.cursor()
     print("Checking")
     async with aiohttp.ClientSession() as session:
-            async with aiohttp.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
+            async with session.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
                 data = await resp.json()
                 if data[0]['fdv'] >= 2*fdv:
                     final = data[0]['fdv']
-                    cursor.execute(f'UPDATE port set Final={final} WHERE Name = {tick}')
+                    cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
                     sellbal(final,fdv,tick)
                     sql.commit()
     sql.close()
