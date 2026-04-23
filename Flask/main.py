@@ -47,8 +47,8 @@ def buybal(tick):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     bal = getbal()
-    cursor.execute(f'UPDATE bal set Balance= {bal-0.1}')
     cursor.execute(f"UPDATE port set BuyBal= {bal-0.1} WHERE Name = '{tick}'")
+    cursor.execute(f'UPDATE bal set Balance= {bal-0.1}')
     sql.commit()
     sql.close()
 

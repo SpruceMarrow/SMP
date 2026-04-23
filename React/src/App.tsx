@@ -34,56 +34,35 @@ interface Proposal {
   id: number;
   title: string;
   description: string;
-  votesFor: number;
-  votesAgainst: number;
-  status: 'Active' | 'Passed' | 'Rejected';
-  timeLeft?: string;
 }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
-  const [proposals, setProposals] = useState<Proposal[]>([
+  const tiers: VotingTier[] = [
     {
-      id: 1,
-      title: "SMP-001: Increase Chili Allocation",
-      description: "Proposal to increase the chili spice levels in the treasury by 15% to boost yield crunchiness.",
-      votesFor: 12500,
-      votesAgainst: 450,
-      status: 'Active',
-      timeLeft: '2d 14h'
+      name: "Entity",
+      votes: "10 Votes",
+      members: ["Main DAO Entity"],
+      color: "bg-primary dark:bg-orange-600 text-white"
     },
     {
-      id: 2,
-      title: "SMP-002: Deploy Crispy-Layer-3",
-      description: "Upgrade the core folding engine to support triple-layered samosa minting.",
-      votesFor: 8900,
-      votesAgainst: 120,
-      status: 'Active',
-      timeLeft: '5d 8h'
+      name: "SMP Founding Members",
+      votes: "5 Votes",
+      members: ["Tej", "Nithin", "Sujan", "Aditiya"],
+      color: "bg-primary-container text-on-primary-container"
     },
     {
-      id: 3,
-      title: "SMP-003: Partnership with Mint Chutney Protocol",
-      description: "Establish a liquidity bridge with the Mint Chutney cross-chain aggregator.",
-      votesFor: 15600,
-      votesAgainst: 2100,
-      status: 'Passed'
+      name: "SMP Core",
+      votes: "2 Votes",
+      members: ["Akhil", "Manoj", "Raghu"],
+      color: "bg-secondary-container text-on-secondary-container"
+    },
+    {
+      name: "SMP Members",
+      votes: "1 Vote",
+      members: ["Sreejith", "Kapoor", "Ankit", "Nikhil", "DK"],
+      color: "bg-surface-container dark:bg-slate-800 text-on-surface dark:text-white"
     }
-  ]);
-
-  const handleVote = (id: number, type: 'for' | 'against') => {
-    setProposals(prev => prev.map(p => {
-      if (p.id === id && p.status === 'Active') {
-        return {
-          ...p,
-          votesFor: type === 'for' ? p.votesFor + 1 : p.votesFor,
-          votesAgainst: type === 'against' ? p.votesAgainst + 1 : p.votesAgainst
-        };
-      }
-      return p;
-    }));
-  };
-
-  {/*Governance UI*/}
+  ];
 
   return (
     <motion.div 
@@ -94,90 +73,52 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
       <div className="flex items-center justify-between mb-12">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-text-tmain dark:text-slate-400 hover:text-tmain dark:hover:text-text-tmain font-bold transition-colors"
+          className="flex items-center gap-2 text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-orange-400 font-bold transition-colors"
         >
-          <ArrowLeft size={20}/>
+          <ArrowLeft size={20} />
           Back to Kitchen
         </button>
-        <h1 className="text-text-tmain font-bold font-text-tmain text-text-tmain dark:text-text-tmain">Governance</h1>
+        <h1 className="text-4xl font-black font-headline text-on-surface dark:text-white">Voting Power</h1>
       </div>
 
       <div className="grid gap-8">
-        {proposals.map((proposal) => (
+        {tiers.map((tier, index) => (
           <motion.div 
-            key={proposal.id}
-            whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 border-4 border-surface dark:border-slate-800 p-8 rounded-xl sticker-shadow"
+            key={tier.name}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-white dark:bg-slate-900 border-4 border-surface-container-lowest dark:border-slate-800 p-8 rounded-xl sticker-shadow"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  proposal.status === 'Active' ? 'bg-primary-container text-on-primary-container' :
-                  proposal.status === 'Passed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
-                  {proposal.status}
-                </span>
-                {proposal.timeLeft && (
-                  <span className="flex items-center gap-1 text-xs font-bold text-text-tmain dark:text-slate-400">
-                    <Clock size={14} />
-                    {proposal.timeLeft}
-                  </span>
-                )}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-2xl font-black dark:text-white">{tier.name}</h3>
+                <p className="text-on-surface-variant dark:text-slate-400 font-bold tracking-wider text-sm mt-1">Tier {index+1}</p>
               </div>
-              <span className="text-sm font-bold text-text-tmain dark:text-slate-500">#{proposal.id}</span>
+              <div className={`${tier.color} px-6 py-2 rounded-full font-black text-lg border-2 border-surface-container-lowest dark:border-slate-700 sticker-shadow`}>
+                {tier.votes}
+              </div>
             </div>
 
-            <h3 className="text-2xl font-black mb-4 dark:text-white">{proposal.title}</h3>
-            <p className="text-text-tmain dark:text-slate-300 mb-8 leading-relaxed font-medium">
-              {proposal.description}
-            </p>
-
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1 w-full">
-                <div className="flex justify-between text-sm font-bold mb-2 dark:text-white">
-                  <span>For: {proposal.votesFor.toLocaleString()}</span>
-                  <span>Against: {proposal.votesAgainst.toLocaleString()}</span>
+            <div className="flex flex-wrap gap-3">
+              {tier.members.map((member) => (
+                <div 
+                  key={member}
+                  className="bg-surface-container-low dark:bg-slate-800 px-4 py-2 rounded-lg border-2 border-surface-container-lowest dark:border-slate-700 font-bold text-on-surface dark:text-slate-200"
+                >
+                  {member}
                 </div>
-                <div className="h-4 bg-surface-container dark:bg-slate-800 rounded-full overflow-hidden flex border-2 border-surface dark:border-slate-700">
-                  <div 
-                    className="h-full bg-primary dark:bg-orange-500 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
-                  <div 
-                    className="h-full bg-text-tmain dark:bg-slate-600 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesAgainst / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
-                </div>
-              </div>
-
-              {proposal.status === 'Active' && (
-                <div className="flex gap-4">
-                  <button 
-                    onClick={() => handleVote(proposal.id, 'for')}
-                    className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
-                  >
-                    <ThumbsUp size={18} />
-                    Vote For
-                  </button>
-                  <button 
-                    onClick={() => handleVote(proposal.id, 'against')}
-                    className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
-                  >
-                    <ThumbsDown size={18} />
-                    Against
-                  </button>
-                </div>
-              )}
+              ))}
             </div>
           </motion.div>
         ))}
       </div>
 
       <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
-        <ShieldCheck className="mx-auto mb-6 w-16 h-16" />
-        <h2 className="text-3xl font-black mb-4">Governance Security</h2>
+        <Vote className="mx-auto mb-6 w-16 h-16" />
+        <h2 className="text-3xl font-black mb-4">DAO Governance Structure</h2>
         <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
+          Voting power in Samosa Money Printers is distributed across tiers to ensure balanced decision-making and reward long-term commitment to the kitchen.
         </p>
       </div>
     </motion.div>
@@ -293,7 +234,7 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
         <ArrowLeft size={20} />
         Back to Home
       </button>
-      <h1 className="text-4xl font-black mb-8 dark:text-white">Bakery</h1>
+      <h1 className="text-4xl font-black mb-8 dark:text-white">Balance: {data[1]}</h1>
       <p className="text-lg text-tmain dark:text-slate-300 mb-8">
       </p>
       {data[0].map((coin, i) => (
