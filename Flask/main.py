@@ -115,7 +115,7 @@ def main():
         return 'what youre probably looking for is https://frontend-muai.onrender.com/'
 
 @app.post('/helius')
-def helius():
+async def helius():
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
     hreq = list(request.get_json())
