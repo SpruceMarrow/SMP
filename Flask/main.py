@@ -8,8 +8,31 @@ import json
 import os
 from functools import partial
 import aiohttp
+import threading
+from apscheduler.schedulers.background import BackgroundScheduler
 
 DBURL = os.environ["DATABASE_URL"]
+
+def run_check_async(ca,tick,fdv):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        loop.run_until_complete(check(ca, tick, fdv))
+    finally:
+        loop.close()
+
+def check_all_positions():
+    """Check all open positions every 5 minutes"""
+    sql = psycopg2.connect(DBURL)
+    cursor = sql.cursor()
+    cursor.execute("SELECT CA, Name, Initial FROM port WHERE Final IS NULL")  # Only check open positions
+    positions = cursor.fetchall()
+    sql.close()
+    
+    for ca, tick, fdv in positions:
+        thread = threading.Thread(target=run_check_async, args=(ca, tick, fdv), daemon=True)
+        thread.start()
+
 
 def getprices(items):
     l = []
@@ -92,23 +115,27 @@ def hfetch(curr):
     return data
 
 async def check(ca,tick,fdv):
-    sql = psycopg2.connect(DBURL)
-    cursor = sql.cursor()
     print("Checking")
     async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
                 data = await resp.json()
                 if data[0]['fdv'] >= 2*fdv:
                     final = data[0]['fdv']
+                    sql = psycopg2.connect(DBURL)
+                    cursor = sql.cursor()
                     cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
                     sellbal(final,fdv,tick)
                     sql.commit()
-    sql.close()
+                    sql.close()
         
         
 
 app = Flask(__name__)
 CORS(app)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=check_all_positions, trigger="interval", minutes=5)
+scheduler.start()
 
 @app.route('/')
 def main():
@@ -145,8 +172,6 @@ async def helius():
                     if tick not in calist:
                         add(tick,fdv,ca)
                         buybal(tick)
-                        for i in list2:
-                            asyncio.create_task(check(i[0],tick,fdv))
     
                 
         
