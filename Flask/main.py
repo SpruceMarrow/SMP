@@ -99,11 +99,11 @@ def fetch():
     'symbol': 'ETH,SOL,BTC',
     'convert': 'USD'
     }
-    l = []
+    l = {}
     res = requests.get(url, params=parameters,headers={'X-CMC_PRO_API_KEY': "18cc6530935245e48a2327569ff067f9"})
     data = res.json()
     for i in data['data']:
-        l.append(round(data['data'][i]['quote']['USD']['price'],1))
+        l[i.lower()] = round(data['data'][i]['quote']['USD']['price'],1)
     return l
 
 def hfetch(curr):
@@ -192,8 +192,8 @@ async def bot():
 
 @app.route('/api')
 def api():
-    btc,eth,sol = fetch()
-    return jsonify({"btc":btc,"eth":eth,"sol":sol})
+    d = fetch()
+    return jsonify(d)
 
 @app.route('/api/historicalbtc')
 def histb():
