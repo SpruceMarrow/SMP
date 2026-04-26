@@ -173,6 +173,7 @@ async def helius():
                 newdata = data or [{'baseToken':{'symbol':' '},'fdv':0}]
                 tick = newdata[0]['baseToken']['symbol']
                 fdv = newdata[0]['fdv']
+                amount = 0
                 nativetransfers = tx['nativeTransfers'][0] if tx['nativeTransfers'] else {amount : 0}
                 amount = nativetransfers['amount'] / 1e9
                 print(f'{tick} {fdv} {amount}')
