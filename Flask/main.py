@@ -145,12 +145,12 @@ def main():
 
 @app.post('/helius')
 async def helius():
-    sql = psycopg2.connect(DBURL)
-    cursor = sql.cursor()
     hreq = list(request.get_json())
     for tx in hreq:
         for mints in tx['tokenTransfers']:
             if mints['mint'].endswith('pump'):
+                sql = psycopg2.connect(DBURL)
+                cursor = sql.cursor()
                 ca = mints['mint']
                 response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
                 data = list(response.json())
