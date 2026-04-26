@@ -152,8 +152,15 @@ async def helius():
                 sql = psycopg2.connect(DBURL)
                 cursor = sql.cursor()
                 ca = mints['mint']
-                response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"})
-                data = list(response.json())
+                response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}', headers={"Accept": "*/*"})
+                if response.status_code != 200:
+                    print(f"API error for {ca}: {response.status_code} - {response.text}")
+                    continue  
+                try:
+                    data = list(response.json())
+                except requests.exceptions.JSONDecodeError as e:
+                    print(f"JSON decode error for {ca}: {e} - Response: {response.text}")
+                    continue
                 print(f'data is {data}')
                 cursor.execute('SELECT Name FROM port')
                 calist=[]
