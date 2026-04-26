@@ -10,6 +10,7 @@ from functools import partial
 import aiohttp
 import threading
 from apscheduler.schedulers.background import BackgroundScheduler
+semaphore = threading.Semaphore(70)
 
 DBURL = os.environ["DATABASE_URL"]
 
@@ -30,7 +31,8 @@ def check_all_positions():
     sql.close()
     
     for ca, tick, fdv in positions:
-        thread = threading.Thread(target=run_check_async, args=(ca, tick, fdv), daemon=True)
+        semaphore.acquire()
+        thread = threading.Thread(target=lambda: (run_check_async(ca, tick, fdv),semaphore.release()), daemon=True)
         thread.start()
 
 
