@@ -178,7 +178,7 @@ def helius():
                 fdv = newdata[0]['fdv']
                 amount = 0
                 nativetransfers = tx['nativeTransfers'][0] if tx['nativeTransfers'] else {amount : 0}
-                amount = nativetransfers['amount'] / 1e9
+                amount = nativetransfers['amount'] / 1e9 if tx['nativeTransfers'] else 0
                 print(f'{tick} {fdv} {amount}')
                 if fdv>80000 and amount>1:
                     print(f'{tick} {fdv} {amount}')
