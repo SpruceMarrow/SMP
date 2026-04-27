@@ -10,7 +10,7 @@ from functools import partial
 import aiohttp
 import threading
 from apscheduler.schedulers.background import BackgroundScheduler
-semaphore = threading.Semaphore(25)
+semaphore = threading.Semaphore(20)
 
 DBURL = os.environ["DATABASE_URL"]
 
