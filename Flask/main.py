@@ -22,6 +22,12 @@ def run_check_async(ca,tick,fdv):
     finally:
         loop.close()
 
+def worker(ca,tick,fdv):
+    try:
+        run_check_async(ca,tick,fdv)
+    finally:
+        semaphore.release()
+
 def check_all_positions():
     """Check all open positions every 5 minutes"""
     sql = psycopg2.connect(DBURL)
@@ -32,7 +38,7 @@ def check_all_positions():
     
     for ca, tick, fdv in positions:
         semaphore.acquire()
-        thread = threading.Thread(target=lambda: (run_check_async(ca, tick, fdv),semaphore.release()), daemon=True)
+        thread = threading.Thread(target=worker, args =(ca, tick, fdv), daemon=True)
         thread.start()
 
 
@@ -71,9 +77,8 @@ def getbal():
 def buybal(tick):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    bal = getbal()
-    cursor.execute(f"UPDATE port set BuyBal= {bal-0.1} WHERE Name = '{tick}'")
-    cursor.execute(f'UPDATE bal set Balance= {bal-0.1}')
+    cursor.execute(f"UPDATE port set BuyBal= BuyBal-0.1 WHERE Name = '{tick}'")
+    cursor.execute(f'UPDATE bal set Balance= Balance-0.1')
     sql.commit()
     sql.close()
 
@@ -81,9 +86,8 @@ def buybal(tick):
 def sellbal(final,fdv,tick):
     sql = psycopg2.connect(DBURL)
     cursor = sql.cursor()
-    bal = getbal()
-    cursor.execute(f'UPDATE bal set Balance= {bal+(0.1*(final-fdv)/fdv)}')
-    cursor.execute(f"UPDATE port set SellBal= {bal+(0.1*(final-fdv)/fdv)} WHERE Name = '{tick}'")
+    cursor.execute(f'UPDATE bal set Balance= Balance+{(0.1*(final-fdv)/fdv)}')
+    cursor.execute(f"UPDATE port set SellBal= SellBal+{(0.1*(final-fdv)/fdv)} WHERE Name = '{tick}'")
     sql.commit()
     sql.close()
 
@@ -118,18 +122,17 @@ def hfetch(curr):
 
 async def check(ca,tick,fdv):
     print("Checking")
-    async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"}) as resp:
-                data = await resp.json()
-                if data[0]['fdv'] >= 2*fdv:
-                    final = data[0]['fdv']
-                    sql = psycopg2.connect(DBURL)
-                    cursor = sql.cursor()
-                    cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
-                    sellbal(final,fdv,tick)
-                    sql.commit()
-                    sql.close()
-        
+    resp = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"},timeout=10)
+    data = await resp.json()
+    if data[0]['fdv'] >= 2*fdv:
+        final = data[0]['fdv']
+        sql = psycopg2.connect(DBURL)
+        cursor = sql.cursor()
+        cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
+        sellbal(final,fdv,tick)
+        sql.commit()
+        sql.close()
+    
         
 
 app = Flask(__name__)
@@ -144,7 +147,7 @@ def main():
         return 'what youre probably looking for is https://frontend-muai.onrender.com/'
 
 @app.post('/helius')
-async def helius():
+def helius():
     hreq = list(request.get_json())
     for tx in hreq:
         for mints in tx['tokenTransfers']:
