@@ -14,17 +14,9 @@ semaphore = threading.Semaphore(70)
 
 DBURL = os.environ["DATABASE_URL"]
 
-def run_check_async(ca,tick,fdv):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        loop.run_until_complete(check(ca, tick, fdv))
-    finally:
-        loop.close()
-
 def worker(ca,tick,fdv):
     try:
-        run_check_async(ca,tick,fdv)
+        check(ca,tick,fdv)
     finally:
         semaphore.release()
 
@@ -120,10 +112,10 @@ def hfetch(curr):
     data = response.json()
     return data
 
-async def check(ca,tick,fdv):
+def check(ca,tick,fdv):
     print("Checking")
     resp = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"},timeout=10)
-    data = await resp.json()
+    data = resp.json()
     if data[0]['fdv'] >= 2*fdv:
         final = data[0]['fdv']
         sql = psycopg2.connect(DBURL)
