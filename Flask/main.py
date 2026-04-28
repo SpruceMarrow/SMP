@@ -10,7 +10,7 @@ from functools import partial
 import aiohttp
 import threading
 from apscheduler.schedulers.background import BackgroundScheduler
-semaphore = threading.Semaphore(20)
+semaphore = threading.Semaphore(5)
 
 DBURL = os.environ["DATABASE_URL"]
 
@@ -116,6 +116,8 @@ def check(ca,tick,fdv):
     print("Checking")
     resp = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}',headers={"Accept":"*/*"},timeout=10)
     data = resp.json()
+    if resp.status == 429:
+        print("Rate limit")
     if data[0]['fdv'] >= 2*fdv:
         final = data[0]['fdv']
         sql = psycopg2.connect(DBURL)
