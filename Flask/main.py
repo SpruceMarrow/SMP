@@ -11,7 +11,7 @@ from functools import partial
 import aiohttp
 import threading
 from apscheduler.schedulers.background import BackgroundScheduler
-semaphore = threading.Semaphore(5)
+semaphore = threading.Semaphore(20)
 
 DBURL = os.environ["DATABASE_URL"]
 
@@ -143,6 +143,8 @@ def check(ca,tick,fdv):
             sql.commit()
             cursor.close()
             return_db(sql)
+    else:
+        print("Somethings wrong")
     
         
 
@@ -150,7 +152,7 @@ app = Flask(__name__)
 CORS(app)
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=check_all_positions, trigger="interval", minutes=5)
+scheduler.add_job(func=check_all_positions, trigger="interval", minutes=30)
 scheduler.start()
 
 @app.route('/')
