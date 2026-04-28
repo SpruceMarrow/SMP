@@ -133,15 +133,16 @@ def check(ca,tick,fdv):
     data = resp.json()
     if resp.status_code == 429:
         print("Rate limit")
-    if data[0]['fdv'] >= 2*fdv:
-        final = data[0]['fdv']
-        sql = get_db()
-        cursor = sql.cursor()
-        cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
-        sellbal(final,fdv,tick)
-        sql.commit()
-        cursor.close()
-        return_db(sql)
+    if data:
+        if data[0]['fdv'] >= 2*fdv:
+            final = data[0]['fdv']
+            sql = get_db()
+            cursor = sql.cursor()
+            cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
+            sellbal(final,fdv,tick)
+            sql.commit()
+            cursor.close()
+            return_db(sql)
     
         
 
