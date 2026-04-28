@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for, jsonify
 from flask import request 
 from flask_cors import CORS
 import psycopg2
+from psycopg2 import pool
 import requests
 import json
 import os
@@ -14,6 +15,14 @@ semaphore = threading.Semaphore(5)
 
 DBURL = os.environ["DATABASE_URL"]
 
+db_pool = psycopg2.pool.ThreadedConnectionPool(1,30,DBURL)
+
+def get_db():
+    return db_pool.getconn()
+
+def return_db(conn):
+    db_pool.putconn(conn)
+
 def worker(ca,tick,fdv):
     try:
         check(ca,tick,fdv)
@@ -22,11 +31,12 @@ def worker(ca,tick,fdv):
 
 def check_all_positions():
     """Check all open positions every 5 minutes"""
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute("SELECT CA, Name, Initial FROM port WHERE Final IS NULL")  # Only check open positions
     positions = cursor.fetchall()
-    sql.close()
+    cursor.close()
+    return_db(sql)
     
     for ca, tick, fdv in positions:
         semaphore.acquire()
@@ -43,53 +53,58 @@ def getprices(items):
     return l
 
 def getitems():
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute("SELECT Name,Initial,CA FROM port")
     rec = list(cursor.fetchall())
+    cursor.close()
     l=[]
     for i in rec[-1:-11:-1]:
         l.append({"tick":i[0],"fdv":i[1],"ca":i[2]})
-    sql.close()
+    return_db(sql)
     return l
     
 
 def getbal():
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute("SELECT Balance FROM bal")
     rec = list(cursor.fetchall())
+    cursor.close()
     bal = rec[0][0]
-    sql.close()
+    return_db(sql)
     return bal
     
 
 
 
 def buybal(tick):
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute(f"UPDATE port set BuyBal= BuyBal-0.1 WHERE Name = '{tick}'")
     cursor.execute(f'UPDATE bal set Balance= Balance-0.1')
     sql.commit()
-    sql.close()
+    cursor.close()
+    return_db(sql)
 
     
 def sellbal(final,fdv,tick):
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute(f'UPDATE bal set Balance= Balance+{(0.1*(final-fdv)/fdv)}')
     cursor.execute(f"UPDATE port set SellBal= SellBal+{(0.1*(final-fdv)/fdv)} WHERE Name = '{tick}'")
     sql.commit()
-    sql.close()
+    cursor.close()
+    return_db(sql)
 
 
 def add(tick,fdv,ca):
-    sql = psycopg2.connect(DBURL)
+    sql = get_db()
     cursor = sql.cursor()
     cursor.execute(f"INSERT INTO port (Name,Initial,CA) values ('{tick}',{fdv},'{ca}')")
     sql.commit()
-    sql.close()
+    cursor.close()
+    return_db(sql)
 
 def fetch():
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
@@ -120,12 +135,13 @@ def check(ca,tick,fdv):
         print("Rate limit")
     if data[0]['fdv'] >= 2*fdv:
         final = data[0]['fdv']
-        sql = psycopg2.connect(DBURL)
+        sql = get_db()
         cursor = sql.cursor()
         cursor.execute(f"UPDATE port set Final={final} WHERE Name = '{tick}'")
         sellbal(final,fdv,tick)
         sql.commit()
-        sql.close()
+        cursor.close()
+        return_db(sql)
     
         
 
@@ -146,7 +162,7 @@ def helius():
     for tx in hreq:
         for mints in tx['tokenTransfers']:
             if mints['mint'].endswith('pump'):
-                sql = psycopg2.connect(DBURL)
+                sql = get_db()
                 cursor = sql.cursor()
                 ca = mints['mint']
                 response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}', headers={"Accept": "*/*"})
@@ -164,7 +180,8 @@ def helius():
                 list1 = list(cursor.fetchall())
                 cursor.execute('SELECT CA FROM port')
                 list2 = list(cursor.fetchall())
-                sql.close()
+                cursor.close()
+                return_db(sql)
                 for i in list1:
                     calist.append(i[0])
                 newdata = data or [{'baseToken':{'symbol':' '},'fdv':0}]
