@@ -33,7 +33,7 @@ def check_all_positions():
     """Check all open positions every 5 minutes"""
     sql = get_db()
     cursor = sql.cursor()
-    cursor.execute("SELECT CA, Name, Initial FROM port WHERE Final IS NULL")  # Only check open positions
+    cursor.execute("SELECT CA, Name, Initial FROM port WHERE SellBal IS NULL")  # Only check open positions
     positions = cursor.fetchall()
     cursor.close()
     return_db(sql)
