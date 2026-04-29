@@ -15,7 +15,7 @@ semaphore = threading.Semaphore(20)
 
 DBURL = os.environ["DATABASE_URL"]
 
-db_pool = psycopg2.pool.ThreadedConnectionPool(1,30,DBURL)
+db_pool = psycopg2.pool.ThreadedConnectionPool(1,80,DBURL)
 
 def get_db():
     return db_pool.getconn()
