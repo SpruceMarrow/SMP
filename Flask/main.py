@@ -171,11 +171,13 @@ def helius():
                 response = requests.get(f'https://api.dexscreener.com/tokens/v1/solana/{ca}', headers={"Accept": "*/*"})
                 if response.status_code != 200:
                     print(f"API error for {ca}: {response.status_code} - {response.text}")
+                    return_db(sql)
                     continue  
                 try:
                     data = list(response.json())
                 except requests.exceptions.JSONDecodeError as e:
                     print(f"JSON decode error for {ca}: {e} - Response: {response.text}")
+                    return_db(sql)
                     continue
                 print(f'data is {data}')
                 cursor.execute('SELECT Name FROM port')
