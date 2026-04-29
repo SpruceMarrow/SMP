@@ -81,7 +81,7 @@ def getbal():
 def buybal(tick):
     sql = get_db()
     cursor = sql.cursor()
-    cursor.execute(f"UPDATE port set BuyBal= BuyBal-0.1 WHERE Name = '{tick}'")
+    cursor.execute(f"UPDATE port set BuyBal= COALESCE(BuyBal,0)-0.1 WHERE Name = '{tick}'")
     cursor.execute(f'UPDATE bal set Balance= Balance-0.1')
     sql.commit()
     cursor.close()
@@ -92,7 +92,7 @@ def sellbal(final,fdv,tick):
     sql = get_db()
     cursor = sql.cursor()
     cursor.execute(f'UPDATE bal set Balance= Balance+{(0.1*(final-fdv)/fdv)}')
-    cursor.execute(f"UPDATE port set SellBal= SellBal+{(0.1*(final-fdv)/fdv)} WHERE Name = '{tick}'")
+    cursor.execute(f"UPDATE port set SellBal= COALESCE(SellBal,0)+{(0.1*(final-fdv)/fdv)} WHERE Name = '{tick}'")
     sql.commit()
     cursor.close()
     return_db(sql)
