@@ -80,7 +80,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
             style={{ transition: "color 0.3s ease" }}
           >
             <ArrowLeft size={14} />
-            Back to Kitchen
+            Back to home
         </button>
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
