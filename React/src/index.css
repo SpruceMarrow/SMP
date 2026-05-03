@@ -76,6 +76,9 @@
   color: var(--tmain);
 }
 
+.text-surface-container {
+  color: var(--surface-container);
+}
 .text-white {
   color: var(--white);
 }

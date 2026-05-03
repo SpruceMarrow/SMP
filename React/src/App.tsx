@@ -30,58 +30,41 @@ import bitcoin from "./images/bitcoin.png";
 
 {/* Governance View */ }
 
+{/* Governance View */ }
+
 interface Proposal {
   id: number;
   title: string;
   description: string;
-  votesFor: number;
-  votesAgainst: number;
-  status: 'Active' | 'Passed' | 'Rejected';
-  timeLeft?: string;
 }
 
 const GovernanceView = ({ onBack }: { onBack: () => void }) => {
-  const [proposals, setProposals] = useState<Proposal[]>([
+  const tiers: VotingTier[] = [
     {
-      id: 1,
-      title: "SMP-001: Increase Chili Allocation",
-      description: "Proposal to increase the chili spice levels in the treasury by 15% to boost yield crunchiness.",
-      votesFor: 12500,
-      votesAgainst: 450,
-      status: 'Active',
-      timeLeft: '2d 14h'
+      name: "Entity",
+      votes: "10 Votes",
+      members: ["Main DAO Entity"],
+      color: "bg-primary dark:bg-orange-600 text-white"
     },
     {
-      id: 2,
-      title: "SMP-002: Deploy Crispy-Layer-3",
-      description: "Upgrade the core folding engine to support triple-layered samosa minting.",
-      votesFor: 8900,
-      votesAgainst: 120,
-      status: 'Active',
-      timeLeft: '5d 8h'
+      name: "SMP Founding Members",
+      votes: "5 Votes",
+      members: ["Tej", "Nithin", "Sujan", "Aditiya"],
+      color: "bg-primary-container text-on-primary-container"
     },
     {
-      id: 3,
-      title: "SMP-003: Partnership with Mint Chutney Protocol",
-      description: "Establish a liquidity bridge with the Mint Chutney cross-chain aggregator.",
-      votesFor: 15600,
-      votesAgainst: 2100,
-      status: 'Passed'
+      name: "SMP Core",
+      votes: "2 Votes",
+      members: ["Akhil", "Manoj", "Raghu"],
+      color: "bg-secondary-container text-on-secondary-container"
+    },
+    {
+      name: "SMP Members",
+      votes: "1 Vote",
+      members: ["Sreejith", "Kapoor", "Ankit", "Nikhil", "DK"],
+      color: "bg-surface-container dark:bg-slate-800 text-on-surface dark:text-white"
     }
-  ]);
-
-  const handleVote = (id: number, type: 'for' | 'against') => {
-    setProposals(prev => prev.map(p => {
-      if (p.id === id && p.status === 'Active') {
-        return {
-          ...p,
-          votesFor: type === 'for' ? p.votesFor + 1 : p.votesFor,
-          votesAgainst: type === 'against' ? p.votesAgainst + 1 : p.votesAgainst
-        };
-      }
-      return p;
-    }));
-  };
+  ];
 
   {/*Governance UI*/}
 
@@ -89,100 +72,71 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto px-6 py-12"
-    >
-      <div className="flex items-center justify-between mb-12">
-        <button 
-          onClick={onBack}
-          className="flex items-center gap-2 text-text-tmain dark:text-slate-400 hover:text-tmain dark:hover:text-text-tmain font-bold transition-colors"
-        >
-          <ArrowLeft size={20}/>
-          Back to Kitchen
+      className="max-w-4xl mx-auto px-6 py-12">
+
+        <button
+            onClick={onBack}
+            className="flex items-center gap-2 text-surface-container hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase"
+            style={{ transition: "color 0.3s ease" }}
+          >
+            <ArrowLeft size={14} />
+            Back to Kitchen
         </button>
-        <h1 className="text-text-tmain font-bold font-text-tmain text-text-tmain dark:text-text-tmain">Governance</h1>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <p className="text-surface-container text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
+          <h1 className="text-6xl font-black text-tmain tracking-tighter leading-none">GOVERNANCE</h1>
+          <p className="text-surface-container text-sm mt-3 max-w-sm">
+            Voting power distributed across tiers — balanced decision-making from the kitchen.
+          </p>
+        </div>
       </div>
 
-      <div className="grid gap-8">
-        {proposals.map((proposal) => (
-          <motion.div 
-            key={proposal.id}
-            whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 border-4 border-surface dark:border-slate-800 p-8 rounded-xl sticker-shadow"
+     <div className="grid gap-6">
+  {tiers.map((tier, index) => (
+    <motion.div
+      key={tier.name}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.1 }}
+      className="bg-[color:var(--surface-container)] border-4 border-tmain/40 hover:border-tmain p-8 rounded-xl transition-all duration-200"
+    >
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <p className="text-tmain/40 text-xs font-black uppercase tracking-widest mb-1">Tier {String(index + 1).padStart(2, '0')}</p>
+          <h3 className="text-2xl font-black text-white">{tier.name}</h3>
+        </div>
+        <div className="px-6 py-2 rounded-full font-black text-lg border-2 border-tmain text-tmain">
+          {tier.votes}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-3">
+        {tier.members.map((member) => (
+          <div
+            key={member}
+            className="px-4 py-2 rounded-lg border-2 border-tmain/30 text-tmain/60 font-black text-sm"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  proposal.status === 'Active' ? 'bg-primary-container text-on-primary-container' :
-                  proposal.status === 'Passed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
-                  {proposal.status}
-                </span>
-                {proposal.timeLeft && (
-                  <span className="flex items-center gap-1 text-xs font-bold text-text-tmain dark:text-slate-400">
-                    <Clock size={14} />
-                    {proposal.timeLeft}
-                  </span>
-                )}
-              </div>
-              <span className="text-sm font-bold text-text-tmain dark:text-slate-500">#{proposal.id}</span>
-            </div>
-
-            <h3 className="text-2xl font-black mb-4 dark:text-white">{proposal.title}</h3>
-            <p className="text-text-tmain dark:text-slate-300 mb-8 leading-relaxed font-medium">
-              {proposal.description}
-            </p>
-
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1 w-full">
-                <div className="flex justify-between text-sm font-bold mb-2 dark:text-white">
-                  <span>For: {proposal.votesFor.toLocaleString()}</span>
-                  <span>Against: {proposal.votesAgainst.toLocaleString()}</span>
-                </div>
-                <div className="h-4 bg-surface-container dark:bg-slate-800 rounded-full overflow-hidden flex border-2 border-surface dark:border-slate-700">
-                  <div 
-                    className="h-full bg-primary dark:bg-orange-500 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesFor / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
-                  <div 
-                    className="h-full bg-text-tmain dark:bg-slate-600 transition-all duration-500" 
-                    style={{ width: `${(proposal.votesAgainst / (proposal.votesFor + proposal.votesAgainst)) * 100}%` }}
-                  />
-                </div>
-              </div>
-
-              {proposal.status === 'Active' && (
-                <div className="flex gap-4">
-                  <button 
-                    onClick={() => handleVote(proposal.id, 'for')}
-                    className="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#8c4a00] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface"
-                  >
-                    <ThumbsUp size={18} />
-                    Vote For
-                  </button>
-                  <button 
-                    onClick={() => handleVote(proposal.id, 'against')}
-                    className="flex items-center gap-2 bg-white dark:bg-slate-800 text-text-tmain dark:text-white px-6 py-3 rounded-lg font-black shadow-[0_4px_0_0_#e2e7ff] dark:shadow-[0_4px_0_0_#000] hover:translate-y-[2px] active:translate-y-[4px] transition-all border-2 border-surface dark:border-slate-700"
-                  >
-                    <ThumbsDown size={18} />
-                    Against
-                  </button>
-                </div>
-              )}
-            </div>
-          </motion.div>
+            {member}
+          </div>
         ))}
       </div>
+    </motion.div>
+  ))}
+</div>
 
-      <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
-        <ShieldCheck className="mx-auto mb-6 w-16 h-16" />
-        <h2 className="text-3xl font-black mb-4">Governance Security</h2>
-        <p className="text-lg opacity-90 font-medium max-w-2xl mx-auto">
-          All votes are verified via Proof-of-Filling. Your voting power is directly proportional to the amount of $SAMOSA tokens you've deep-fried in the text-tmain treasury.
-        </p>
-      </div>
+<div className="mt-8 bg-[color:var(--surface-container)] border-4 border-tmain/40 p-10 rounded-xl text-center">
+  <Vote className="mx-auto mb-4 text-white w-12 h-12" />
+  <h2 className="text-2xl font-black text-white mb-3">DAO GOVERNANCE STRUCTURE</h2>
+  <p className="text-tmain/40 font-medium max-w-2xl mx-auto text-sm leading-relaxed">
+    Voting power in Samosa Money Printers is distributed across tiers to ensure balanced decision-making and reward long-term commitment to the kitchen.
+  </p>
+</div>
     </motion.div>
   );
 };
+
 
 {/* The P2P View */ }  
 
@@ -279,52 +233,93 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
                 setDataIsLoaded(true);
             });
     }, []); 
-  return ( !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="max-w-7xl mx-auto px-6 py-12"
-    >
-      <button
-        onClick={onBack}
-        className="flex items-center gap-2 text-tmain dark:text-orange-400 hover:text-tmain dark:hover:text-orange-300 transition-colors mb-8"
+return (!dataIsLoaded ? (
+  <div className="flex items-center justify-center h-screen">
+    <p className="text-tmain font-black text-xl animate-pulse">LOADING BAKERY DATA...</p>
+  </div>
+) : (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="max-w-5xl mx-auto px-6 py-10"
+  >
+    <button
+      onClick={onBack}
+      className="flex items-center gap-2 text-surface-container hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase">
+      <ArrowLeft size={14} />
+      Back to Home
+    </button>
+
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <p className="text-surface-container text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
+        <h1 className="text-6xl font-black text-tmain tracking-tighter leading-none">THE BAKERY</h1>
+        <p className="text-surface-container text-sm mt-3 max-w-sm">
+          P2P token leaderboard — live performance data from the kitchen.
+        </p>
+      </div>
+
+      {/* BALANCE */}
+      <div className="flex flex-col items-start md:items-end gap-1 px-6 py-4 rounded-xl border border-tmain/20 bg-[color:var(--surface-container)] min-w-[180px]">
+        <span className="text-tmain/40 text-[10px] font-black uppercase tracking-[0.2em]">Your Balance</span>
+        <span className="text-4xl font-black text-tmain tabular-nums">{data[1]}</span>
+      </div>
+    </div>
+
+   {/* LEADERBOARD PANEL */}
+<div className="rounded-2xl border border-tmain bg-surface-container overflow-hidden">
+
+  {/* Panel Header */}
+  <div className="flex items-center justify-between px-6 py-4 border-b border-tmain/10">
+    <div className="flex items-center gap-3">
+      <span className="w-2 h-2 rounded-full bg-tmain animate-pulse" />
+      <span className="text-tmain font-black text-sm tracking-widest uppercase">P2P Leaderboard</span>
+      <span className="text-tmain/30 text-xs font-mono">LIVE</span>
+    </div>
+    <button className="px-4 py-1.5 rounded-lg border border-tmain/30 text-tmain text-xs font-black uppercase tracking-widest hover:bg-tmain hover:text-black transition-all duration-200">
+      Refresh
+    </button>
+  </div>
+
+  {/* Column Labels */}
+  <div className="grid grid-cols-[3rem_8rem_1fr_8rem] px-6 py-3 border-b border-tmain/10">
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">#</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Ticker</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Contract Address</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest text-right">Price</span>
+  </div>
+
+  {/* Rows */}
+  <div className="divide-y divide-tmain/5">
+    {data[0].map((coin, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: i * 0.04 }}
+        className="grid grid-cols-[3rem_8rem_1fr_8rem] items-center px-6 py-4
+          border-l-2 border-l-transparent
+          hover:border-l-tmain hover:bg-tmain/5
+          transition-all duration-150"
       >
-        <ArrowLeft size={20} />
-        Back to Home
-      </button>
-      <h1 className="text-4xl font-black mb-8 dark:text-white">Bakery</h1>
-      <p className="text-lg text-tmain dark:text-slate-300 mb-8">
-      </p>
-      {data[0].map((coin, i) => (
-                  <div
-                    key={i}
-                    className="group grid grid-cols-[2rem_6rem_1fr_auto] min-w-0 items-center px-3 py-4 rounded-xl 
-                    bg-surface-container 
-                    shadow-[0_1px_0_0_var(--tmain)]
-                    hover:shadow-[0_10px_0_0_var(--tmain)]
-                    hover:-translate-y-1 transition-all duration-200"
-                  >
-                    <span className="font-black text-tmain text-lg">
-                      {i + 1}
-                    </span>
+        <span className="font-black text-sm tabular-nums text-tmain/30">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <span className="font-black text-tmain text-sm tracking-wider">{coin.tick}</span>
+        <span className="text-tmain/30 text-xs font-mono truncate pr-4">{coin.ca}</span>
+        <span className={`font-black text-sm tabular-nums text-right ${
+          parseFloat(data[7][i]) < 0 ? "text-red-400" : "text-green-400"
+        }`}>
+          {parseFloat(data[7][i]) >= 0 ? `+${data[7][i]}` : data[7][i]}
+        </span>
+      </motion.div>
+    ))}
+  </div>
 
-                    <span className="font-bold text-tmain text-lg">
-                      {coin.tick}
-                    </span>
-
-                    <span className="text-tmain truncate min-w-0">
-                      {coin.ca}
-                    </span>
-
-                    <span className="text-tmain">
-                      {data[7][i]}
-                    </span>
-
-                  </div>
-                ))}
-    </motion.div>
-  ));
+</div>
+  </motion.div>
+));
 };
 
  type Item = {
@@ -430,7 +425,7 @@ const chart = createChart(chartref.current, {
 {/*Start of App8*/}
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'BAKERY' | 'P2P' | 'GOVERNANCE'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'TREASURY' | 'BAKERY' | 'P2P' | 'GOVERNANCE'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -493,7 +488,9 @@ export default function App() {
 {/* Mains App UI */ }
 
 return (
-  !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
+  !dataIsLoaded ?<div className="flex items-center justify-center h-screen">
+    <p className="text-tmain font-black text-xl animate-pulse">LOADING THE RECIPES TO COOK...</p>
+  </div>: (
 
     <div className="min-h-screen overflow-x-hidden"
     style={{
@@ -583,7 +580,7 @@ return (
           onClick={() => {
             if (item === 'BAKERY') setCurrentView('BAKERY');
             else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else if (item === 'P2P') setCurrentView('P2P');
             else setCurrentView('home');
           }}
           className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
@@ -611,8 +608,9 @@ return (
           whileHover={{ scale: 1.05, rotate: 1 }}
           onClick={() => {
             if (item === 'BAKERY') setCurrentView('BAKERY');
+            else if (item === 'TREASURY') setCurrentView('TREASURY');
             else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else if (item === 'P2P') setCurrentView('P2P');
             else setCurrentView('home');
           }}
           className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
@@ -655,7 +653,8 @@ return (
               onClick={() => {
                 if (item === 'BAKERY') setCurrentView('BAKERY');
                 else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                else if (item === 'EXTRA') setCurrentView('EXTRA');
+                else if (item === 'TREASURY') setCurrentView('TREASURY');
+                else if (item === 'P2P') setCurrentView('P2P');
                 else setCurrentView('home');
                 setIsMenuOpen(false);
               }}
