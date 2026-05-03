@@ -12,7 +12,7 @@
   --surface: #e4b896;
   --surface-container: rgb(15, 23, 42);
   --surface-container-low: #2f4063;
-  --surface-container-lowest: #521a1a;
+  --surface-container-text: #521a1a;
 
   --white: #ffffff;
   --black: #000000;
@@ -36,9 +36,9 @@
   --grid-color: rgba(232, 232, 232, 0.1);
 
   --surface: #0b121e;
-  --surface-container: #1e293b;
+  --surface-container: #263143;
   --surface-container-low: #111827;
-  --surface-container-lowest: #020617;
+  --surface-container-text: #5d6586;
 }
 
 /* ---------------- BASE ---------------- */
@@ -85,6 +85,10 @@
 
 .text-black {
   color: var(--black);
+}
+
+.text-surface-container-text {
+  color: var(--surface-container-text);
 }
 
 .bg-tmain {

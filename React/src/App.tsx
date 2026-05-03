@@ -76,7 +76,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
         <button
             onClick={onBack}
-            className="flex items-center gap-2 text-surface-container hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase"
+            className="flex items-center gap-2 text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase"
             style={{ transition: "color 0.3s ease" }}
           >
             <ArrowLeft size={14} />
@@ -85,9 +85,9 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
 
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
-          <p className="text-surface-container text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
+         <p className="text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
           <h1 className="text-6xl font-black text-tmain tracking-tighter leading-none">GOVERNANCE</h1>
-          <p className="text-surface-container text-sm mt-3 max-w-sm">
+          <p className="font-bold text-sm mt-3 max-w-sm text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)]">
             Voting power distributed across tiers — balanced decision-making from the kitchen.
           </p>
         </div>
@@ -246,16 +246,17 @@ return (!dataIsLoaded ? (
   >
     <button
       onClick={onBack}
-      className="flex items-center gap-2 text-surface-container hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase">
+      className="flex items-center gap-2 text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase"
+    >
       <ArrowLeft size={14} />
       Back to Home
     </button>
 
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
       <div>
-        <p className="text-surface-container text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
+        <p className="text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
         <h1 className="text-6xl font-black text-tmain tracking-tighter leading-none">THE BAKERY</h1>
-        <p className="text-surface-container text-sm mt-3 max-w-sm">
+        <p className="font-bold text-sm mt-3 max-w-sm text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)]">
           P2P token leaderboard — live performance data from the kitchen.
         </p>
       </div>
@@ -515,7 +516,7 @@ return (
     {/* Logo */}
     <div
       onClick={() => setCurrentView('home')}
-      className="w-10 h-10 rounded-full border-2 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
+      className="w-10 h-10 rounded-full border-3 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
     >
       <img src={logo} alt="logo" className="w-full h-full object-cover" />
     </div>
