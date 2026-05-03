@@ -49,7 +49,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     {
       name: "SMP Founding Members",
       votes: "5 Votes",
-      members: ["Tej", "Nithin", "Sujan", "Aditiya"],
+      members: ["Tej", "Nithin", "Star", "Aditiya"],
       color: "bg-primary-container text-on-primary-container"
     },
     {
@@ -268,7 +268,7 @@ return (!dataIsLoaded ? (
       </div>
     </div>
 
-   {/* LEADERBOARD PANEL */}
+   {/* table*/}
 <div className="rounded-2xl border border-tmain bg-surface-container overflow-hidden">
 
   {/* Panel Header */}
@@ -323,12 +323,12 @@ return (!dataIsLoaded ? (
 ));
 };
 
- type Item = {
+type Item = {
   img: string;
   label: string;
-  };
+};
 
-function Dropdown({ selected, setSelected }) {
+function Dropdown({ selected, setSelected }: { selected: string; setSelected: (val: string) => void }) {
   return (
     <div className="relative inline-block group">
       <select
@@ -340,7 +340,6 @@ function Dropdown({ selected, setSelected }) {
         <option value="eth">ETH / ETHEREUM</option>
         <option value="sol">SOL / SOLANA</option>
       </select>
-      {/* Custom arrow for gamer aesthetic */}
       <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-tmain">
         ▼
       </div>
@@ -348,7 +347,7 @@ function Dropdown({ selected, setSelected }) {
   );
 }
 
-function Chart({ choice }) {
+function Chart({ choice, isDarkMode }: { choice: string; isDarkMode: boolean }) {
   const chartref = useRef<HTMLDivElement>(null);
   const [data, setData] = useState([]);
 
@@ -371,35 +370,36 @@ function Chart({ choice }) {
     if (!chartref.current || data.length === 0) return;
 
     const styles = getComputedStyle(document.documentElement);
+    const tmain = styles.getPropertyValue('--tmain').trim();
 
-const chart = createChart(chartref.current, {
-  width: chartref.current.clientWidth,
-  height: 400,
+    const chart = createChart(chartref.current, {
+      width: chartref.current.clientWidth,
+      height: 400,
 
-  layout: {
-    background: { color: 'transparent' },
-    textColor: styles.getPropertyValue('--tmain'),
-  },
+      layout: {
+        background: { color: 'transparent' },
+        textColor: tmain,
+      },
 
-  grid: {
-    vertLines: { color: 'rgba(255,255,255,0.03)' },
-    horzLines: { color: 'rgba(255,255,255,0.03)' },
-  },
+      grid: {
+        vertLines: { color: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.06)' },
+        horzLines: { color: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.06)' },
+      },
 
-  timeScale: {
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
+      timeScale: {
+        borderColor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
+      },
 
-  rightPriceScale: {
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
-});
+      rightPriceScale: {
+        borderColor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
+      },
+    });
 
     const candlestickSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#22c55e', 
-      downColor: '#ef4444', 
+      upColor: '#22c55e',
+      downColor: '#ef4444',
       borderVisible: false,
-      wickUpColor: '#22c55e', 
+      wickUpColor: '#22c55e',
       wickDownColor: '#ef4444',
     });
 
@@ -418,7 +418,7 @@ const chart = createChart(chartref.current, {
       window.removeEventListener('resize', handleResize);
       chart.remove();
     };
-  }, [data]);
+  }, [data, isDarkMode]); 
 
   return <div ref={chartref} className="w-full h-[350px]" />;
 }
