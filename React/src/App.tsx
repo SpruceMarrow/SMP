@@ -72,7 +72,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto px-6 py-12">
+      className="max-w-6xl mx-auto px-6 py-12">
 
         <button
             onClick={onBack}
@@ -86,7 +86,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
          <p className="text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] text-xs font-black uppercase tracking-[0.3em] mb-2">Samosa Money Printers</p>
-          <h1 className="text-6xl font-black text-tmain tracking-tighter leading-none">GOVERNANCE</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-tmain tracking-tighter leading-none">GOVERNANCE</h1>
           <p className="font-bold text-sm mt-3 max-w-sm text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)]">
             Voting power distributed across tiers — balanced decision-making from the kitchen.
           </p>
@@ -100,17 +100,16 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-[color:var(--surface-container)] border-4 border-tmain/40 hover:border-tmain p-8 rounded-xl transition-all duration-200"
-    >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-          <p className="text-tmain/40 text-xs font-black uppercase tracking-widest mb-1">Tier {String(index + 1).padStart(2, '0')}</p>
-          <h3 className="text-2xl font-black text-white">{tier.name}</h3>
-        </div>
-        <div className="px-6 py-2 rounded-full font-black text-lg border-2 border-tmain text-tmain">
-          {tier.votes}
-        </div>
-      </div>
+      className="bg-[color:var(--surface-container)] border-4 border-tmain/40 hover:border-tmain p-8 rounded-xl transition-all duration-200">
+      <div className="flex flex-col gap-4 mb-6">
+  <div>
+    <p className="text-tmain/40 text-xs font-black uppercase tracking-widest mb-1">Tier {String(index + 1).padStart(2, '0')}</p>
+    <h3 className="text-2xl font-black text-white">{tier.name}</h3>
+  </div>
+  <div className="self-start px-6 py-2 rounded-full font-black text-lg border-2 border-tmain text-tmain">
+    {tier.votes}
+  </div>
+</div>
 
       <div className="flex flex-wrap gap-3">
         {tier.members.map((member) => (
@@ -242,7 +241,7 @@ return (!dataIsLoaded ? (
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="max-w-5xl mx-auto px-6 py-10"
+    className="max-w-6xl mx-auto px-6 py-10"
   >
     <button
       onClick={onBack}
@@ -263,7 +262,7 @@ return (!dataIsLoaded ? (
 
       {/* BALANCE */}
       <div className="flex flex-col items-start md:items-end gap-1 px-6 py-4 rounded-xl border border-tmain/20 bg-[color:var(--surface-container)] min-w-[180px]">
-        <span className="text-tmain/40 text-[10px] font-black uppercase tracking-[0.2em]">Your Balance</span>
+        <span className="text-tmain/40 text-[10px] font-black uppercase tracking-[0.2em]">Bot Balance</span>
         <span className="text-4xl font-black text-tmain tabular-nums">{data[1]}</span>
       </div>
     </div>
@@ -272,22 +271,23 @@ return (!dataIsLoaded ? (
 <div className="rounded-2xl border border-tmain bg-surface-container overflow-hidden">
 
   {/* Panel Header */}
-  <div className="flex items-center justify-between px-6 py-4 border-b border-tmain/10">
+  <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-tmain/10">
     <div className="flex items-center gap-3">
       <span className="w-2 h-2 rounded-full bg-tmain animate-pulse" />
-      <span className="text-tmain font-black text-sm tracking-widest uppercase">P2P Leaderboard</span>
-      <span className="text-tmain/30 text-xs font-mono">LIVE</span>
+      <span className="text-tmain font-black text-xs md:text-sm tracking-widest uppercase">P2P Leaderboard</span>
+      <span className="text-tmain/30 text-[10px] md:text-xs font-mono">LIVE</span>
     </div>
-    <button className="px-4 py-1.5 rounded-lg border border-tmain/30 text-tmain text-xs font-black uppercase tracking-widest hover:bg-tmain hover:text-black transition-all duration-200">
+    <button className="px-3 py-1.5 rounded-lg border border-tmain/30 text-tmain text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-tmain hover:text-black transition-all duration-200">
       Refresh
     </button>
   </div>
 
-  {/* Column Labels */}
-  <div className="grid grid-cols-[3rem_8rem_1fr_8rem] px-6 py-3 border-b border-tmain/10">
+{/* Column Labels - Responsive Grid */}
+  {/* Mobile: # (2rem), Ticker (4rem), CA (fills space), Price (4.5rem) */}
+  <div className="grid grid-cols-[2rem_4rem_1fr_4.5rem] md:grid-cols-[3rem_8rem_1fr_8rem] px-4 md:px-6 py-3 border-b border-tmain/10 bg-tmain/5">
     <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">#</span>
-    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Ticker</span>
-    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Contract Address</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Coin</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest truncate">Contract Address</span>
     <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest text-right">Price</span>
   </div>
 
@@ -308,8 +308,8 @@ return (!dataIsLoaded ? (
           {String(i + 1).padStart(2, '0')}
         </span>
         <span className="font-black text-tmain text-sm tracking-wider">{coin.tick}</span>
-        <span className="text-tmain/30 text-xs font-mono truncate pr-4">{coin.ca}</span>
-        <span className={`font-black text-sm tabular-nums text-right ${
+        <span className="text-tmain/30 text-xs font-mono truncate pr-12">{coin.ca}</span>
+        <span className={`font-black text-[11px] md:text-sm tabular-nums text-center whitespace-nowrap ${
           parseFloat(data[7][i]) < 0 ? "text-red-400" : "text-green-400"
         }`}>
           {parseFloat(data[7][i]) >= 0 ? `+${data[7][i]}` : data[7][i]}
@@ -366,32 +366,40 @@ function Chart({ choice, isDarkMode }: { choice: string; isDarkMode: boolean }) 
       });
   }, [choice]);
 
-  useEffect(() => {
-    if (!chartref.current || data.length === 0) return;
+useEffect(() => {
+  if (!chartref.current || data.length === 0) return;
 
+  let chart: any = null;
+
+  const timer = setTimeout(() => {
     const styles = getComputedStyle(document.documentElement);
     const tmain = styles.getPropertyValue('--tmain').trim();
-
-    const chart = createChart(chartref.current, {
-      width: chartref.current.clientWidth,
-      height: 400,
-
+    
+    chart = createChart(chartref.current!, {
+      width: chartref.current!.clientWidth,
+      height: 380,
       layout: {
         background: { color: 'transparent' },
         textColor: tmain,
       },
-
       grid: {
-        vertLines: { color: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.06)' },
-        horzLines: { color: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.06)' },
+        vertLines: { color: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.06)' },
+        horzLines: { color: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.06)' },
       },
-
       timeScale: {
-        borderColor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
+        borderColor: isDarkMode ? 'rgb(67,218,255)' : 'rgb(253,139,0)',
+        fixLeftEdge: true,   // Prevents labels from bleeding off the left
+        fixRightEdge: true,  // Prevents labels from bleeding off the right
+        lockVisibleTimeRangeOnResize: true,
       },
-
+      // UPDATE THIS SECTION
       rightPriceScale: {
-        borderColor: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.1)',
+        borderColor: isDarkMode ? 'rgb(67,218,255)' : 'rgb(253,139,0)',
+        autoScale: true,
+        scaleMargins: {
+          top: 0.1,    // Leaves space at the top so price text doesn't overflow
+          bottom: 0.2, // Leaves space at the bottom for the time labels
+        },
       },
     });
 
@@ -413,12 +421,14 @@ function Chart({ choice, isDarkMode }: { choice: string; isDarkMode: boolean }) 
     };
 
     window.addEventListener('resize', handleResize);
+  }, 50);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      chart.remove();
-    };
-  }, [data, isDarkMode]); 
+  return () => {
+    clearTimeout(timer);
+    window.removeEventListener('resize', () => {});
+    if (chart) chart.remove();
+  };
+}, [data, isDarkMode]);
 
   return <div ref={chartref} className="w-full h-[350px]" />;
 }
@@ -723,7 +733,7 @@ return (
     </h2>
 
     <div className="w-full max-w-4xl mx-auto">
-      <Chart choice={selected} />
+      <Chart choice={selected} isDarkMode={isDarkMode} />
     </div>
 
   </div>
