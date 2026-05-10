@@ -219,6 +219,7 @@ def helius():
                     return 'received'
                 finally:
                     return_db(sql)
+                    return 'recieved'
 
     
                 
