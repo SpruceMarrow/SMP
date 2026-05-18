@@ -30,6 +30,8 @@ import bitcoin from "./images/bitcoin.png";
 
 {/* Governance View */ }
 
+{/* Governance View */ }
+
 interface Proposal {
   id: number;
   title: string;
@@ -47,7 +49,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     {
       name: "SMP Founding Members",
       votes: "5 Votes",
-      members: ["Tej", "Nithin", "Sujan", "Aditiya"],
+      members: ["Tej", "Nithin", "Star", "Aditiya"],
       color: "bg-primary-container text-on-primary-container"
     },
     {
@@ -113,6 +115,9 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
           </motion.div>
         ))}
       </div>
+    </motion.div>
+  ))}
+</div>
 
       <div className="mt-16 bg-primary dark:bg-orange-600 text-white p-12 rounded-xl border-[8px] border-white dark:border-slate-800 sticker-shadow text-center">
         <Vote className="mx-auto mb-6 w-16 h-16" />
@@ -124,6 +129,7 @@ const GovernanceView = ({ onBack }: { onBack: () => void }) => {
     </motion.div>
   );
 };
+
 
 {/* The P2P View */ }  
 
@@ -220,12 +226,20 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
                 setDataIsLoaded(true);
             });
     }, []); 
-  return ( !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="max-w-7xl mx-auto px-6 py-12"
+return (!dataIsLoaded ? (
+  <div className="flex items-center justify-center h-screen">
+    <p className="text-tmain font-black text-xl animate-pulse">LOADING BAKERY DATA...</p>
+  </div>
+) : (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="max-w-6xl mx-auto px-6 py-10"
+  >
+    <button
+      onClick={onBack}
+      className="flex items-center gap-2 text-[color:var(--surface-container)] dark:text-[color:var(--surface-container-text)] hover:text-tmain font-bold transition-colors duration-200 mb-12 text-sm tracking-widest uppercase"
     >
       <button
         onClick={onBack}
@@ -250,30 +264,75 @@ const BAKERY = ({ onBack }: { onBack: () => void }) => {
                       {i + 1}
                     </span>
 
-                    <span className="font-bold text-tmain text-lg">
-                      {coin.tick}
-                    </span>
+      {/* BALANCE */}
+      <div className="flex flex-col items-start md:items-end gap-1 px-6 py-4 rounded-xl border border-tmain/20 bg-[color:var(--surface-container)] min-w-[180px]">
+        <span className="text-tmain/40 text-[10px] font-black uppercase tracking-[0.2em]">Bot Balance</span>
+        <span className="text-4xl font-black text-tmain tabular-nums">{data[1]}</span>
+      </div>
+    </div>
 
-                    <span className="text-tmain truncate min-w-0">
-                      {coin.ca}
-                    </span>
+   {/* table*/}
+<div className="rounded-2xl border border-tmain bg-surface-container overflow-hidden">
 
-                    <span className="text-tmain">
-                      {data[7][i]}
-                    </span>
+  {/* Panel Header */}
+  <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-tmain/10">
+    <div className="flex items-center gap-3">
+      <span className="w-2 h-2 rounded-full bg-tmain animate-pulse" />
+      <span className="text-tmain font-black text-xs md:text-sm tracking-widest uppercase">P2P Leaderboard</span>
+      <span className="text-tmain/30 text-[10px] md:text-xs font-mono">LIVE</span>
+    </div>
+    <button className="px-3 py-1.5 rounded-lg border border-tmain/30 text-tmain text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-tmain hover:text-black transition-all duration-200">
+      Refresh
+    </button>
+  </div>
 
-                  </div>
-                ))}
-    </motion.div>
-  ));
+{/* Column Labels - Responsive Grid */}
+  {/* Mobile: # (2rem), Ticker (4rem), CA (fills space), Price (4.5rem) */}
+  <div className="grid grid-cols-[2rem_4rem_1fr_4.5rem] md:grid-cols-[3rem_8rem_1fr_8rem] px-4 md:px-6 py-3 border-b border-tmain/10 bg-tmain/5">
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">#</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest">Coin</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest truncate">Contract Address</span>
+    <span className="text-[10px] font-black text-tmain/30 uppercase tracking-widest text-right">Price</span>
+  </div>
+
+  {/* Rows */}
+  <div className="divide-y divide-tmain/5">
+    {data[0].map((coin, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: i * 0.04 }}
+        className="grid grid-cols-[3rem_8rem_1fr_8rem] items-center px-6 py-4
+          border-l-2 border-l-transparent
+          hover:border-l-tmain hover:bg-tmain/5
+          transition-all duration-150"
+      >
+        <span className="font-black text-sm tabular-nums text-tmain/30">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <span className="font-black text-tmain text-sm tracking-wider">{coin.tick}</span>
+        <span className="text-tmain/30 text-xs font-mono truncate pr-12">{coin.ca}</span>
+        <span className={`font-black text-[11px] md:text-sm tabular-nums text-center whitespace-nowrap ${
+          parseFloat(data[7][i]) < 0 ? "text-red-400" : "text-green-400"
+        }`}>
+          {parseFloat(data[7][i]) >= 0 ? `+${data[7][i]}` : data[7][i]}
+        </span>
+      </motion.div>
+    ))}
+  </div>
+
+</div>
+  </motion.div>
+));
 };
 
- type Item = {
+type Item = {
   img: string;
   label: string;
-  };
+};
 
-function Dropdown({ selected, setSelected }) {
+function Dropdown({ selected, setSelected }: { selected: string; setSelected: (val: string) => void }) {
   return (
     <div className="relative inline-block group">
       <select
@@ -285,7 +344,6 @@ function Dropdown({ selected, setSelected }) {
         <option value="eth">ETH / ETHEREUM</option>
         <option value="sol">SOL / SOLANA</option>
       </select>
-      {/* Custom arrow for gamer aesthetic */}
       <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-tmain">
         ▼
       </div>
@@ -293,7 +351,7 @@ function Dropdown({ selected, setSelected }) {
   );
 }
 
-function Chart({ choice }) {
+function Chart({ choice, isDarkMode }: { choice: string; isDarkMode: boolean }) {
   const chartref = useRef<HTMLDivElement>(null);
   const [data, setData] = useState([]);
 
@@ -312,39 +370,48 @@ function Chart({ choice }) {
       });
   }, [choice]);
 
-  useEffect(() => {
-    if (!chartref.current || data.length === 0) return;
+useEffect(() => {
+  if (!chartref.current || data.length === 0) return;
 
+  let chart: any = null;
+
+  const timer = setTimeout(() => {
     const styles = getComputedStyle(document.documentElement);
-
-const chart = createChart(chartref.current, {
-  width: chartref.current.clientWidth,
-  height: 400,
-
-  layout: {
-    background: { color: 'transparent' },
-    textColor: styles.getPropertyValue('--tmain'),
-  },
-
-  grid: {
-    vertLines: { color: 'rgba(255,255,255,0.03)' },
-    horzLines: { color: 'rgba(255,255,255,0.03)' },
-  },
-
-  timeScale: {
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
-
-  rightPriceScale: {
-    borderColor: 'rgba(255,255,255,0.08)',
-  },
-});
+    const tmain = styles.getPropertyValue('--tmain').trim();
+    
+    chart = createChart(chartref.current!, {
+      width: chartref.current!.clientWidth,
+      height: 380,
+      layout: {
+        background: { color: 'transparent' },
+        textColor: tmain,
+      },
+      grid: {
+        vertLines: { color: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.06)' },
+        horzLines: { color: isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.06)' },
+      },
+      timeScale: {
+        borderColor: isDarkMode ? 'rgb(67,218,255)' : 'rgb(253,139,0)',
+        fixLeftEdge: true,   // Prevents labels from bleeding off the left
+        fixRightEdge: true,  // Prevents labels from bleeding off the right
+        lockVisibleTimeRangeOnResize: true,
+      },
+      // UPDATE THIS SECTION
+      rightPriceScale: {
+        borderColor: isDarkMode ? 'rgb(67,218,255)' : 'rgb(253,139,0)',
+        autoScale: true,
+        scaleMargins: {
+          top: 0.1,    // Leaves space at the top so price text doesn't overflow
+          bottom: 0.2, // Leaves space at the bottom for the time labels
+        },
+      },
+    });
 
     const candlestickSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#22c55e', 
-      downColor: '#ef4444', 
+      upColor: '#22c55e',
+      downColor: '#ef4444',
       borderVisible: false,
-      wickUpColor: '#22c55e', 
+      wickUpColor: '#22c55e',
       wickDownColor: '#ef4444',
     });
 
@@ -358,12 +425,14 @@ const chart = createChart(chartref.current, {
     };
 
     window.addEventListener('resize', handleResize);
+  }, 50);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      chart.remove();
-    };
-  }, [data]);
+  return () => {
+    clearTimeout(timer);
+    window.removeEventListener('resize', () => {});
+    if (chart) chart.remove();
+  };
+}, [data, isDarkMode]);
 
   return <div ref={chartref} className="w-full h-[350px]" />;
 }
@@ -371,7 +440,7 @@ const chart = createChart(chartref.current, {
 {/*Start of App8*/}
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'BAKERY' | 'P2P' | 'GOVERNANCE'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'TREASURY' | 'BAKERY' | 'P2P' | 'GOVERNANCE'>('home');
   const [isPrinting, setIsPrinting] = useState(false);
   const [printProgress, setPrintProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -434,7 +503,9 @@ export default function App() {
 {/* Mains App UI */ }
 
 return (
-  !dataIsLoaded ? <div><h1>Please wait....</h1></div> : (
+  !dataIsLoaded ?<div className="flex items-center justify-center h-screen">
+    <p className="text-tmain font-black text-xl animate-pulse">LOADING THE RECIPES TO COOK...</p>
+  </div>: (
 
     <div className="min-h-screen overflow-x-hidden"
     style={{
@@ -459,7 +530,7 @@ return (
     {/* Logo */}
     <div
       onClick={() => setCurrentView('home')}
-      className="w-10 h-10 rounded-full border-2 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
+      className="w-10 h-10 rounded-full border-3 border-tmain overflow-hidden bg-surface-container flex items-center justify-center cursor-pointer"
     >
       <img src={logo} alt="logo" className="w-full h-full object-cover" />
     </div>
@@ -524,7 +595,7 @@ return (
           onClick={() => {
             if (item === 'BAKERY') setCurrentView('BAKERY');
             else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else if (item === 'P2P') setCurrentView('P2P');
             else setCurrentView('home');
           }}
           className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
@@ -552,8 +623,9 @@ return (
           whileHover={{ scale: 1.05, rotate: 1 }}
           onClick={() => {
             if (item === 'BAKERY') setCurrentView('BAKERY');
+            else if (item === 'TREASURY') setCurrentView('TREASURY');
             else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-            else if (item === 'EXTRA') setCurrentView('EXTRA');
+            else if (item === 'P2P') setCurrentView('P2P');
             else setCurrentView('home');
           }}
           className={`${currentView === item ? 'text-tmain' : 'text-tmain/70'} hover:text-tmain transition`}
@@ -596,7 +668,8 @@ return (
               onClick={() => {
                 if (item === 'BAKERY') setCurrentView('BAKERY');
                 else if (item === 'GOVERNANCE') setCurrentView('GOVERNANCE');
-                else if (item === 'EXTRA') setCurrentView('EXTRA');
+                else if (item === 'TREASURY') setCurrentView('TREASURY');
+                else if (item === 'P2P') setCurrentView('P2P');
                 else setCurrentView('home');
                 setIsMenuOpen(false);
               }}
@@ -664,7 +737,7 @@ return (
     </h2>
 
     <div className="w-full max-w-4xl mx-auto">
-      <Chart choice={selected} />
+      <Chart choice={selected} isDarkMode={isDarkMode} />
     </div>
 
   </div>
